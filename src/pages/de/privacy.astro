@@ -1,0 +1,42 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site } from '@/data/site';
+import { Content as Policy } from '@/policies/data-protection-policy.md';
+---
+
+<Base
+  title={`Datenschutzrichtlinie | ${site.brand}`}
+  description="Wie Meridium Management Consultants personenbezogene Daten nach dem Personal Data Protection Act 2012 von Singapur erhebt, verwendet und schützt."
+  lang="de"
+>
+  <section class="border-b border-line bg-ivory">
+    <div class="container-m py-14 md:py-20">
+      <p class="eyebrow">Rechtliches</p>
+      <h1 class="mt-4 max-w-3xl font-serif text-4xl font-semibold leading-[1.1] tracking-tight text-navy sm:text-5xl">
+        Datenschutzrichtlinie
+      </h1>
+      <p class="mt-6 max-w-[62ch] text-lg leading-relaxed">
+        Wie {site.legalName} personenbezogene Daten nach dem Personal Data Protection Act 2012
+        von Singapur erhebt, verwendet, offenlegt, schützt und aufbewahrt.
+      </p>
+      <p class="mt-4 max-w-[62ch] rounded-[3px] border border-navy/15 bg-tint px-4 py-3 text-[15px] leading-relaxed">
+        Diese Richtlinie wird in englischer Sprache geführt; die englische Fassung ist
+        maßgeblich. Bei Fragen zum Inhalt wenden Sie sich gern an {site.email}.
+      </p>
+    </div>
+  </section>
+  <section class="bg-white">
+    <div class="container-m section">
+      <div class="prose-m prose-policy">
+        <Policy />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style is:global>
+  /* The markdown h1 duplicates the page h1; hide it and let the page header lead. */
+  .prose-policy > h1 {
+    display: none;
+  }
+</style>

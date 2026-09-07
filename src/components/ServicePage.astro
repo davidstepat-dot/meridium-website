@@ -1,0 +1,233 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import Base from '@/layouts/Base.astro';
+import CTABand from '@/components/CTABand.astro';
+import { site } from '@/data/site';
+import { langPrefix, ui, type Lang } from '@/data/i18n';
+
+interface Props {
+  entry: CollectionEntry<'services'>;
+  lang: Lang;
+}
+
+const { entry, lang } = Astro.props;
+const { data } = entry;
+const t = ui[lang];
+const prefix = langPrefix(lang);
+const { Content } = await render(entry);
+
+const hasBody = entry.body && entry.body.trim().length > 0;
+const relatedSlug = data.related ? data.related.slug.id.split('/')[1] : null;
+---
+
+<Base
+  title={data.seoTitle ?? `${data.title} | ${site.brand}`}
+  description={data.seoDescription ?? data.outcome}
+  noindex={data.stub}
+  lang={lang}
+>
+  <!-- Page header -->
+  <section class="border-b border-line bg-ivory">
+    <div class="container-m py-14 md:py-20">
+      <nav aria-label="Breadcrumb" class="text-sm">
+        <ol class="flex items-center gap-2">
+          <li><a href={prefix || '/'} class="text-navy/70 hover:text-navy">{t.service.home}</a></li>
+          <li aria-hidden="true" class="text-navy/40">/</li>
+          <li><a href={`${prefix}/#services`} class="text-navy/70 hover:text-navy">{t.service.services}</a></li>
+          <li aria-hidden="true" class="text-navy/40">/</li>
+          <li aria-current="page" class="font-medium text-navy">{data.title}</li>
+        </ol>
+      </nav>
+      <h1 class="mt-6 max-w-3xl font-serif text-4xl font-semibold leading-[1.1] tracking-tight text-navy sm:text-5xl">
+        {data.headline}
+      </h1>
+      <p class="mt-6 max-w-[62ch] text-lg leading-relaxed">{data.intro}</p>
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a href={site.bookingHref} class="btn-red">{t.cta.book}</a>
+        <a href={`${prefix}/#services`} class="btn-outline-navy">{t.service.allServices}</a>
+      </div>
+    </div>
+  </section>
+
+  {
+    data.stub && (
+      <section class="bg-white">
+        <div class="container-m py-14">
+          <p class="todo-flag inline-block !px-3 !py-2 text-sm">
+            TODO: full page content for {data.title} is pending. Structure and copy above are
+            final direction.
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    hasBody && (
+      <section class="bg-white">
+        <div class="container-m section">
+          <div class="prose-m">
+            <Content />
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    data.included.length > 0 && (
+      <section class="bg-ivory">
+        <div class="container-m section">
+          <h2 class="max-w-2xl font-serif text-3xl font-semibold tracking-tight text-navy">
+            {t.service.included}
+          </h2>
+          <ul class="mt-8 grid gap-x-12 gap-y-4 md:grid-cols-2">
+            {data.included.map((item) => (
+              <li class="flex gap-3 leading-relaxed">
+                <svg
+                  class="mt-1.5 h-4 w-4 shrink-0 text-navy"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M2.5 8.5l3.5 3.5 7.5-8"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    data.process.length > 0 && (
+      <section class="bg-white">
+        <div class="container-m section">
+          <h2 class="max-w-2xl font-serif text-3xl font-semibold tracking-tight text-navy">
+            {t.service.how}
+          </h2>
+          <ol class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {data.process.map((step, i) => (
+              <li class="border-t border-navy/15 pt-5">
+                <span class="font-serif text-sm font-semibold text-navy/70" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 class="mt-2 font-serif text-lg font-semibold tracking-tight text-navy">
+                  {step.title}
+                </h3>
+                <p class="mt-2 text-[15px] leading-relaxed">{step.description}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    data.needs.length > 0 && (
+      <section class="bg-ivory">
+        <div class="container-m section">
+          <h2 class="max-w-2xl font-serif text-3xl font-semibold tracking-tight text-navy">
+            {t.service.needs}
+          </h2>
+          <ul class="mt-8 max-w-3xl space-y-4">
+            {data.needs.map((item) => (
+              <li class="flex gap-3 leading-relaxed">
+                <svg
+                  class="mt-1.5 h-4 w-4 shrink-0 text-navy"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M2.5 8.5l3.5 3.5 7.5-8"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    data.faqs.length > 0 && (
+      <section class="bg-white">
+        <div class="container-m section">
+          <h2 class="max-w-2xl font-serif text-3xl font-semibold tracking-tight text-navy">
+            {t.service.faq}
+          </h2>
+          <div class="mt-8 max-w-3xl divide-y divide-line border-y border-line">
+            {data.faqs.map((faq) => (
+              <details class="group py-5">
+                <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-serif text-lg font-semibold tracking-tight text-navy [&::-webkit-details-marker]:hidden">
+                  {faq.q}
+                  <svg
+                    class="h-4 w-4 shrink-0 transition-transform group-open:rotate-45"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                  </svg>
+                </summary>
+                <p class="mt-3 max-w-[62ch] leading-relaxed">{faq.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    data.related && relatedSlug && (
+      <section class="bg-white">
+        <div class="container-m pb-16">
+          <a
+            href={`${prefix}/services/${relatedSlug}/`}
+            class="group flex items-center justify-between gap-4 border border-line p-6 transition-colors hover:border-navy sm:p-8"
+          >
+            <div>
+              <p class="eyebrow">{t.service.related}</p>
+              <p class="mt-2 font-serif text-xl font-semibold tracking-tight text-navy">
+                {data.related.label}
+              </p>
+            </div>
+            <svg
+              class="h-5 w-5 shrink-0 text-navy transition-transform group-hover:translate-x-1"
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M2 8h11m0 0L9 4m4 4l-4 4"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+        </div>
+      </section>
+    )
+  }
+
+  <CTABand lang={lang} heading={ui[lang].cta.serviceHeading(data.ctaNoun ?? data.title.toLowerCase())} />
+</Base>

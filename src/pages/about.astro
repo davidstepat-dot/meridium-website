@@ -1,0 +1,152 @@
+---
+import { Image } from 'astro:assets';
+import Base from '@/layouts/Base.astro';
+import CTABand from '@/components/CTABand.astro';
+import { site } from '@/data/site';
+import { team } from '@/data/team';
+import marinaBayDay from '@/assets/marina-bay-day.jpg';
+
+const initials = (name: string) =>
+  name
+    .split(' ')
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 2);
+---
+
+<Base
+  title={`About | ${site.brand}`}
+  description="Meridium is a licensed Singapore corporate services firm built on senior-only delivery and a deliberately small client book."
+>
+  <section class="border-b border-line bg-ivory">
+    <div class="container-m py-14 md:py-20">
+      <p class="eyebrow">About Meridium</p>
+      <h1 class="mt-4 max-w-3xl font-serif text-4xl font-semibold leading-[1.1] tracking-tight text-navy sm:text-5xl">
+        Senior people, a small client book, one accountable contact.
+      </h1>
+      <p class="mt-6 max-w-[62ch] text-lg leading-relaxed">
+        Meridium Management Consultants is a licensed Singapore corporate services firm serving
+        foreign companies and founders entering Asia, and the professional advisers who refer
+        them.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white">
+    <div class="container-m section grid items-center gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
+      <div>
+        <h2 class="font-serif text-3xl font-semibold tracking-tight text-navy">
+          What we are here to do.
+        </h2>
+        <p class="mt-5 max-w-[58ch] leading-relaxed">
+          Our vision is simple to state and hard to do: to be the firm that international
+          principals trust with their Asian base, the way they trust their own senior team. Our
+          mission follows from it: deliver incorporation, compliance, tax and expansion work in
+          Singapore to a standard that makes the entity boring, so the business built on top of
+          it can be interesting.
+        </p>
+        <p class="mt-4 max-w-[58ch] leading-relaxed">
+          Everything Meridium does runs through one relationship. The person who scopes your work
+          delivers it, the person who delivers it answers for it, and the answer arrives from
+          someone who knows your file without opening it.
+        </p>
+      </div>
+      <Image
+        src={marinaBayDay}
+        alt="Singapore central business district seen across the water on a clear day"
+        widths={[480, 768, 1080]}
+        sizes="(min-width: 1024px) 38vw, 100vw"
+        class="aspect-[4/3] w-full rounded-[3px] object-cover"
+        loading="lazy"
+      />
+    </div>
+  </section>
+
+  <section class="bg-ivory">
+    <div class="container-m section">
+      <div class="max-w-2xl">
+        <h2 class="font-serif text-3xl font-semibold tracking-tight text-navy">
+          The senior-only model.
+        </h2>
+        <p class="mt-5 leading-relaxed">
+          The corporate services industry scales by leverage: partners sell, juniors deliver, and
+          managers juggle client books of a hundred or more. The economics are excellent and the
+          service is not. Meridium is built on the opposite trade.
+        </p>
+      </div>
+      <ul class="mt-10 grid gap-8 md:grid-cols-3">
+        <li class="border-t border-navy/15 pt-5">
+          <h3 class="font-serif text-lg font-semibold tracking-tight text-navy">
+            No junior hires learning on your file
+          </h3>
+          <p class="mt-2 text-[15px] leading-relaxed">
+            Every engagement is scoped, led and delivered by senior practitioners. Training
+            happens on our time, not on your entity.
+          </p>
+        </li>
+        <li class="border-t border-navy/15 pt-5">
+          <h3 class="font-serif text-lg font-semibold tracking-tight text-navy">
+            No manager juggling 120 clients
+          </h3>
+          <p class="mt-2 text-[15px] leading-relaxed">
+            We cap the client book each adviser carries. Capacity discipline is the price of
+            responsiveness, and we pay it deliberately.
+          </p>
+        </li>
+        <li class="border-t border-navy/15 pt-5">
+          <h3 class="font-serif text-lg font-semibold tracking-tight text-navy">
+            One firm across the lifecycle
+          </h3>
+          <p class="mt-2 text-[15px] leading-relaxed">
+            Incorporation, compliance, payroll, tax, IP and expansion connect under one roof, so
+            nothing falls between providers.
+          </p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  {
+    team.length > 0 && (
+      <section class="bg-white">
+        <div class="container-m section">
+          <div class="max-w-2xl">
+            <p class="eyebrow">The team</p>
+            <h2 class="mt-4 font-serif text-3xl font-semibold tracking-tight text-navy">
+              The people on your file.
+            </h2>
+          </div>
+          <div class="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {team.map((member) => (
+              <div class="border border-line p-6">
+                {member.photo ? (
+                  <Image
+                    src={member.photo}
+                    alt={`Portrait of ${member.name}`}
+                    widths={[400, 800]}
+                    sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 100vw"
+                    class="aspect-[4/5] w-full rounded-[3px] object-cover"
+                  />
+                ) : (
+                  <div
+                    class="flex h-20 w-20 items-center justify-center rounded-full bg-tint font-serif text-2xl font-semibold text-navy"
+                    aria-hidden="true"
+                  >
+                    {initials(member.name)}
+                  </div>
+                )}
+                <p class="mt-5 font-serif text-xl font-semibold tracking-tight text-navy">
+                  {member.name}
+                </p>
+                <p class="mt-1 text-sm text-body/80">{member.role}</p>
+                {member.bio && <p class="mt-3 text-[15px] leading-relaxed">{member.bio}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <CTABand />
+</Base>

@@ -1,0 +1,86 @@
+---
+import { getCollection } from 'astro:content';
+import wordmark from '@/assets/wordmark.png';
+import orchid from '@/assets/orchid-mark.png';
+import { site } from '@/data/site';
+import { langPrefix, ui, type Lang } from '@/data/i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = ui[lang];
+const prefix = langPrefix(lang);
+
+const services = (await getCollection('services', ({ id }) => id.startsWith(`${lang}/`))).sort(
+  (a, b) => a.data.order - b.data.order
+);
+const slugOf = (id: string) => id.split('/')[1];
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-navy-dark text-white/75">
+  <div class="container-m grid gap-12 py-14 md:grid-cols-[1.4fr_1fr_1fr] md:py-20">
+    <div>
+      {/* TODO: replace CSS-inverted marks with proper reversed logo files from the designer. */}
+      <div class="flex items-center gap-2.5">
+        <img
+          src={orchid.src}
+          alt=""
+          aria-hidden="true"
+          class="h-8 w-auto brightness-0 invert"
+          width={orchid.width}
+          height={orchid.height}
+        />
+        <img
+          src={wordmark.src}
+          alt="Meridium"
+          class="h-5 w-auto brightness-0 invert"
+          width={wordmark.width}
+          height={wordmark.height}
+        />
+      </div>
+      <p class="mt-4 max-w-xs text-sm leading-relaxed">{t.footer.tagline}</p>
+      <a
+        href={`mailto:${site.email}`}
+        class="mt-5 inline-block text-sm font-medium text-white underline decoration-white/30 underline-offset-4 hover:decoration-white"
+      >
+        {site.email}
+      </a>
+    </div>
+
+    <nav aria-label={t.footer.services}>
+      <p class="text-xs font-semibold uppercase tracking-[0.18em] text-white/50">{t.footer.services}</p>
+      <ul class="mt-4 space-y-2.5 text-sm">
+        {
+          services.map((s) => (
+            <li>
+              <a href={`${prefix}/services/${slugOf(s.id)}/`} class="hover:text-white">
+                {s.data.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <nav aria-label={t.footer.company}>
+      <p class="text-xs font-semibold uppercase tracking-[0.18em] text-white/50">{t.footer.company}</p>
+      <ul class="mt-4 space-y-2.5 text-sm">
+        <li><a href={`${prefix}/about/`} class="hover:text-white">{t.footer.about}</a></li>
+        <li><a href={`${prefix}/contact/`} class="hover:text-white">{t.footer.contact}</a></li>
+        <li><a href={`${prefix}/privacy/`} class="hover:text-white">{t.footer.privacy}</a></li>
+        <li><a href={`${prefix}/terms/`} class="hover:text-white">{t.footer.terms}</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="container-m flex flex-col gap-2 py-6 text-[13px] leading-relaxed text-white/55">
+      <p>{site.legalName} · {t.footer.uenLabel}: {site.uen}</p>
+      <p>{t.footer.registeredOffice}: {site.registeredAddress}</p>
+      <p>© {year} {site.legalName} {t.footer.rights}</p>
+    </div>
+  </div>
+</footer>

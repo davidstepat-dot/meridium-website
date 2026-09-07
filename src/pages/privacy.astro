@@ -1,0 +1,37 @@
+---
+import Base from '@/layouts/Base.astro';
+import { site } from '@/data/site';
+import { Content as Policy } from '@/policies/data-protection-policy.md';
+---
+
+<Base
+  title={`Data protection policy | ${site.brand}`}
+  description="How Meridium Management Consultants collects, uses, protects and retains personal data under the Personal Data Protection Act 2012 of Singapore."
+>
+  <section class="border-b border-line bg-ivory">
+    <div class="container-m py-14 md:py-20">
+      <p class="eyebrow">Legal</p>
+      <h1 class="mt-4 max-w-3xl font-serif text-4xl font-semibold leading-[1.1] tracking-tight text-navy sm:text-5xl">
+        Data protection policy
+      </h1>
+      <p class="mt-6 max-w-[62ch] text-lg leading-relaxed">
+        How {site.legalName} collects, uses, discloses, protects and retains personal data under
+        the Personal Data Protection Act 2012 of Singapore.
+      </p>
+    </div>
+  </section>
+  <section class="bg-white">
+    <div class="container-m section">
+      <div class="prose-m prose-policy">
+        <Policy />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style is:global>
+  /* The markdown h1 duplicates the page h1; hide it and let the page header lead. */
+  .prose-policy > h1 {
+    display: none;
+  }
+</style>

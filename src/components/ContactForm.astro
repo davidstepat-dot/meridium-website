@@ -1,0 +1,222 @@
+---
+import { getCollection } from 'astro:content';
+import { site } from '@/data/site';
+import { langPrefix, ui, type Lang } from '@/data/i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = ui[lang].form;
+const prefix = langPrefix(lang);
+
+const services = (await getCollection('services', ({ id }) => id.startsWith(`${lang}/`))).sort(
+  (a, b) => a.data.order - b.data.order
+);
+// Web3Forms access key. Set PUBLIC_WEB3FORMS_KEY in .env (see README).
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
+
+const inputClass =
+  'w-full rounded-[3px] border border-line bg-white px-4 py-3 text-[15px] text-body placeholder:text-body/40 focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy aria-[invalid=true]:border-red';
+const labelClass = 'mb-1.5 block text-sm font-medium text-navy';
+const errorClass = 'mt-1.5 hidden text-sm text-red-dark';
+const linkClass =
+  'font-medium text-navy underline decoration-navy/30 underline-offset-4 hover:decoration-navy';
+---
+
+<div class="max-w-2xl">
+  {/* Without PUBLIC_WEB3FORMS_KEY the form submits to its error state, which
+      offers the mailto fallback. Set the key to make submissions deliver. */}
+  <form
+    data-contact-form
+    data-access-key={accessKey}
+    method="post"
+    action={accessKey ? 'https://api.web3forms.com/submit' : undefined}
+    novalidate
+  >
+    {accessKey && <input type="hidden" name="access_key" value={accessKey} />}
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label for="cf-name" class={labelClass}>{t.name}</label>
+        <input id="cf-name" name="name" type="text" autocomplete="name" required class={inputClass} data-error-id="cf-name-error" />
+        <p id="cf-name-error" class={errorClass}>{t.nameError}</p>
+      </div>
+      <div>
+        <label for="cf-company" class={labelClass}>{t.company}</label>
+        <input id="cf-company" name="company" type="text" autocomplete="organization" required class={inputClass} data-error-id="cf-company-error" />
+        <p id="cf-company-error" class={errorClass}>{t.companyError}</p>
+      </div>
+      <div>
+        <label for="cf-email" class={labelClass}>{t.email}</label>
+        <input id="cf-email" name="email" type="email" autocomplete="email" required class={inputClass} data-error-id="cf-email-error" />
+        <p id="cf-email-error" class={errorClass}>{t.emailError}</p>
+      </div>
+      <div>
+        <label for="cf-country" class={labelClass}>{t.country}</label>
+        <input id="cf-country" name="country" type="text" autocomplete="country-name" required class={inputClass} data-error-id="cf-country-error" />
+        <p id="cf-country-error" class={errorClass}>{t.countryError}</p>
+      </div>
+      <div class="sm:col-span-2">
+        <label for="cf-service" class={labelClass}>{t.service}</label>
+        <select id="cf-service" name="service" required class={inputClass} data-error-id="cf-service-error">
+          <option value="" selected disabled>{t.servicePlaceholder}</option>
+          {services.map((s) => <option value={s.data.title}>{s.data.title}</option>)}
+        </select>
+        <p id="cf-service-error" class={errorClass}>{t.serviceError}</p>
+      </div>
+      <div class="sm:col-span-2">
+        <label for="cf-message" class={labelClass}>{t.message}</label>
+        <textarea id="cf-message" name="message" rows="5" required class={inputClass} data-error-id="cf-message-error"></textarea>
+        <p id="cf-message-error" class={errorClass}>{t.messageError}</p>
+      </div>
+    </div>
+
+    {/* Honeypot: hidden from humans and assistive technology, tempting to bots. */}
+    <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+    <div class="mt-5">
+      <div class="flex items-start gap-3 text-sm leading-relaxed">
+        <input id="cf-consent" name="consent" type="checkbox" required class="mt-0.5 h-4 w-4 shrink-0 accent-[#10245f]" data-error-id="cf-consent-error" aria-describedby="cf-consent-note" />
+        <div>
+          <label for="cf-consent">{t.consent}</label>
+          <span id="cf-consent-note" class="block text-body/80">
+            {t.consentNotePre}
+            <a href={`${prefix}/privacy/`} class={linkClass}>{t.consentNoteLink}</a>.
+          </span>
+        </div>
+      </div>
+      <p id="cf-consent-error" class={errorClass}>{t.consentError}</p>
+    </div>
+
+    <div class="mt-7 flex flex-wrap items-center gap-4">
+      <button type="submit" class="btn-red aria-disabled:opacity-70" data-submit-button>{t.send}</button>
+      <a href={site.bookingHref} class="btn-outline-navy">{t.bookAlt}</a>
+    </div>
+
+    <p class="mt-5 max-w-[60ch] text-sm leading-relaxed text-body/80">{t.sensitive}</p>
+
+    <div data-form-status aria-live="polite" class="mt-6">
+      <p data-form-busy class="hidden text-[15px]">{t.busy}</p>
+      <div data-form-success class="hidden rounded-[3px] border border-navy/20 bg-tint p-5">
+        <p class="font-serif text-lg font-semibold tracking-tight text-navy">{t.successTitle}</p>
+        <p class="mt-1.5 text-[15px] leading-relaxed">{t.successBody(site.email)}</p>
+      </div>
+      <div data-form-error class="hidden rounded-[3px] border border-red/40 bg-red/5 p-5">
+        <p class="font-semibold text-red-dark">{t.errorTitle}</p>
+        <p class="mt-1.5 text-[15px] leading-relaxed">
+          {t.errorPre}
+          <a href={`mailto:${site.email}`} class={linkClass}>{site.email}</a>
+          {t.errorPost}
+        </p>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  let submitting = false;
+
+  const showError = (input: HTMLElement, show: boolean) => {
+    input.setAttribute('aria-invalid', String(show));
+    const errorId = input.getAttribute('data-error-id');
+    if (!errorId) return;
+    const msg = document.getElementById(errorId);
+    msg?.classList.toggle('hidden', !show);
+    // Associate the error text only while it is visible, so screen readers do
+    // not announce error descriptions on pristine, valid fields.
+    const existing = (input.getAttribute('aria-describedby') ?? '')
+      .split(/\s+/)
+      .filter((id) => id && id !== errorId);
+    if (show) existing.push(errorId);
+    if (existing.length) input.setAttribute('aria-describedby', existing.join(' '));
+    else input.removeAttribute('aria-describedby');
+  };
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (submitting) return;
+
+    const fields = [
+      ...form.querySelectorAll<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>(
+        'input[required], select[required], textarea[required]'
+      ),
+    ];
+    let firstInvalid: HTMLElement | null = null;
+    for (const field of fields) {
+      let valid = field instanceof HTMLInputElement && field.type === 'checkbox'
+        ? field.checked
+        : field.value.trim().length > 0;
+      if (valid && field instanceof HTMLInputElement && field.type === 'email') {
+        valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim());
+      }
+      showError(field, !valid);
+      if (!valid && !firstInvalid) firstInvalid = field;
+    }
+    if (firstInvalid) {
+      firstInvalid.focus();
+      return;
+    }
+
+    const busy = form.querySelector<HTMLElement>('[data-form-busy]');
+    const success = form.querySelector<HTMLElement>('[data-form-success]');
+    const error = form.querySelector<HTMLElement>('[data-form-error]');
+    const button = form.querySelector<HTMLButtonElement>('[data-submit-button]');
+    success?.classList.add('hidden');
+    error?.classList.add('hidden');
+
+    // Honeypot: bots fill it; humans never see it. Pretend success, send nothing.
+    const honeypot = form.querySelector<HTMLInputElement>('input[name="botcheck"]');
+    if (honeypot?.checked) {
+      form.reset();
+      success?.classList.remove('hidden');
+      return;
+    }
+
+    const accessKey = form.dataset.accessKey;
+    if (!accessKey) {
+      error?.classList.remove('hidden');
+      return;
+    }
+
+    submitting = true;
+    button?.setAttribute('aria-disabled', 'true');
+    busy?.classList.remove('hidden');
+
+    try {
+      const data = new FormData(form);
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: accessKey,
+          subject: `Website enquiry: ${data.get('service')}`,
+          from_name: 'Meridium website',
+          name: data.get('name'),
+          company: data.get('company'),
+          email: data.get('email'),
+          country: data.get('country'),
+          service: data.get('service'),
+          message: data.get('message'),
+          consent: 'Consented to the data protection policy',
+          consent_recorded_at: new Date().toISOString(),
+        }),
+      });
+      const result = await response.json();
+      if (result.success) {
+        form.reset();
+        success?.classList.remove('hidden');
+        success?.scrollIntoView({ block: 'nearest' });
+      } else {
+        error?.classList.remove('hidden');
+      }
+    } catch {
+      error?.classList.remove('hidden');
+    } finally {
+      submitting = false;
+      button?.removeAttribute('aria-disabled');
+      busy?.classList.add('hidden');
+    }
+  });
+</script>

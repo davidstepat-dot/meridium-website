@@ -1,0 +1,33 @@
+---
+import Base from '@/layouts/Base.astro';
+import TermsBody from '@/components/TermsBody.astro';
+import { site } from '@/data/site';
+---
+
+<Base
+  title={`Nutzungsbedingungen | ${site.brand}`}
+  description="Bedingungen für die Nutzung der Website von Meridium Management Consultants. Die englische Fassung ist maßgeblich."
+  lang="de"
+>
+  <section class="border-b border-line bg-ivory">
+    <div class="container-m py-14 md:py-20">
+      <p class="eyebrow">Rechtliches</p>
+      <h1 class="mt-4 max-w-3xl font-serif text-4xl font-semibold leading-[1.1] tracking-tight text-navy sm:text-5xl">
+        Nutzungsbedingungen
+      </h1>
+      <p class="mt-6 max-w-[62ch] text-lg leading-relaxed">
+        Diese Bedingungen regeln die Nutzung dieser Website. Sie sind nicht die Bedingungen eines
+        Mandats mit {site.legalName}; diese werden gesondert schriftlich vereinbart.
+      </p>
+      <p class="mt-4 max-w-[62ch] rounded-[3px] border border-navy/15 bg-tint px-4 py-3 text-[15px] leading-relaxed">
+        Die Nutzungsbedingungen werden in englischer Sprache geführt; die englische Fassung ist
+        maßgeblich. Bei Fragen zum Inhalt wenden Sie sich gern an {site.email}.
+      </p>
+    </div>
+  </section>
+  <section class="bg-white">
+    <div class="container-m section">
+      <TermsBody />
+    </div>
+  </section>
+</Base>

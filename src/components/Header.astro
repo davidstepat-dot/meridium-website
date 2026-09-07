@@ -1,0 +1,187 @@
+---
+import { getCollection } from 'astro:content';
+import wordmark from '@/assets/wordmark.png';
+import orchid from '@/assets/orchid-mark.png';
+import { site } from '@/data/site';
+import { langPrefix, ui, type Lang } from '@/data/i18n';
+import LanguageSwitch from '@/components/LanguageSwitch.astro';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = ui[lang];
+const prefix = langPrefix(lang);
+
+const services = (await getCollection('services', ({ id }) => id.startsWith(`${lang}/`))).sort(
+  (a, b) => a.data.order - b.data.order
+);
+const slugOf = (id: string) => id.split('/')[1];
+---
+
+<header class="sticky top-0 z-50 border-b border-line bg-white/95 backdrop-blur">
+  <div class="container-m flex h-16 items-center justify-between gap-6 md:h-[4.5rem]">
+    <a href={prefix || '/'} class="flex shrink-0 items-center gap-2.5" aria-label="Meridium">
+      <img
+        src={orchid.src}
+        alt=""
+        aria-hidden="true"
+        class="h-8 w-auto md:h-9"
+        width={orchid.width}
+        height={orchid.height}
+      />
+      <img
+        src={wordmark.src}
+        alt="Meridium"
+        class="h-5 w-auto md:h-6"
+        width={wordmark.width}
+        height={wordmark.height}
+      />
+    </a>
+
+    <nav class="hidden items-center gap-1 lg:flex" aria-label="Main">
+      <div class="group relative" data-services-wrap>
+        <button
+          type="button"
+          class="flex items-center gap-1.5 rounded-[3px] px-4 py-2 text-[15px] font-medium text-navy hover:bg-tint"
+          aria-expanded="false"
+          aria-controls="services-panel"
+          data-services-button
+        >
+          {t.nav.services}
+          <svg class="h-3.5 w-3.5 transition-transform group-hover:rotate-180" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <div
+          id="services-panel"
+          class="invisible absolute left-1/2 top-full -translate-x-1/2 pt-3 opacity-0 transition-opacity duration-150 group-hover:visible group-hover:opacity-100 group-[.open]:visible group-[.open]:opacity-100"
+          data-services-panel
+        >
+          <div class="grid w-[640px] grid-cols-2 gap-1 border border-line bg-white p-2 shadow-xl shadow-navy/5">
+            {
+              services.map((s) => (
+                <a href={`${prefix}/services/${slugOf(s.id)}/`} class="rounded-[3px] p-4 hover:bg-tint">
+                  <span class="block font-serif text-[1.05rem] font-semibold tracking-tight text-navy">
+                    {s.data.title}
+                  </span>
+                  <span class="mt-1 block text-sm leading-snug text-body/90">{s.data.outcome}</span>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+      <a href={`${prefix}/about/`} class="rounded-[3px] px-4 py-2 text-[15px] font-medium text-navy hover:bg-tint">
+        {t.nav.about}
+      </a>
+      <a href={`${prefix}/contact/`} class="rounded-[3px] px-4 py-2 text-[15px] font-medium text-navy hover:bg-tint">
+        {t.nav.contact}
+      </a>
+    </nav>
+
+    <div class="flex items-center gap-4">
+      <div class="hidden lg:block">
+        <LanguageSwitch lang={lang} idSuffix="desktop" />
+      </div>
+      <a href={site.bookingHref} class="btn-red hidden !px-5 !py-2.5 text-sm lg:inline-flex">{t.nav.bookCall}</a>
+      <button
+        type="button"
+        class="flex h-10 w-10 items-center justify-center rounded-[3px] text-navy hover:bg-tint lg:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        aria-label={t.nav.openMenu}
+        data-menu-button
+        data-label-open={t.nav.openMenu}
+        data-label-close={t.nav.closeMenu}
+      >
+        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true" data-icon-open>
+          <path d="M2 5h16M2 10h16M2 15h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+        <svg class="hidden h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true" data-icon-close>
+          <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="hidden border-t border-line bg-white lg:hidden" data-menu-panel>
+    <nav class="container-m flex flex-col gap-1 py-4" aria-label="Main, mobile">
+      <p class="eyebrow px-3 pb-1 pt-2">{t.nav.services}</p>
+      {
+        services.map((s) => (
+          <a href={`${prefix}/services/${slugOf(s.id)}/`} class="rounded-[3px] px-3 py-2.5 text-[15px] font-medium text-navy hover:bg-tint">
+            {s.data.title}
+          </a>
+        ))
+      }
+      <div class="my-2 border-t border-line"></div>
+      <a href={`${prefix}/about/`} class="rounded-[3px] px-3 py-2.5 text-[15px] font-medium text-navy hover:bg-tint">
+        {t.nav.about}
+      </a>
+      <a href={`${prefix}/contact/`} class="rounded-[3px] px-3 py-2.5 text-[15px] font-medium text-navy hover:bg-tint">
+        {t.nav.contact}
+      </a>
+      <div class="flex items-center justify-between gap-4 px-3 py-3">
+        <span class="text-sm font-medium text-navy/70">{t.nav.language}</span>
+        <LanguageSwitch lang={lang} idSuffix="mobile" />
+      </div>
+      <a href={site.bookingHref} class="btn-red mt-2">{t.nav.bookCall}</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-menu-button]');
+  const panel = document.querySelector<HTMLElement>('[data-menu-panel]');
+  const iconOpen = document.querySelector<SVGElement>('[data-icon-open]');
+  const iconClose = document.querySelector<SVGElement>('[data-icon-close]');
+
+  const setMenu = (isOpen: boolean) => {
+    panel?.classList.toggle('hidden', !isOpen);
+    button?.setAttribute('aria-expanded', String(isOpen));
+    const label = isOpen ? button?.dataset.labelClose : button?.dataset.labelOpen;
+    if (label) button?.setAttribute('aria-label', label);
+    iconOpen?.classList.toggle('hidden', isOpen);
+    iconClose?.classList.toggle('hidden', !isOpen);
+  };
+
+  button?.addEventListener('click', () => {
+    setMenu(panel?.classList.contains('hidden') ?? false);
+  });
+
+  // Services dropdown: hover opens via CSS; keyboard and touch use the .open
+  // class so Escape can dismiss it without moving focus (WCAG 1.4.13).
+  const servicesButton = document.querySelector<HTMLButtonElement>('[data-services-button]');
+  const servicesWrap = document.querySelector<HTMLElement>('[data-services-wrap]');
+  if (servicesButton && servicesWrap) {
+    const setServices = (open: boolean) => {
+      servicesWrap.classList.toggle('open', open);
+      servicesButton.setAttribute('aria-expanded', String(open));
+    };
+    servicesButton.addEventListener('click', () => {
+      setServices(!servicesWrap.classList.contains('open'));
+    });
+    servicesWrap.addEventListener('mouseenter', () => servicesButton.setAttribute('aria-expanded', 'true'));
+    servicesWrap.addEventListener('mouseleave', () => setServices(false));
+    servicesWrap.addEventListener('focusin', () => setServices(true));
+    servicesWrap.addEventListener('focusout', (e) => {
+      if (!servicesWrap.contains(e.relatedTarget as Node)) setServices(false);
+    });
+    document.addEventListener('pointerdown', (e) => {
+      if (!servicesWrap.contains(e.target as Node)) setServices(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      if (servicesWrap.classList.contains('open')) {
+        setServices(false);
+        servicesButton.focus();
+      }
+      if (panel && !panel.classList.contains('hidden')) {
+        setMenu(false);
+        button?.focus();
+      }
+    });
+  }
+</script>

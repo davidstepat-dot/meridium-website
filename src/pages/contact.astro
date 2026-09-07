@@ -1,0 +1,56 @@
+---
+import Base from '@/layouts/Base.astro';
+import ContactForm from '@/components/ContactForm.astro';
+import { site } from '@/data/site';
+---
+
+<Base
+  title={`Contact | ${site.brand}`}
+  description="Speak with a senior Meridium adviser about entering Asia via Singapore. Send an enquiry or request a scoping call."
+>
+  <section class="border-b border-line bg-ivory">
+    <div class="container-m py-14 md:py-20">
+      <p class="eyebrow">Contact</p>
+      <h1 class="mt-4 max-w-3xl font-serif text-4xl font-semibold leading-[1.1] tracking-tight text-navy sm:text-5xl">
+        Speak with a senior adviser.
+      </h1>
+      <p class="mt-6 max-w-[62ch] text-lg leading-relaxed">
+        Tell us what you are planning and a senior practitioner will come back to you, usually
+        within one business day. A scoping call costs nothing and commits you to nothing.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white">
+    <div class="container-m section grid gap-14 lg:grid-cols-[1.4fr_1fr]">
+      <ContactForm />
+      <aside class="space-y-10 lg:pt-2">
+        <div>
+          <h2 class="font-serif text-xl font-semibold tracking-tight text-navy">Office</h2>
+          <p class="mt-3 leading-relaxed">
+            {site.legalName}
+            {site.addressLines.map((line) => <><br />{line}</>)}
+          </p>
+        </div>
+        <div>
+          <h2 class="font-serif text-xl font-semibold tracking-tight text-navy">Email</h2>
+          <p class="mt-3 leading-relaxed">
+            <a
+              href={`mailto:${site.email}`}
+              class="font-medium text-navy underline decoration-navy/30 underline-offset-4 hover:decoration-navy"
+            >
+              {site.email}
+            </a>
+          </p>
+        </div>
+        <div>
+          <h2 class="font-serif text-xl font-semibold tracking-tight text-navy">Referrers</h2>
+          <p class="mt-3 max-w-[44ch] text-[15px] leading-relaxed">
+            Lawyers, accountants and chambers of commerce referring a client: write to us
+            directly and we will keep you informed to exactly the degree your client wishes.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>

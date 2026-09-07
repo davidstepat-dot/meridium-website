@@ -1,0 +1,111 @@
+# Meridium Management Consultants website
+
+Production website for Meridium Management Consultants Pte. Ltd., a Singapore corporate
+services firm. Built with Astro 5 and Tailwind CSS 4, fully static, no CMS.
+
+All three build phases are complete: homepage, eight service pages, About, contact form,
+data protection policy, terms of use, SEO plumbing and deploy configuration. Items still
+marked TODO in the interface are deliberate flags for facts only the firm can confirm;
+they are listed at the bottom of this file.
+
+## Run locally
+
+Requires Node.js 20 or newer. This machine has Node 22 installed at `~/.local/opt/node22`.
+Add it to your PATH once:
+
+```
+echo 'export PATH="$HOME/.local/opt/node22/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc
+```
+
+Then, from the project folder:
+
+```
+npm install
+npm run dev        # local preview at http://localhost:4321
+npm run build      # static production build into dist/
+npm run preview    # serve the production build locally
+npm run check      # type-check the templates and content
+```
+
+## Edit copy without touching components
+
+- **Service pages**: `src/content/services/en/*.md` (English) and
+  `src/content/services/de/*.md` (German), one file per service and language. The
+  frontmatter holds the structured sections (card copy, headline, intro, what's included,
+  process, needs, FAQs); the markdown body below it is the long-form narrative. The
+  homepage grid, header dropdown, footer and contact form select all read from these
+  same files. Keep both languages in step when editing.
+- **Languages**: English lives at `/`, German at `/de/`. Shared interface strings
+  (navigation, footer, form labels, buttons) live in `src/data/i18n.ts`. The flag
+  switcher in the header links between the two versions of the current page. The data
+  protection policy and terms are maintained in English; the German pages carry a notice
+  that the English version governs.
+- **Firm facts** (legal name, UEN, licence number, address, email, booking link):
+  `src/data/site.ts`. TODO values render with a visible amber flag until replaced.
+- **Team members**: `src/data/team.ts`. Add one object per person; a missing photo or bio
+  renders a visible TODO placeholder.
+- **Homepage sections** (differentiators, engagement steps, regions): the arrays at the
+  top of `src/pages/index.astro`.
+- **Data protection policy**: `src/policies/data-protection-policy.md`.
+- **Photos**: `src/assets/`. Replace a file and rebuild; Astro regenerates the optimised
+  responsive variants.
+
+House rules encoded in the copy: no em-dashes, no exclamation marks, British or Singapore
+English spelling, no invented statistics or testimonials, no guarantees of regulatory
+outcomes or processing times. Work pass figures cite mom.gov.sg in comments next to the
+copy; re-verify them at each MOM revision.
+
+## Contact form (Web3Forms)
+
+Submissions are emailed to enquiries@meridium.sg via Web3Forms.
+
+1. Create a free access key at https://web3forms.com using enquiries@meridium.sg.
+2. Copy `.env.example` to `.env` and set `PUBLIC_WEB3FORMS_KEY=<your key>`.
+3. For deployed sites, set the same variable in your host's environment settings
+   (Netlify: Site settings > Environment variables).
+
+Until the key is set, the form shows its error state on submit, with a mailto fallback.
+The form includes a hidden `botcheck` honeypot; the PDPA consent checkbox is required.
+
+**To switch providers later** (Formspree, Netlify Forms or similar): the form markup and
+validation live in `src/components/ContactForm.astro`. Replace the `fetch` call in its
+script with your provider's endpoint and payload format; nothing else on the site touches
+the form.
+
+## Deploy (GitHub Pages)
+
+The repository ships with `.github/workflows/deploy.yml`: every push to `main` builds
+the site and publishes it to GitHub Pages. One-time setup after pushing:
+
+1. Create a repository on GitHub and push this folder to its `main` branch.
+2. In the repository: Settings > Pages > Build and deployment > Source: **GitHub
+   Actions**.
+3. Settings > Secrets and variables > Actions > New repository secret:
+   `PUBLIC_WEB3FORMS_KEY` with your Web3Forms key, then re-run the workflow so the
+   contact form delivers.
+4. Custom domain: Settings > Pages > Custom domain: `meridium.sg` (the repo also
+   carries `public/CNAME`), and tick Enforce HTTPS once the certificate is issued.
+5. At your DNS provider for meridium.sg, create four A records on the apex pointing to
+   GitHub Pages: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`,
+   `185.199.111.153`, and a `www` CNAME record pointing to
+   `<your-github-username>.github.io`.
+
+DNS changes can take up to a day to propagate; the Pages settings screen shows when the
+domain check and certificate are ready.
+
+**Alternatives**: `netlify.toml` is included for Netlify; Cloudflare Pages and Vercel
+work with build command `npm run build`, output `dist`, Node 22, and the same
+environment variable.
+
+## Parked until the facts exist
+
+1. ACRA registration number under the CSP regime: set `cspLicence` in
+   `src/data/site.ts` and restore the licence line in `src/components/Footer.astro`.
+2. Team section: intentionally empty for launch (`src/data/team.ts`); portrait files
+   remain locally in `src/assets/team/` (gitignored, so nothing personal is in the
+   public repository).
+3. DPO contact in the data protection policy currently routes to
+   enquiries@meridium.sg; change to a dedicated dpo@ mailbox when one exists.
+4. Terms and data protection policy: counsel review recommended.
+5. A designed reversed (white) logo file to replace the CSS-inverted footer marks, and
+   optionally a scheduling link for "Book a call" (`src/data/site.ts`).
