@@ -14,7 +14,7 @@ included:
   - "Erwiderungen auf Beanstandungen, Einwände und formale Rückfragen des Amts"
   - "Anmeldungen über das Madrider Protokoll für Schutz in mehreren Jurisdiktionen"
   - "Verlängerungen und ein Portfolioregister, dessen Fristen Ihr fester Ansprechpartner überwacht"
-  - "Koordination mit zugelassenen IP-Agenten und Kanzleien, wenn eine Angelegenheit dies erfordert"
+  - "Koordination mit zugelassenen IP-Agenten und Anwälten, wenn eine Angelegenheit dies erfordert"
 process:
   - title: "Recherche und Verfügbarkeitsprüfung"
     description: "Bevor Geld in eine Anmeldung fließt, recherchieren wir im Register und geben Ihnen eine schriftliche Einschätzung der Risiken: identische Marken, verwechslungsfähige Marken und Klassen, in denen Sie mit etablierten Anbietern kollidieren würden."
@@ -36,8 +36,8 @@ faqs:
     a: "Markenschutz wird je Klasse von Waren und Dienstleistungen nach einem internationalen Klassifikationssystem gewährt. Fassen Sie das Verzeichnis zu eng, agieren Wettbewerber direkt neben Ihnen. Fassen Sie es zu weit, provozieren Sie Beanstandungen und zahlen für Klassen, die Sie nie nutzen. Das Verzeichnis richtig zu formulieren ist der eigentliche handwerkliche Kern einer Anmeldung."
   - q: "Wie funktioniert der Weg über das Madrider Protokoll?"
     a: "Mit einer singapurischen Anmeldung oder Eintragung als Basis kann eine einzige internationale Anmeldung über das IPOS Schutz in vielen Mitgliedsstaaten zugleich beantragen. Das ist in der Regel günstiger und einfacher zu verwalten als Anmeldungen Land für Land, auch wenn jede Jurisdiktion die Marke weiterhin nach eigenem Recht prüft. Wir beraten Sie, wo das Madrider Protokoll zu Ihrer Marktliste passt und wo eine direkte nationale Anmeldung die bessere Wahl ist."
-  - q: "Wann ziehen Sie einen IP-Agenten oder eine Kanzlei hinzu?"
-    a: "Routinemäßige Recherchen, Anmeldungen, Klassifizierung und Verlängerungen begleiten wir direkt. Wird eine Angelegenheit streitig, etwa bei einem Widerspruch, einem Löschungsverfahren oder einem Verletzungsstreit, oder ist eine formelle Vertretung erforderlich, beauftragen wir auf Ihre Weisung einen zugelassenen IP-Agenten oder eine spezialisierte Kanzlei und steuern diese in Ihrem Namen. Sie wissen jederzeit, in welchem der beiden Modi Sie sich befinden."
+  - q: "Wann ziehen Sie einen IP-Agenten oder externe Anwälte hinzu?"
+    a: "Routinemäßige Recherchen, Anmeldungen, Klassifizierung und Verlängerungen begleiten wir direkt. Wird eine Angelegenheit streitig, etwa bei einem Widerspruch, einem Löschungsverfahren oder einem Verletzungsstreit, oder ist eine formelle Vertretung erforderlich, beauftragen wir auf Ihre Weisung einen zugelassenen IP-Agenten oder spezialisierte Anwälte und steuern diese in Ihrem Namen. Sie wissen jederzeit, in welchem der beiden Modi Sie sich befinden."
   - q: "Schützt mich eine singapurische Eintragung auch anderswo in Asien?"
     a: "Nein. Markenrechte gelten territorial. Eine singapurische Eintragung schützt Sie in Singapur und bildet zugleich eine hervorragende Basis für Anmeldungen über das Madrider Protokoll in Ihre weiteren Märkte. Genau in dieser Reihenfolge planen wir es für die meisten Mandanten, die regional expandieren."
 related:

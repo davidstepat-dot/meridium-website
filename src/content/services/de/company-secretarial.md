@@ -39,7 +39,7 @@ faqs:
   - q: "Was passiert bei verspäteten Einreichungen?"
     a: "ACRA verhängt Zuschläge für verspätete Einreichungen, und anhaltende Säumnis kann zu Maßnahmen gegen die Gesellschaft und ihre Direktoren führen. Wenn Sie bereits im Rückstand sind, beginnen wir mit einer Bereinigung: Wir stellen fest, was aussteht, reichen es ein und halten Sie anschließend dauerhaft auf aktuellem Stand."
   - q: "Können Sie unseren bestehenden Corporate Secretary ablösen?"
-    a: "Ja. Die Übernahme ist Routine: Wir holen die Register und Unterlagen beim bisherigen Anbieter ein, prüfen sie und melden den Wechsel des Secretary bei ACRA. Ihre einzige Aufgabe ist eine Anweisung an die bisherige Kanzlei."
+    a: "Ja. Die Übernahme ist Routine: Wir holen die Register und Unterlagen beim bisherigen Anbieter ein, prüfen sie und melden den Wechsel des Secretary bei ACRA. Ihre einzige Aufgabe ist eine Anweisung an den bisherigen Anbieter."
   - q: "Wie schließen wir eine Gesellschaft, die wir nicht mehr benötigen?"
     a: "Eine ruhende, schuldenfreie Gesellschaft wird üblicherweise per Striking-off gelöscht, dem einfacheren und günstigeren Weg. Eine Gesellschaft mit zu verteilendem Vermögen wird im Wege des Members' Voluntary Winding-up geschlossen, an dem ein Liquidator beteiligt ist. Wir beraten, welcher Weg zutrifft, bereiten die Dokumente vor und begleiten das Verfahren bis zum Abschluss."
 related:

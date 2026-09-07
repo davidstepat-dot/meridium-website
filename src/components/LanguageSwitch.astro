@@ -3,48 +3,23 @@ import { altPath, type Lang } from '@/data/i18n';
 
 interface Props {
   lang: Lang;
-  // SVG clip-path ids must be unique per instance on a page.
-  idSuffix?: string;
 }
 
-const { lang, idSuffix = 'a' } = Astro.props;
+const { lang } = Astro.props;
 const path = Astro.url.pathname;
 const enHref = altPath(path, 'en');
 const deHref = altPath(path, 'de');
-const clipId = `uj-clip-${idSuffix}`;
 
-const active = 'rounded-[2px] ring-2 ring-navy ring-offset-2';
-const inactive = 'rounded-[2px] opacity-60 transition-opacity hover:opacity-100 focus-visible:opacity-100';
+const active = 'px-1.5 py-1 text-navy underline decoration-2 underline-offset-4';
+const inactive = 'px-1.5 py-1 text-navy/50 transition-colors hover:text-navy focus-visible:text-navy';
 ---
 
-<div class="flex items-center gap-2.5" role="group" aria-label="Language / Sprache">
-  <a
-    href={enHref}
-    aria-label="English"
-    aria-current={lang === 'en' ? 'true' : undefined}
-    class={lang === 'en' ? active : inactive}
-  >
-    <svg viewBox="0 0 60 30" class="block h-3.5 w-7" aria-hidden="true">
-      <clipPath id={clipId}>
-        <path d="M30,15 h30 v15 z v-15 h-30 z h-30 v-15 z v15 h30 z" />
-      </clipPath>
-      <path d="M0,0 v30 h60 v-30 z" fill="#012169" />
-      <path d="M0,0 60,30 M60,0 0,30" stroke="#ffffff" stroke-width="6" />
-      <path d="M0,0 60,30 M60,0 0,30" clip-path={`url(#${clipId})`} stroke="#C8102E" stroke-width="4" />
-      <path d="M30,0 v30 M0,15 h60" stroke="#ffffff" stroke-width="10" />
-      <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6" />
-    </svg>
+<div class="flex items-center text-sm font-semibold tracking-wide" role="group" aria-label="Language / Sprache">
+  <a href={enHref} aria-label="English" aria-current={lang === 'en' ? 'true' : undefined} class={lang === 'en' ? active : inactive}>
+    EN
   </a>
-  <a
-    href={deHref}
-    aria-label="Deutsch"
-    aria-current={lang === 'de' ? 'true' : undefined}
-    class={lang === 'de' ? active : inactive}
-  >
-    <svg viewBox="0 0 60 30" class="block h-3.5 w-7" aria-hidden="true">
-      <rect width="60" height="10" y="0" fill="#000000" />
-      <rect width="60" height="10" y="10" fill="#DD0000" />
-      <rect width="60" height="10" y="20" fill="#FFCE00" />
-    </svg>
+  <span class="text-navy/30" aria-hidden="true">|</span>
+  <a href={deHref} aria-label="Deutsch" aria-current={lang === 'de' ? 'true' : undefined} class={lang === 'de' ? active : inactive}>
+    DE
   </a>
 </div>

@@ -83,7 +83,7 @@ const slugOf = (id: string) => id.split('/')[1];
 
     <div class="flex items-center gap-4">
       <div class="hidden lg:block">
-        <LanguageSwitch lang={lang} idSuffix="desktop" />
+        <LanguageSwitch lang={lang} />
       </div>
       <a href={site.bookingHref} class="btn-red hidden !px-5 !py-2.5 text-sm lg:inline-flex">{t.nav.bookCall}</a>
       <button
@@ -125,7 +125,7 @@ const slugOf = (id: string) => id.split('/')[1];
       </a>
       <div class="flex items-center justify-between gap-4 px-3 py-3">
         <span class="text-sm font-medium text-navy/70">{t.nav.language}</span>
-        <LanguageSwitch lang={lang} idSuffix="mobile" />
+        <LanguageSwitch lang={lang} />
       </div>
       <a href={site.bookingHref} class="btn-red mt-2">{t.nav.bookCall}</a>
     </nav>

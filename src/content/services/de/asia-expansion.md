@@ -20,7 +20,7 @@ process:
   - title: "Strukturdesign"
     description: "Wir gestalten, wie jede Marktgesellschaft aus Singapur gehalten, finanziert und geführt wird, bevor irgendetwas gegründet ist."
   - title: "Lokale Umsetzung"
-    description: "Unser Partner im Zielmarkt führt Gründung und Registrierungen durch, von uns gegen einen vereinbarten Leistungsumfang gesteuert. Sie laufen also nie selbst einer ausländischen Kanzlei hinterher."
+    description: "Unser Partner im Zielmarkt führt Gründung und Registrierungen durch, von uns gegen einen vereinbarten Leistungsumfang gesteuert. Sie laufen also nie selbst einem ausländischen Anbieter hinterher."
   - title: "Laufende Koordination"
     description: "Ihr fester Ansprechpartner in Singapur behält das Gesamtbild: Lokale Meldungen erfolgen vor Ort, die Verantwortung liegt aber an einer Stelle."
 needs:
@@ -32,7 +32,7 @@ faqs:
   - q: "Warum regionale Gesellschaften überhaupt aus Singapur heraus halten?"
     a: "Weil der Holdingstandort alles Nachgelagerte prägt: wie Kapital hinein- und hinausfließt, wie Streitigkeiten beigelegt werden, welche Abkommensvorteile greifen und wie ein späterer Exit besteuert wird. Singapurs Kombination aus einem breiten Netz von Doppelbesteuerungsabkommen, angesehenen Gerichten und Schiedsverfahren, einem tiefen Pool an Fachkräften und freiem Kapitalverkehr ist der Grund, warum so viele regionale Gruppen hier gehalten werden. Die richtige Antwort hängt dennoch von Ihren konkreten Umständen ab, und genau das klärt das Scoping."
   - q: "Wer erledigt die Arbeit in den einzelnen Ländern tatsächlich?"
-    a: "Eine lokale Kanzlei, die wir geprüft haben und mit der wir zusammenarbeiten, beauftragt unter einem Leistungsumfang, den wir steuern. Sie erhalten lokale Expertise dort, wo das Recht sie verlangt, und eine einzige verantwortliche Geschäftsbeziehung dort, wo Ihre Zeit hingeht. Liefert ein Partner nicht, ist es unsere Aufgabe, das zu regeln, nicht Ihre."
+    a: "Eine lokale Firma, die wir geprüft haben und mit der wir zusammenarbeiten, beauftragt unter einem Leistungsumfang, den wir steuern. Sie erhalten lokale Expertise dort, wo das Recht sie verlangt, und eine einzige verantwortliche Geschäftsbeziehung dort, wo Ihre Zeit hingeht. Liefert ein Partner nicht, ist es unsere Aufgabe, das zu regeln, nicht Ihre."
   - q: "In welchen ASEAN-Markt sollten wir zuerst gehen?"
     a: "Das hängt davon ab, was Sie verkaufen und an wen. Genau diese Analyse leisten wir im Scoping, statt sie hier pauschal zu beantworten. Der ehrliche allgemeine Punkt: Die Märkte unterscheiden sich enorm in Regulierung, Regeln für ausländische Beteiligungen und operativer Reibung, und der richtige erste Markt ist meist der, in dem Ihr Kunde bereits ist."
   - q: "Können wir die Region zunächst ohne lokale Gesellschaften aus Singapur bedienen?"

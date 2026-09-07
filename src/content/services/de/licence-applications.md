@@ -12,7 +12,7 @@ included:
   - "Antragsvorbereitung: Formulare, Nachweisdokumente und die Darstellung, die die Behörde erwartet"
   - "Einreichung und Gebührenabwicklung über die zuständigen Behördenportale"
   - "Beantwortung behördlicher Rückfragen und Nachforderungen"
-  - "Koordination mit spezialisierten Kanzleien, wo ein Antrag dies erfordert"
+  - "Koordination mit spezialisierten Rechtsberatern, wo ein Antrag dies erfordert"
   - "Ein Lizenzregister für Ihre Gesellschaft, mit Verlängerungsterminen, die Ihr persönlicher Ansprechpartner überwacht"
 process:
   - title: "Prüfung"
@@ -67,4 +67,4 @@ Bestimmte Geschäftsmodelle unterliegen zusätzlichen Regimen, die wir jeweils m
 - Ministry of Manpower (MOM, das Arbeitsministerium) für die Tätigkeit von Arbeitsvermittlungsagenturen.
 - Building and Construction Authority (BCA, die Baubehörde) für Bau- und Auftragnehmerregistrierung.
 
-Wo ein Antrag in Terrain führt, das spezialisierte anwaltliche Beratung erfordert, etwa eine strittige Lizenzfrage bei der MAS, sagen wir das früh und ziehen auf Ihre Weisung die richtige Kanzlei hinzu, statt an Ihrem Antrag zu üben.
+Wo ein Antrag in Terrain führt, das spezialisierte anwaltliche Beratung erfordert, etwa eine strittige Lizenzfrage bei der MAS, sagen wir das früh und ziehen auf Ihre Weisung die richtige Firma hinzu, statt an Ihrem Antrag zu üben.
