@@ -72,6 +72,29 @@ validation live in `src/components/ContactForm.astro`. Replace the `fetch` call 
 script with your provider's endpoint and payload format; nothing else on the site touches
 the form.
 
+## Newsletter popup (HubSpot)
+
+`src/components/NewsletterPopup.astro` is rendered on every page from `Base.astro`. It
+opens after 10 seconds or at 40% scroll depth, never on the contact, data protection or
+terms pages, once per visitor per 30 days, and never again after a successful sign-up.
+The footer's "Newsletter" link opens it on demand; `meridium.sg/?newsletter` forces it
+open for testing on any page.
+
+Submissions go from the visitor's browser straight to HubSpot's Forms API, with both
+consents (communications and data processing) recorded against the contact. No HubSpot
+script, tracking or cookie is loaded on the site.
+
+- **Copy** (both languages): `ui.<lang>.newsletter` in `src/data/i18n.ts`.
+- **HubSpot identifiers** (portal, form, subscription type): `site.newsletter` in
+  `src/data/site.ts`. Find them in HubSpot under Marketing > Forms > the form's share
+  page (the form ID is in the URL) and Settings > Marketing > Email > Subscription types.
+- **Timing and rules**: the constants at the top of the component's script.
+- **reCAPTCHA must stay off** on the HubSpot form; HubSpot's API rejects submissions to
+  reCAPTCHA-protected forms. A honeypot field in the popup and HubSpot's own spam
+  filtering cover the gap.
+- **Welcome email**: sent by the workflow attached to the form in HubSpot (the form's
+  Automation tab), not by the site.
+
 ## Deploy (GitHub Pages)
 
 The repository ships with `.github/workflows/deploy.yml`: every push to `main` builds
