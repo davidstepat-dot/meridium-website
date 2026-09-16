@@ -72,6 +72,8 @@ const year = new Date().getFullYear();
         <li><a href={`${prefix}/contact/`} class="hover:text-white">{t.footer.contact}</a></li>
         <li><a href={`${prefix}/privacy/`} class="hover:text-white">{t.footer.privacy}</a></li>
         <li><a href={`${prefix}/terms/`} class="hover:text-white">{t.footer.terms}</a></li>
+        {/* Opens the newsletter popup (NewsletterPopup.astro) for visitors who closed it. */}
+        <li><button type="button" class="hover:text-white" data-newsletter-open>{t.footer.newsletter}</button></li>
       </ul>
     </nav>
   </div>

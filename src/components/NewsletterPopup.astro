@@ -1,0 +1,348 @@
+---
+// Newsletter sign-up popup. Rendered once per page from Base.astro.
+//
+// Behaviour (all in the script below):
+//   - opens after 10 seconds on the page, or once the visitor has scrolled
+//     40% of the way down, whichever comes first;
+//   - never on the contact, data protection or terms pages;
+//   - shown once per visitor per 30 days (localStorage); never again after
+//     a successful subscription;
+//   - any element with data-newsletter-open (the footer link) opens it on
+//     demand, and meridium.sg/?newsletter forces it open for testing;
+//   - submissions go from the browser straight to HubSpot's Forms API with
+//     the two consents recorded. No HubSpot script or cookie is loaded.
+//
+// Copy lives in src/data/i18n.ts (ui.<lang>.newsletter); HubSpot identifiers
+// in src/data/site.ts (site.newsletter).
+import { site } from '@/data/site';
+import { langPrefix, ui, type Lang } from '@/data/i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = ui[lang].newsletter;
+const prefix = langPrefix(lang);
+const { portalId, formId, subscriptionTypeId } = site.newsletter;
+
+const inputClass =
+  'w-full rounded-[3px] border border-line bg-white px-3.5 py-2.5 text-[15px] text-body placeholder:text-body/40 focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy aria-[invalid=true]:border-red';
+const labelClass = 'mb-1.5 block text-sm font-medium text-navy';
+const errorClass = 'mt-1.5 hidden text-sm text-red-dark';
+const linkClass =
+  'font-medium text-navy underline decoration-navy/30 underline-offset-4 hover:decoration-navy';
+---
+
+<dialog
+  class="m-auto w-[calc(100%-2rem)] max-w-xl rounded-[3px] border border-line bg-white p-0 text-body shadow-2xl shadow-navy/30 backdrop:bg-navy/60 max-h-[calc(100dvh-2rem)] overflow-y-auto"
+  aria-labelledby="newsletter-title"
+  data-newsletter-dialog
+  data-portal-id={portalId}
+  data-form-id={formId}
+  data-subscription-type-id={subscriptionTypeId}
+>
+  <div class="relative p-6 sm:p-9">
+    <form data-newsletter-form novalidate>
+      <p class="eyebrow">{t.eyebrow}</p>
+      <h2 id="newsletter-title" class="mt-2 pr-8 font-serif text-2xl font-semibold tracking-tight text-navy sm:text-[1.75rem]">
+        {t.heading}
+      </h2>
+      <p class="mt-3 text-[15px] leading-relaxed">{t.body}</p>
+      <p class="mt-2 text-sm leading-relaxed text-body/80">{t.cadence}</p>
+
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        <div>
+          <label for="nl-firstname" class={labelClass}>{t.firstName}</label>
+          <input id="nl-firstname" name="firstname" type="text" autocomplete="given-name" required class={inputClass} data-error-id="nl-firstname-error" />
+          <p id="nl-firstname-error" class={errorClass}>{t.firstNameError}</p>
+        </div>
+        <div>
+          <label for="nl-lastname" class={labelClass}>{t.lastName}</label>
+          <input id="nl-lastname" name="lastname" type="text" autocomplete="family-name" required class={inputClass} data-error-id="nl-lastname-error" />
+          <p id="nl-lastname-error" class={errorClass}>{t.lastNameError}</p>
+        </div>
+        <div>
+          <label for="nl-company" class={labelClass}>
+            {t.company} <span class="font-normal text-body/60">({t.optional})</span>
+          </label>
+          <input id="nl-company" name="company" type="text" autocomplete="organization" class={inputClass} />
+        </div>
+        <div>
+          <label for="nl-email" class={labelClass}>{t.email}</label>
+          <input id="nl-email" name="email" type="email" autocomplete="email" required class={inputClass} data-error-id="nl-email-error" />
+          <p id="nl-email-error" class={errorClass}>{t.emailError}</p>
+        </div>
+      </div>
+
+      {/* Honeypot: hidden from humans and assistive technology, tempting to bots. */}
+      <input type="text" name="website" class="hidden" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+      <div class="mt-5 space-y-3 text-sm leading-relaxed">
+        <div class="flex items-start gap-3">
+          <input id="nl-consent-communications" name="consentCommunications" type="checkbox" required class="mt-0.5 h-4 w-4 shrink-0 accent-[#10245f]" data-error-id="nl-consent-error" />
+          <label for="nl-consent-communications">{t.consentCommunications}</label>
+        </div>
+        <div class="flex items-start gap-3">
+          <input id="nl-consent-processing" name="consentProcessing" type="checkbox" required class="mt-0.5 h-4 w-4 shrink-0 accent-[#10245f]" data-error-id="nl-consent-error" />
+          <label for="nl-consent-processing">{t.consentProcessing}</label>
+        </div>
+        <p id="nl-consent-error" class={errorClass}>{t.consentError}</p>
+        <p class="text-body/80">
+          {t.policyPre}
+          <a href={`${prefix}/privacy/`} class={linkClass}>{t.policyLink}</a>.
+        </p>
+      </div>
+
+      <div class="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <button type="submit" class="btn-red aria-disabled:opacity-70" data-newsletter-submit>{t.subscribe}</button>
+        <button type="button" class="text-[15px] font-medium text-navy/80 underline decoration-navy/30 underline-offset-4 hover:text-navy hover:decoration-navy" data-newsletter-close>
+          {t.notNow}
+        </button>
+      </div>
+
+      <div aria-live="polite" class="mt-5">
+        <p data-newsletter-busy class="hidden text-[15px]">{t.busy}</p>
+        <div data-newsletter-error class="hidden rounded-[3px] border border-red/40 bg-red/5 p-4">
+          <p class="font-semibold text-red-dark">{t.errorTitle}</p>
+          <p class="mt-1 text-[15px] leading-relaxed">
+            {t.errorPre}
+            <a href={`mailto:${site.email}`} class={linkClass}>{site.email}</a>
+            {t.errorPost}
+          </p>
+        </div>
+      </div>
+    </form>
+
+    <div data-newsletter-success class="hidden" aria-live="polite">
+      <p class="eyebrow">{t.eyebrow}</p>
+      <h2 class="mt-2 pr-8 font-serif text-2xl font-semibold tracking-tight text-navy sm:text-[1.75rem]">{t.successTitle}</h2>
+      <p class="mt-3 text-[15px] leading-relaxed">{t.successBody}</p>
+      <div class="mt-6">
+        <button type="button" class="btn-outline-navy" data-newsletter-close>{t.done}</button>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-[3px] text-navy/70 hover:bg-tint hover:text-navy sm:right-4 sm:top-4"
+      aria-label={t.close}
+      data-newsletter-close
+    >
+      <svg class="h-5 w-5" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+</dialog>
+
+<style>
+  @keyframes newsletter-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  dialog[open] {
+    animation: newsletter-in 240ms ease-out;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    dialog[open] {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('[data-newsletter-dialog]');
+  const form = dialog?.querySelector<HTMLFormElement>('[data-newsletter-form]');
+
+  if (dialog && form && typeof dialog.showModal === 'function') {
+    const STORAGE_KEY = 'meridium-newsletter';
+    const DISMISS_DAYS = 30;
+    const DELAY_MS = 10_000;
+    const SCROLL_FRACTION = 0.4;
+    // Pages where an interruption is unwelcome (both languages).
+    const QUIET_PATHS = /^\/(de\/)?(contact|privacy|terms)\/?$/;
+
+    const readState = () => {
+      try {
+        return localStorage.getItem(STORAGE_KEY);
+      } catch {
+        return null;
+      }
+    };
+    const writeState = (value: string) => {
+      try {
+        localStorage.setItem(STORAGE_KEY, value);
+      } catch {
+        /* private mode or storage blocked: the popup simply shows again next visit */
+      }
+    };
+    const suppressed = () => {
+      const state = readState();
+      if (!state) return false;
+      if (state === 'subscribed') return true;
+      const shownAt = Number(state);
+      return Number.isFinite(shownAt) && Date.now() - shownAt < DISMISS_DAYS * 86_400_000;
+    };
+
+    const open = () => {
+      if (dialog.open) return;
+      dialog.showModal();
+      document.documentElement.classList.add('overflow-hidden');
+    };
+    const close = () => {
+      if (dialog.open) dialog.close();
+    };
+    dialog.addEventListener('close', () => {
+      document.documentElement.classList.remove('overflow-hidden');
+    });
+    // A click on the backdrop lands on the dialog element itself; clicks inside
+    // the panel land on its children.
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) close();
+    });
+    dialog.querySelectorAll<HTMLElement>('[data-newsletter-close]').forEach((el) => {
+      el.addEventListener('click', close);
+    });
+    document.querySelectorAll<HTMLElement>('[data-newsletter-open]').forEach((el) => {
+      el.addEventListener('click', (event) => {
+        event.preventDefault();
+        open();
+      });
+    });
+
+    // Automatic trigger.
+    const forced = new URLSearchParams(location.search).has('newsletter');
+    if (forced) {
+      open();
+    } else if (!suppressed() && !QUIET_PATHS.test(location.pathname)) {
+      let armed = true;
+      const fire = () => {
+        if (!armed) return;
+        armed = false;
+        clearTimeout(timer);
+        removeEventListener('scroll', onScroll);
+        writeState(String(Date.now()));
+        open();
+      };
+      const onScroll = () => {
+        const range = document.documentElement.scrollHeight - innerHeight;
+        if (range > 0 && scrollY / range >= SCROLL_FRACTION) fire();
+      };
+      const timer = setTimeout(fire, DELAY_MS);
+      addEventListener('scroll', onScroll, { passive: true });
+    }
+
+    // Submission.
+    let submitting = false;
+    const showError = (input: HTMLElement, show: boolean) => {
+      input.setAttribute('aria-invalid', String(show));
+      const errorId = input.getAttribute('data-error-id');
+      if (!errorId) return;
+      const msg = document.getElementById(errorId);
+      // The consent message is shared by two boxes: keep it visible while
+      // either box is invalid.
+      if (show) msg?.classList.remove('hidden');
+      else if (!form.querySelector(`[data-error-id="${errorId}"][aria-invalid="true"]`)) msg?.classList.add('hidden');
+      const existing = (input.getAttribute('aria-describedby') ?? '')
+        .split(/\s+/)
+        .filter((id) => id && id !== errorId);
+      if (show) existing.push(errorId);
+      if (existing.length) input.setAttribute('aria-describedby', existing.join(' '));
+      else input.removeAttribute('aria-describedby');
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (submitting) return;
+
+      const fields = [...form.querySelectorAll<HTMLInputElement>('input[required]')];
+      let firstInvalid: HTMLElement | null = null;
+      for (const field of fields) {
+        let valid = field.type === 'checkbox' ? field.checked : field.value.trim().length > 0;
+        if (valid && field.type === 'email') valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim());
+        showError(field, !valid);
+        if (!valid && !firstInvalid) firstInvalid = field;
+      }
+      if (firstInvalid) {
+        firstInvalid.focus();
+        return;
+      }
+
+      const busy = form.querySelector<HTMLElement>('[data-newsletter-busy]');
+      const error = form.querySelector<HTMLElement>('[data-newsletter-error]');
+      const success = dialog.querySelector<HTMLElement>('[data-newsletter-success]');
+      const button = form.querySelector<HTMLButtonElement>('[data-newsletter-submit]');
+      error?.classList.add('hidden');
+
+      const succeed = () => {
+        writeState('subscribed');
+        form.classList.add('hidden');
+        success?.classList.remove('hidden');
+        success?.querySelector<HTMLElement>('[data-newsletter-close]')?.focus();
+      };
+
+      // Honeypot: bots fill it; humans never see it. Pretend success, send nothing.
+      const honeypot = form.querySelector<HTMLInputElement>('input[name="website"]');
+      if (honeypot?.value) {
+        succeed();
+        return;
+      }
+
+      const data = new FormData(form);
+      const text = (name: string) => String(data.get(name) ?? '').trim();
+      const labelFor = (id: string) => dialog.querySelector<HTMLElement>(`label[for="${id}"]`)?.textContent?.trim() ?? '';
+      const fieldsPayload = [
+        { objectTypeId: '0-1', name: 'email', value: text('email') },
+        { objectTypeId: '0-1', name: 'firstname', value: text('firstname') },
+        { objectTypeId: '0-1', name: 'lastname', value: text('lastname') },
+      ];
+      if (text('company')) fieldsPayload.push({ objectTypeId: '0-1', name: 'company', value: text('company') });
+
+      const { portalId, formId, subscriptionTypeId } = dialog.dataset;
+      const endpoint = `https://api.hsforms.com/submissions/v3/integration/submit/${portalId}/${formId}`;
+
+      submitting = true;
+      button?.setAttribute('aria-disabled', 'true');
+      busy?.classList.remove('hidden');
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            submittedAt: Date.now(),
+            fields: fieldsPayload,
+            context: { pageUri: location.href, pageName: document.title },
+            legalConsentOptions: {
+              consent: {
+                consentToProcess: true,
+                text: labelFor('nl-consent-processing'),
+                communications: [
+                  {
+                    value: true,
+                    subscriptionTypeId: Number(subscriptionTypeId),
+                    text: labelFor('nl-consent-communications'),
+                  },
+                ],
+              },
+            },
+          }),
+        });
+        if (response.ok) succeed();
+        else error?.classList.remove('hidden');
+      } catch {
+        error?.classList.remove('hidden');
+      } finally {
+        submitting = false;
+        button?.removeAttribute('aria-disabled');
+        busy?.classList.add('hidden');
+      }
+    });
+  }
+</script>
