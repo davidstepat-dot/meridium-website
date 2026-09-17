@@ -55,6 +55,19 @@ English spelling, no invented statistics or testimonials, no guarantees of regul
 outcomes or processing times. Work pass figures cite mom.gov.sg in comments next to the
 copy; re-verify them at each MOM revision.
 
+## Book a call (Calendly)
+
+Every "Book a call" button (header, homepage hero, service pages, CTA band and the
+alternative button on the contact form) links to the Calendly event "Call with Meridium"
+at `https://calendly.com/enquiries-meridium/30min` and opens it in a new tab. The link is
+`site.bookingHref` in `src/data/site.ts`. No Calendly script or cookie is loaded on the
+site; the booking page runs entirely on calendly.com.
+
+Change the event's length, availability, video link or booking questions in Calendly
+under the enquiries@meridium.sg account; nothing on the site needs to change for that.
+Only edit `bookingHref` if the event URL itself changes (for example a renamed event
+slug or a new event type).
+
 ## Contact form (Web3Forms)
 
 Submissions are emailed to enquiries@meridium.sg via Web3Forms.
@@ -137,5 +150,4 @@ environment variable.
 3. DPO contact in the data protection policy currently routes to
    enquiries@meridium.sg; change to a dedicated dpo@ mailbox when one exists.
 4. Terms and data protection policy: counsel review recommended.
-5. A designed reversed (white) logo file to replace the CSS-inverted footer marks, and
-   optionally a scheduling link for "Book a call" (`src/data/site.ts`).
+5. A designed reversed (white) logo file to replace the CSS-inverted footer marks.

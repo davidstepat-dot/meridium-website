@@ -41,7 +41,7 @@ const { heading = t.cta.heading, body = t.cta.body } = Astro.props;
     </h2>
     <p class="mx-auto mt-4 max-w-xl leading-relaxed text-white/80">{body}</p>
     <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-      <a href={site.bookingHref} class="btn-red">{t.cta.book}</a>
+      <a href={site.bookingHref} target="_blank" rel="noopener" class="btn-red">{t.cta.book}</a>
       <a href={`mailto:${site.email}`} class="btn-outline-white">{t.cta.writeTo} {site.email}</a>
     </div>
   </div>

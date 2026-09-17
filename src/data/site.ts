@@ -13,9 +13,12 @@ export const site = {
   cspLicence: '',
   addressLines,
   registeredAddress: addressLines.join(', '),
-  // Opens the visitor's mail program, per client instruction. Swap for a
-  // scheduling link (for example Calendly) if one is adopted later.
-  bookingHref: 'mailto:enquiries@meridium.sg?subject=Scoping%20call%20request',
+  // Calendly event "Call with Meridium" (30 min, Google Meet), owned by the
+  // enquiries@meridium.sg Calendly account. Every "Book a call" button on the
+  // site links here and opens it in a new tab; no Calendly script or cookie
+  // runs on meridium.sg. Edit the event itself (length, hours, questions) in
+  // Calendly; only change this value if the event link changes.
+  bookingHref: 'https://calendly.com/enquiries-meridium/30min',
   defaultDescription:
     'Licensed Singapore corporate services firm for foreign companies entering Asia: incorporation, compliance, tax and expansion, delivered by senior advisers.',
   // Newsletter sign-up (src/components/NewsletterPopup.astro). Submissions go
