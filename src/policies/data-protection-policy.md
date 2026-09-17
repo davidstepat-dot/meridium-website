@@ -2,14 +2,6 @@
 
 Prepared in accordance with the Personal Data Protection Act 2012 of Singapore and other applicable Singapore laws and regulations.
 
-| | |
-|---|---|
-| Organisation | Meridium Management Consultants Pte. Ltd. (the Company) |
-| Document owner | Data Protection Officer (DPO) |
-| Version | 1.0 |
-| Next review | Annually, or upon material change in law or operations |
-| Classification | Internal use, may be shared with clients and partners on request |
-
 ## 1. Introduction and purpose
 
 Meridium Management Consultants Pte. Ltd. (referred to in this policy as Meridium, the Company, we, us or our) provides corporate, advisory and management consulting services to international principals establishing or scaling their operations in Asia. In the course of delivering these services we collect, use, disclose and otherwise handle personal data belonging to our clients, the individuals connected to our clients, our employees, our business partners, our suppliers and members of the public.
