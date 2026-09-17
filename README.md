@@ -84,15 +84,22 @@ Submissions go from the visitor's browser straight to HubSpot's Forms API, with 
 consents (communications and data processing) recorded against the contact. No HubSpot
 script, tracking or cookie is loaded on the site.
 
+There are two newsletters, one per language. English pages submit to the English HubSpot
+form and record consent against the "Meridium Newsletter (English)" subscription type;
+German pages use the German form and "Meridium Newsletter (Deutsch)". Each form has its
+own welcome-email workflow in HubSpot, and each newsletter send goes only to its own
+subscription type, so the lists never mix.
+
 - **Copy** (both languages): `ui.<lang>.newsletter` in `src/data/i18n.ts`.
-- **HubSpot identifiers** (portal, form, subscription type): `site.newsletter` in
-  `src/data/site.ts`. Find them in HubSpot under Marketing > Forms > the form's share
-  page (the form ID is in the URL) and Settings > Marketing > Email > Subscription types.
+- **HubSpot identifiers** (portal, form and subscription type per language):
+  `site.newsletter` in `src/data/site.ts`. Find them in HubSpot under Marketing > Forms
+  (the form ID is in the editor URL) and Settings > Marketing > Email > Subscription
+  Types.
 - **Timing and rules**: the constants at the top of the component's script.
-- **reCAPTCHA must stay off** on the HubSpot form; HubSpot's API rejects submissions to
+- **reCAPTCHA must stay off** on both HubSpot forms; HubSpot's API rejects submissions to
   reCAPTCHA-protected forms. A honeypot field in the popup and HubSpot's own spam
   filtering cover the gap.
-- **Welcome email**: sent by the workflow attached to the form in HubSpot (the form's
+- **Welcome emails**: sent by the workflow attached to each form in HubSpot (the form's
   Automation tab), not by the site.
 
 ## Deploy (GitHub Pages)
