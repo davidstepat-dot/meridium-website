@@ -11,9 +11,11 @@
 //     demand, and meridium.sg/?newsletter forces it open for testing;
 //   - submissions go from the browser straight to HubSpot's Forms API with
 //     the two consents recorded. No HubSpot script or cookie is loaded.
+//     English and German pages submit to different HubSpot forms and
+//     subscription types, so the two lists stay separate.
 //
 // Copy lives in src/data/i18n.ts (ui.<lang>.newsletter); HubSpot identifiers
-// in src/data/site.ts (site.newsletter).
+// in src/data/site.ts (site.newsletter[lang]).
 import { site } from '@/data/site';
 import { langPrefix, ui, type Lang } from '@/data/i18n';
 
@@ -24,7 +26,8 @@ interface Props {
 const { lang = 'en' } = Astro.props;
 const t = ui[lang].newsletter;
 const prefix = langPrefix(lang);
-const { portalId, formId, subscriptionTypeId } = site.newsletter;
+const { portalId } = site.newsletter;
+const { formId, subscriptionTypeId } = site.newsletter[lang];
 
 const inputClass =
   'w-full rounded-[3px] border border-line bg-white px-3.5 py-2.5 text-[15px] text-body placeholder:text-body/40 focus:border-navy focus:outline-none focus:ring-1 focus:ring-navy aria-[invalid=true]:border-red';
