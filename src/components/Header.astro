@@ -85,7 +85,7 @@ const slugOf = (id: string) => id.split('/')[1];
       <div class="hidden lg:block">
         <LanguageSwitch lang={lang} />
       </div>
-      <a href={site.bookingHref} class="btn-red hidden !px-5 !py-2.5 text-sm lg:inline-flex">{t.nav.bookCall}</a>
+      <a href={site.bookingHref} target="_blank" rel="noopener" class="btn-red hidden !px-5 !py-2.5 text-sm lg:inline-flex">{t.nav.bookCall}</a>
       <button
         type="button"
         class="flex h-10 w-10 items-center justify-center rounded-[3px] text-navy hover:bg-tint lg:hidden"
@@ -127,7 +127,7 @@ const slugOf = (id: string) => id.split('/')[1];
         <span class="text-sm font-medium text-navy/70">{t.nav.language}</span>
         <LanguageSwitch lang={lang} />
       </div>
-      <a href={site.bookingHref} class="btn-red mt-2">{t.nav.bookCall}</a>
+      <a href={site.bookingHref} target="_blank" rel="noopener" class="btn-red mt-2">{t.nav.bookCall}</a>
     </nav>
   </div>
 </header>

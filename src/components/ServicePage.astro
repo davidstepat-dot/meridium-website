@@ -43,7 +43,7 @@ const relatedSlug = data.related ? data.related.slug.id.split('/')[1] : null;
       </h1>
       <p class="mt-6 max-w-[62ch] text-lg leading-relaxed">{data.intro}</p>
       <div class="mt-8 flex flex-wrap gap-4">
-        <a href={site.bookingHref} class="btn-red">{t.cta.book}</a>
+        <a href={site.bookingHref} target="_blank" rel="noopener" class="btn-red">{t.cta.book}</a>
         <a href={`${prefix}/#services`} class="btn-outline-navy">{t.service.allServices}</a>
       </div>
     </div>
