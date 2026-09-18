@@ -142,15 +142,3 @@ workflow.
 **Alternatives**: `netlify.toml` is included for Netlify; Cloudflare Pages and Vercel
 work with build command `npm run build`, output `dist` and Node 22. No environment
 variables are required.
-
-## Open items
-
-1. ACRA registration number under the CSP regime: set `cspLicence` in
-   `src/data/site.ts` and restore the licence line in `src/components/Footer.astro`
-   once the number is issued.
-2. Team section: intentionally empty for launch (`src/data/team.ts`). Portrait files
-   stay local in `src/assets/team/`, which is gitignored, so no personal photos sit in
-   this repository.
-3. DPO contact in the data protection policy routes to enquiries@meridium.sg; change to
-   a dedicated mailbox when one exists.
-4. A designed reversed (white) logo file to replace the CSS-inverted footer marks.
