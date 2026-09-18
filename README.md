@@ -68,22 +68,42 @@ under the enquiries@meridium.sg account; nothing on the site needs to change for
 Only edit `bookingHref` if the event URL itself changes (for example a renamed event
 slug or a new event type).
 
-## Contact form (Web3Forms)
+## Contact form (HubSpot)
 
-Submissions are emailed to enquiries@meridium.sg via Web3Forms.
+`src/components/ContactForm.astro` submits straight from the visitor's browser to
+HubSpot's Forms API, the same way the newsletter popup does. Every enquiry creates or
+updates a HubSpot contact (first name, last name, email, company, country, service of
+interest, message) with the consent text recorded, and HubSpot notifies the team. No
+HubSpot script, tracking or cookie is loaded on the site, and no build secret is needed.
 
-1. Create a free access key at https://web3forms.com using enquiries@meridium.sg.
-2. Copy `.env.example` to `.env` and set `PUBLIC_WEB3FORMS_KEY=<your key>`.
-3. For deployed sites, set the same variable in your host's environment settings
-   (Netlify: Site settings > Environment variables).
+One HubSpot form serves both languages. The service select always sends the English
+service title, so the CRM property stays uniform; the submission's conversion page
+(`/contact/` or `/de/contact/`) shows which language the visitor used.
 
-Until the key is set, the form shows its error state on submit, with a mailto fallback.
-The form includes a hidden `botcheck` honeypot; the PDPA consent checkbox is required.
+The HubSpot side is already set up (September 2026): a custom contact property "Service
+of interest" (`service_of_interest`, single-line text) and the form "Website contact form
+(meridium.sg)" with exactly these fields, all required: First name, Last name, Email,
+Company name, Country/Region, Service of interest, Message. Submission notifications go
+to the users chosen in the form's Options tab; reCAPTCHA is off and must stay off, because
+HubSpot's API rejects submissions to reCAPTCHA-protected forms (the site's honeypot and
+HubSpot's spam filtering cover the gap). Contacts created by this form are not set as
+marketing contacts, so enquiries do not consume the marketing contacts tier; they become
+marketing contacts only if they subscribe to the newsletter.
 
-**To switch providers later** (Formspree, Netlify Forms or similar): the form markup and
-validation live in `src/components/ContactForm.astro`. Replace the `fetch` call in its
-script with your provider's endpoint and payload format; nothing else on the site touches
-the form.
+Rules when editing the HubSpot form or this component:
+
+- Keep the field sets identical. HubSpot rejects API submissions whose fields do not
+  match the form definition, and submissions missing a required field. To add a field,
+  add it to the HubSpot form first, then to the markup and to the `fieldsPayload` list
+  in the component's script.
+- If the form is ever recreated, set the new ID in `site.contact.formId`
+  (`src/data/site.ts`); it is in the form editor's URL. If `formId` is empty the form
+  shows its error state on submit, with a mailto fallback.
+- The form includes a hidden `botcheck` honeypot; the PDPA consent checkbox is required
+  and its wording is sent to HubSpot as the consent-to-process text.
+
+- **Copy** (both languages): `ui.<lang>.form` in `src/data/i18n.ts`.
+- **HubSpot identifiers**: `site.contact` in `src/data/site.ts`.
 
 ## Newsletter popup (HubSpot)
 
@@ -123,12 +143,9 @@ the site and publishes it to GitHub Pages. One-time setup after pushing:
 1. Create a repository on GitHub and push this folder to its `main` branch.
 2. In the repository: Settings > Pages > Build and deployment > Source: **GitHub
    Actions**.
-3. Settings > Secrets and variables > Actions > New repository secret:
-   `PUBLIC_WEB3FORMS_KEY` with your Web3Forms key, then re-run the workflow so the
-   contact form delivers.
-4. Custom domain: Settings > Pages > Custom domain: `meridium.sg` (the repo also
+3. Custom domain: Settings > Pages > Custom domain: `meridium.sg` (the repo also
    carries `public/CNAME`), and tick Enforce HTTPS once the certificate is issued.
-5. At your DNS provider for meridium.sg, create four A records on the apex pointing to
+4. At your DNS provider for meridium.sg, create four A records on the apex pointing to
    GitHub Pages: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`,
    `185.199.111.153`, and a `www` CNAME record pointing to
    `<your-github-username>.github.io`.
@@ -137,8 +154,8 @@ DNS changes can take up to a day to propagate; the Pages settings screen shows w
 domain check and certificate are ready.
 
 **Alternatives**: `netlify.toml` is included for Netlify; Cloudflare Pages and Vercel
-work with build command `npm run build`, output `dist`, Node 22, and the same
-environment variable.
+work with build command `npm run build`, output `dist` and Node 22. No environment
+variables are required.
 
 ## Parked until the facts exist
 

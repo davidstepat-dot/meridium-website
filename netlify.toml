@@ -1,5 +1,6 @@
-# Netlify deploy configuration. Set PUBLIC_WEB3FORMS_KEY in the Netlify UI
-# (Site settings > Environment variables) so the contact form can submit.
+# Netlify deploy configuration. No environment variables are needed: the
+# contact form and newsletter submit to HubSpot with public identifiers held
+# in src/data/site.ts.
 [build]
   command = "npm run build"
   publish = "dist"
