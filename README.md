@@ -1,23 +1,20 @@
 # Meridium Management Consultants website
 
-Production website for Meridium Management Consultants Pte. Ltd., a Singapore corporate
-services firm. Built with Astro 5 and Tailwind CSS 4, fully static, no CMS.
+Source of https://meridium.sg, the website of Meridium Management Consultants Pte. Ltd.,
+a Singapore corporate services firm. Built with Astro 5 and Tailwind CSS 4, fully static,
+no CMS. Every push to `main` builds the site and publishes it to GitHub Pages under the
+custom domain.
 
-All three build phases are complete: homepage, eight service pages, About, contact form,
-data protection policy, terms of use, SEO plumbing and deploy configuration. Items still
-marked TODO in the interface are deliberate flags for facts only the firm can confirm;
-they are listed at the bottom of this file.
+The site loads no third-party scripts, trackers or cookies. The two things that talk to
+outside services (the contact form and the newsletter sign-up) send data from the
+visitor's browser directly to HubSpot's Forms API; "Book a call" opens Calendly in a new
+tab. Nothing in this repository is secret: the HubSpot portal, form and subscription IDs
+are the same public identifiers the browser sends, and no API keys or credentials are
+needed to build or deploy.
 
 ## Run locally
 
-Requires Node.js 20 or newer. This machine has Node 22 installed at `~/.local/opt/node22`.
-Add it to your PATH once:
-
-```
-echo 'export PATH="$HOME/.local/opt/node22/bin:$PATH"' >> ~/.zshrc && source ~/.zshrc
-```
-
-Then, from the project folder:
+Requires Node.js 20 or newer. From the project folder:
 
 ```
 npm install
@@ -40,10 +37,10 @@ npm run check      # type-check the templates and content
   switcher in the header links between the two versions of the current page. The data
   protection policy and terms are maintained in English; the German pages carry a notice
   that the English version governs.
-- **Firm facts** (legal name, UEN, licence number, address, email, booking link):
-  `src/data/site.ts`. TODO values render with a visible amber flag until replaced.
-- **Team members**: `src/data/team.ts`. Add one object per person; a missing photo or bio
-  renders a visible TODO placeholder.
+- **Firm facts** (legal name, UEN, licence number, address, email, booking link, HubSpot
+  identifiers): `src/data/site.ts`.
+- **Team members**: `src/data/team.ts`. The About page shows the team section only when
+  this array has entries.
 - **Homepage sections** (differentiators, engagement steps, regions): the arrays at the
   top of `src/pages/index.astro`.
 - **Data protection policy**: `src/policies/data-protection-policy.md`.
@@ -71,24 +68,20 @@ slug or a new event type).
 ## Contact form (HubSpot)
 
 `src/components/ContactForm.astro` submits straight from the visitor's browser to
-HubSpot's Forms API, the same way the newsletter popup does. Every enquiry creates or
-updates a HubSpot contact (first name, last name, email, company, country, service of
-interest, message) with the consent text recorded, and HubSpot notifies the team. No
-HubSpot script, tracking or cookie is loaded on the site, and no build secret is needed.
+HubSpot's Forms API. Every enquiry creates or updates a HubSpot contact (first name, last
+name, email, company, country, service of interest, message) with the consent text
+recorded as the legal basis, and HubSpot emails the team. One HubSpot form serves both
+languages: the service select always sends the English service title, so the CRM
+property stays uniform, and the submission's conversion page (`/contact/` or
+`/de/contact/`) shows which language the visitor used.
 
-One HubSpot form serves both languages. The service select always sends the English
-service title, so the CRM property stays uniform; the submission's conversion page
-(`/contact/` or `/de/contact/`) shows which language the visitor used.
-
-The HubSpot side is already set up (September 2026): a custom contact property "Service
-of interest" (`service_of_interest`, single-line text) and the form "Website contact form
+On the HubSpot side (set up September 2026): a custom contact property "Service of
+interest" (`service_of_interest`, single-line text) and the form "Website contact form
 (meridium.sg)" with exactly these fields, all required: First name, Last name, Email,
 Company name, Country/Region, Service of interest, Message. Submission notifications go
-to the users chosen in the form's Options tab; reCAPTCHA is off and must stay off, because
-HubSpot's API rejects submissions to reCAPTCHA-protected forms (the site's honeypot and
-HubSpot's spam filtering cover the gap). Contacts created by this form are not set as
-marketing contacts, so enquiries do not consume the marketing contacts tier; they become
-marketing contacts only if they subscribe to the newsletter.
+to the users chosen in the form's Options tab. Contacts created by this form are not set
+as marketing contacts, so enquiries do not consume the marketing contacts tier; they
+become marketing contacts only if they subscribe to the newsletter.
 
 Rules when editing the HubSpot form or this component:
 
@@ -96,14 +89,15 @@ Rules when editing the HubSpot form or this component:
   match the form definition, and submissions missing a required field. To add a field,
   add it to the HubSpot form first, then to the markup and to the `fieldsPayload` list
   in the component's script.
-- If the form is ever recreated, set the new ID in `site.contact.formId`
-  (`src/data/site.ts`); it is in the form editor's URL. If `formId` is empty the form
+- reCAPTCHA must stay off on the HubSpot form; HubSpot's API rejects submissions to
+  reCAPTCHA-protected forms. The form's hidden `botcheck` honeypot and HubSpot's own spam
+  filtering cover the gap.
+- If the form is ever recreated in HubSpot, set the new ID in `site.contact.formId`
+  (`src/data/site.ts`); it is in the form editor's URL. With `formId` empty the form
   shows its error state on submit, with a mailto fallback.
-- The form includes a hidden `botcheck` honeypot; the PDPA consent checkbox is required
-  and its wording is sent to HubSpot as the consent-to-process text.
-
-- **Copy** (both languages): `ui.<lang>.form` in `src/data/i18n.ts`.
-- **HubSpot identifiers**: `site.contact` in `src/data/site.ts`.
+- The PDPA consent checkbox is required and its wording is sent to HubSpot as the
+  consent-to-process text. Copy for both languages: `ui.<lang>.form` in
+  `src/data/i18n.ts`.
 
 ## Newsletter popup (HubSpot)
 
@@ -114,8 +108,7 @@ The footer's "Newsletter" link opens it on demand; `meridium.sg/?newsletter` for
 open for testing on any page.
 
 Submissions go from the visitor's browser straight to HubSpot's Forms API, with both
-consents (communications and data processing) recorded against the contact. No HubSpot
-script, tracking or cookie is loaded on the site.
+consents (communications and data processing) recorded against the contact.
 
 There are two newsletters, one per language. English pages submit to the English HubSpot
 form and record consent against the "Meridium Newsletter (English)" subscription type;
@@ -129,42 +122,35 @@ subscription type, so the lists never mix.
   (the form ID is in the editor URL) and Settings > Marketing > Email > Subscription
   Types.
 - **Timing and rules**: the constants at the top of the component's script.
-- **reCAPTCHA must stay off** on both HubSpot forms; HubSpot's API rejects submissions to
-  reCAPTCHA-protected forms. A honeypot field in the popup and HubSpot's own spam
-  filtering cover the gap.
+- **reCAPTCHA must stay off** on both newsletter forms, for the same reason as above.
 - **Welcome emails**: sent by the workflow attached to each form in HubSpot (the form's
   Automation tab), not by the site.
 
 ## Deploy (GitHub Pages)
 
-The repository ships with `.github/workflows/deploy.yml`: every push to `main` builds
-the site and publishes it to GitHub Pages. One-time setup after pushing:
+`.github/workflows/deploy.yml` builds the site and publishes it to GitHub Pages on every
+push to `main`; a deploy takes under a minute. The repository is configured with Pages
+served from GitHub Actions and the custom domain `meridium.sg` (also in `public/CNAME`),
+served over HTTPS. DNS for meridium.sg points the apex at GitHub Pages' four A records
+(`185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`) and `www`
+at `davidstepat-dot.github.io`. No repository secrets or environment variables are
+needed.
 
-1. Create a repository on GitHub and push this folder to its `main` branch.
-2. In the repository: Settings > Pages > Build and deployment > Source: **GitHub
-   Actions**.
-3. Custom domain: Settings > Pages > Custom domain: `meridium.sg` (the repo also
-   carries `public/CNAME`), and tick Enforce HTTPS once the certificate is issued.
-4. At your DNS provider for meridium.sg, create four A records on the apex pointing to
-   GitHub Pages: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`,
-   `185.199.111.153`, and a `www` CNAME record pointing to
-   `<your-github-username>.github.io`.
-
-DNS changes can take up to a day to propagate; the Pages settings screen shows when the
-domain check and certificate are ready.
+To re-run a deploy without a code change: Actions > Deploy to GitHub Pages > Run
+workflow.
 
 **Alternatives**: `netlify.toml` is included for Netlify; Cloudflare Pages and Vercel
 work with build command `npm run build`, output `dist` and Node 22. No environment
 variables are required.
 
-## Parked until the facts exist
+## Open items
 
 1. ACRA registration number under the CSP regime: set `cspLicence` in
-   `src/data/site.ts` and restore the licence line in `src/components/Footer.astro`.
-2. Team section: intentionally empty for launch (`src/data/team.ts`); portrait files
-   remain locally in `src/assets/team/` (gitignored, so nothing personal is in the
-   public repository).
-3. DPO contact in the data protection policy currently routes to
-   enquiries@meridium.sg; change to a dedicated dpo@ mailbox when one exists.
-4. Terms and data protection policy: counsel review recommended.
-5. A designed reversed (white) logo file to replace the CSS-inverted footer marks.
+   `src/data/site.ts` and restore the licence line in `src/components/Footer.astro`
+   once the number is issued.
+2. Team section: intentionally empty for launch (`src/data/team.ts`). Portrait files
+   stay local in `src/assets/team/`, which is gitignored, so no personal photos sit in
+   this repository.
+3. DPO contact in the data protection policy routes to enquiries@meridium.sg; change to
+   a dedicated mailbox when one exists.
+4. A designed reversed (white) logo file to replace the CSS-inverted footer marks.
