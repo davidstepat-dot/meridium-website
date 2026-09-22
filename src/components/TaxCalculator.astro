@@ -1,0 +1,360 @@
+---
+// Singapore individual income tax estimator. Runs entirely in the visitor's
+// browser; nothing is sent anywhere. Rates are the IRAS resident progressive
+// rates in force from Year of Assessment 2024 (verified September 2026, see
+// site.resources.irasRatesHref) and the non-resident rates: employment income
+// at 15% flat or the resident rates, whichever is higher; director's fees and
+// other income at 24%. Re-verify the bands after each Budget.
+import { site } from '@/data/site';
+import { ui, type Lang } from '@/data/i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = ui[lang].resources.calculator;
+const locale = lang === 'de' ? 'de-DE' : 'en-SG';
+const fmt = (n: number) => new Intl.NumberFormat(locale, { maximumFractionDigits: 0 }).format(n);
+
+// Resident bands: [width of band in S$ (Infinity for the top band), rate].
+const bands: [number, number][] = [
+  [20000, 0],
+  [10000, 0.02],
+  [10000, 0.035],
+  [40000, 0.07],
+  [40000, 0.115],
+  [40000, 0.15],
+  [40000, 0.18],
+  [40000, 0.19],
+  [40000, 0.195],
+  [40000, 0.2],
+  [180000, 0.22],
+  [500000, 0.23],
+  [Infinity, 0.24],
+];
+const pct = (r: number) =>
+  new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: 1 }).format(r);
+const bandLabel = (width: number, i: number) => {
+  if (width === Infinity) return `${t.above} ${t.currency}${fmt(1000000)}`;
+  return `${i === 0 ? t.first : t.next} ${t.currency}${fmt(width)}`;
+};
+const RELIEF_CAP = 80000;
+---
+
+<div
+  class="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-14"
+  data-tax-calculator
+  data-locale={locale}
+  data-currency={t.currency}
+  data-relief-cap={RELIEF_CAP}
+>
+  <form class="space-y-7" novalidate>
+    <fieldset>
+      <legend class="text-sm font-semibold text-navy">{t.residency}</legend>
+      <div class="mt-3 grid gap-3 sm:grid-cols-2">
+        <label class="flex cursor-pointer items-start gap-3 rounded-[3px] border border-line bg-white p-4 has-[:checked]:border-navy">
+          <input type="radio" name="residency" value="resident" class="mt-1 accent-navy" checked />
+          <span>
+            <span class="block font-medium text-navy">{t.resident}</span>
+            <span class="mt-1 block text-[13px] leading-snug text-body/80">{t.residentHint}</span>
+          </span>
+        </label>
+        <label class="flex cursor-pointer items-start gap-3 rounded-[3px] border border-line bg-white p-4 has-[:checked]:border-navy">
+          <input type="radio" name="residency" value="non-resident" class="mt-1 accent-navy" />
+          <span>
+            <span class="block font-medium text-navy">{t.nonResident}</span>
+            <span class="mt-1 block text-[13px] leading-snug text-body/80">{t.nonResidentHint}</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <div>
+      <label for="tax-employment" class="text-sm font-semibold text-navy">{t.employment}</label>
+      <div class="relative mt-2">
+        <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-sm text-body/70">{t.currency}</span>
+        <input
+          id="tax-employment"
+          name="employment"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          placeholder="120,000"
+          class="w-full rounded-[3px] border border-line bg-white py-3 pl-11 pr-4 text-navy focus:border-navy focus:outline-none"
+        />
+      </div>
+      <p class="mt-1.5 text-[13px] leading-snug text-body/80">{t.employmentHint}</p>
+    </div>
+
+    <div>
+      <label for="tax-other" class="text-sm font-semibold text-navy">{t.other}</label>
+      <div class="relative mt-2">
+        <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-sm text-body/70">{t.currency}</span>
+        <input
+          id="tax-other"
+          name="other"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          placeholder="0"
+          class="w-full rounded-[3px] border border-line bg-white py-3 pl-11 pr-4 text-navy focus:border-navy focus:outline-none"
+        />
+      </div>
+      <p class="mt-1.5 text-[13px] leading-snug text-body/80">{t.otherHint}</p>
+    </div>
+
+    <div data-reliefs-field>
+      <label for="tax-reliefs" class="text-sm font-semibold text-navy">{t.reliefs}</label>
+      <div class="relative mt-2">
+        <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-sm text-body/70">{t.currency}</span>
+        <input
+          id="tax-reliefs"
+          name="reliefs"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          placeholder="0"
+          class="w-full rounded-[3px] border border-line bg-white py-3 pl-11 pr-4 text-navy focus:border-navy focus:outline-none disabled:bg-tint disabled:text-body/50"
+        />
+      </div>
+      <p class="mt-1.5 text-[13px] leading-snug text-body/80">{t.reliefsHint}</p>
+    </div>
+
+    <p class="text-[13px] leading-relaxed text-body/70">{t.basis}</p>
+  </form>
+
+  <div class="border border-line bg-white" aria-live="polite">
+    <div class="border-b border-line p-6 sm:p-8">
+      <p class="eyebrow">{t.resultsHeading}</p>
+      <p class="mt-3 font-serif text-4xl font-semibold tracking-tight text-navy sm:text-5xl">
+        <span data-out="tax">{t.currency}0</span>
+      </p>
+      <p class="mt-1 text-sm text-body/80">{t.taxPayable}</p>
+
+      <dl class="mt-6 grid gap-x-6 gap-y-3 text-[15px] sm:grid-cols-2">
+        <div class="flex justify-between gap-4 border-t border-line pt-3 sm:block">
+          <dt class="text-body/80">{t.totalIncome}</dt>
+          <dd class="font-semibold text-navy" data-out="income">{t.currency}0</dd>
+        </div>
+        <div class="flex justify-between gap-4 border-t border-line pt-3 sm:block" data-out-reliefs-row>
+          <dt class="text-body/80">{t.reliefsApplied}</dt>
+          <dd class="font-semibold text-navy" data-out="reliefs">{t.currency}0</dd>
+        </div>
+        <div class="flex justify-between gap-4 border-t border-line pt-3 sm:block">
+          <dt class="text-body/80">{t.chargeable}</dt>
+          <dd class="font-semibold text-navy" data-out="chargeable">{t.currency}0</dd>
+        </div>
+        <div class="flex justify-between gap-4 border-t border-line pt-3 sm:block">
+          <dt class="text-body/80">{t.effectiveRate}</dt>
+          <dd class="font-semibold text-navy" data-out="rate">0%</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="p-6 sm:p-8">
+      <h3 class="font-serif text-lg font-semibold tracking-tight text-navy">{t.breakdownHeading}</h3>
+
+      <table class="mt-4 w-full border-collapse text-[14px] leading-snug" data-table="resident">
+        <thead>
+          <tr class="text-left text-body/80">
+            <th class="border-b-2 border-navy/20 py-2 pr-3 font-medium">{t.band}</th>
+            <th class="border-b-2 border-navy/20 py-2 pr-3 text-right font-medium">{t.rate}</th>
+            <th class="border-b-2 border-navy/20 py-2 pr-3 text-right font-medium">{t.taxable}</th>
+            <th class="border-b-2 border-navy/20 py-2 text-right font-medium">{t.tax}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            bands.map(([width, rate], i) => (
+              <tr class="text-body/60 transition-colors data-[active]:text-navy" data-band>
+                <td class="border-b border-line py-2 pr-3">{bandLabel(width, i)}</td>
+                <td class="border-b border-line py-2 pr-3 text-right tabular-nums">{pct(rate)}</td>
+                <td class="border-b border-line py-2 pr-3 text-right tabular-nums" data-cell="amount">
+                  0
+                </td>
+                <td class="border-b border-line py-2 text-right tabular-nums" data-cell="tax">
+                  0
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+
+      <table class="mt-4 hidden w-full border-collapse text-[14px] leading-snug" data-table="non-resident">
+        <thead>
+          <tr class="text-left text-body/80">
+            <th class="border-b-2 border-navy/20 py-2 pr-3 font-medium">{t.band}</th>
+            <th class="border-b-2 border-navy/20 py-2 pr-3 font-medium">{t.rate}</th>
+            <th class="border-b-2 border-navy/20 py-2 pr-3 text-right font-medium">{t.taxable}</th>
+            <th class="border-b-2 border-navy/20 py-2 text-right font-medium">{t.tax}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="text-navy">
+            <td class="border-b border-line py-2 pr-3">{t.nrEmployment}</td>
+            <td class="border-b border-line py-2 pr-3 text-[13px] text-body/80">{t.nrEmploymentRate}</td>
+            <td class="border-b border-line py-2 pr-3 text-right tabular-nums" data-nr="employment-amount">0</td>
+            <td class="border-b border-line py-2 text-right tabular-nums" data-nr="employment-tax">0</td>
+          </tr>
+          <tr class="text-navy">
+            <td class="border-b border-line py-2 pr-3">{t.nrOther}</td>
+            <td class="border-b border-line py-2 pr-3 text-[13px] text-body/80">{t.nrOtherRate}</td>
+            <td class="border-b border-line py-2 pr-3 text-right tabular-nums" data-nr="other-amount">0</td>
+            <td class="border-b border-line py-2 text-right tabular-nums" data-nr="other-tax">0</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="mt-4 hidden text-[13px] leading-relaxed text-body/80" data-nr-note>{t.nrNote}</p>
+
+      <p class="mt-6 text-[13px] leading-relaxed text-body/80">{t.disclaimer}</p>
+      <p class="mt-2 text-[13px]">
+        <a
+          href={site.resources.irasRatesHref}
+          target="_blank"
+          rel="noopener"
+          class="font-medium text-navy underline decoration-navy/30 underline-offset-4 hover:decoration-navy"
+        >
+          {t.source}
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Keep these in step with the `bands` array in the template above.
+  const BANDS: [number, number][] = [
+    [20000, 0],
+    [10000, 0.02],
+    [10000, 0.035],
+    [40000, 0.07],
+    [40000, 0.115],
+    [40000, 0.15],
+    [40000, 0.18],
+    [40000, 0.19],
+    [40000, 0.195],
+    [40000, 0.2],
+    [180000, 0.22],
+    [500000, 0.23],
+    [Infinity, 0.24],
+  ];
+  const NON_RESIDENT_EMPLOYMENT_FLAT = 0.15;
+  const NON_RESIDENT_OTHER = 0.24;
+
+  const root = document.querySelector<HTMLElement>('[data-tax-calculator]');
+  if (root) {
+    const locale = root.dataset.locale || 'en-SG';
+    const currency = root.dataset.currency || 'S$';
+    const reliefCap = Number(root.dataset.reliefCap) || 80000;
+
+    const money = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
+    const cents = new Intl.NumberFormat(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const percent = new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: 1 });
+    const fmtMoney = (n: number) => `${currency}${money.format(n)}`;
+    const fmtCents = (n: number) => `${currency}${cents.format(n)}`;
+
+    const form = root.querySelector<HTMLFormElement>('form')!;
+    const employmentInput = form.elements.namedItem('employment') as HTMLInputElement;
+    const otherInput = form.elements.namedItem('other') as HTMLInputElement;
+    const reliefsInput = form.elements.namedItem('reliefs') as HTMLInputElement;
+    const reliefsField = root.querySelector<HTMLElement>('[data-reliefs-field]')!;
+    const reliefsRow = root.querySelector<HTMLElement>('[data-out-reliefs-row]')!;
+    const residentTable = root.querySelector<HTMLElement>('[data-table="resident"]')!;
+    const nonResidentTable = root.querySelector<HTMLElement>('[data-table="non-resident"]')!;
+    const nrNote = root.querySelector<HTMLElement>('[data-nr-note]')!;
+    const bandRows = Array.from(root.querySelectorAll<HTMLElement>('[data-band]'));
+    const out = (key: string) => root.querySelector<HTMLElement>(`[data-out="${key}"]`)!;
+    const nr = (key: string) => root.querySelector<HTMLElement>(`[data-nr="${key}"]`)!;
+
+    // Accepts "120,000", "120000", "120.000" (German grouping) and "S$120,000".
+    const parse = (input: HTMLInputElement) => {
+      const digits = input.value.replace(/[^\d]/g, '');
+      const n = Number(digits);
+      return Number.isFinite(n) ? Math.max(0, Math.floor(n)) : 0;
+    };
+
+    // Progressive tax on a whole-dollar chargeable income, per band.
+    const progressive = (chargeable: number) => {
+      let remaining = chargeable;
+      let total = 0;
+      const perBand = BANDS.map(([width, rate]) => {
+        const amount = Math.max(0, Math.min(remaining, width));
+        remaining -= amount;
+        const tax = amount * rate;
+        total += tax;
+        return { amount, tax };
+      });
+      return { total, perBand };
+    };
+
+    const isResident = () =>
+      (form.elements.namedItem('residency') as RadioNodeList).value === 'resident';
+
+    const render = () => {
+      const resident = isResident();
+      const employment = parse(employmentInput);
+      const other = parse(otherInput);
+      const income = employment + other;
+
+      reliefsInput.disabled = !resident;
+      reliefsField.classList.toggle('opacity-50', !resident);
+      reliefsRow.style.display = resident ? '' : 'none';
+      residentTable.classList.toggle('hidden', !resident);
+      nonResidentTable.classList.toggle('hidden', resident);
+      nrNote.classList.toggle('hidden', resident);
+
+      let chargeable = income;
+      let reliefs = 0;
+      let tax = 0;
+
+      if (resident) {
+        reliefs = Math.min(parse(reliefsInput), reliefCap, income);
+        chargeable = income - reliefs;
+        const { total, perBand } = progressive(chargeable);
+        tax = total;
+        perBand.forEach(({ amount, tax: bandTax }, i) => {
+          const row = bandRows[i];
+          row.querySelector<HTMLElement>('[data-cell="amount"]')!.textContent = money.format(amount);
+          row.querySelector<HTMLElement>('[data-cell="tax"]')!.textContent = cents.format(bandTax);
+          if (amount > 0) row.setAttribute('data-active', '');
+          else row.removeAttribute('data-active');
+        });
+      } else {
+        const employmentTax = Math.max(
+          employment * NON_RESIDENT_EMPLOYMENT_FLAT,
+          progressive(employment).total
+        );
+        const otherTax = other * NON_RESIDENT_OTHER;
+        tax = employmentTax + otherTax;
+        nr('employment-amount').textContent = money.format(employment);
+        nr('employment-tax').textContent = cents.format(employmentTax);
+        nr('other-amount').textContent = money.format(other);
+        nr('other-tax').textContent = cents.format(otherTax);
+      }
+
+      out('tax').textContent = fmtCents(tax);
+      out('income').textContent = fmtMoney(income);
+      out('reliefs').textContent = fmtMoney(reliefs);
+      out('chargeable').textContent = fmtMoney(chargeable);
+      out('rate').textContent = percent.format(income > 0 ? tax / income : 0);
+    };
+
+    // Re-group digits as the visitor types, keeping the caret at the end.
+    const regroup = (input: HTMLInputElement) => {
+      const n = parse(input);
+      input.value = input.value.trim() === '' ? '' : money.format(n);
+    };
+
+    for (const input of [employmentInput, otherInput, reliefsInput]) {
+      input.addEventListener('input', () => {
+        regroup(input);
+        render();
+      });
+    }
+    form.addEventListener('change', render);
+    form.addEventListener('submit', (e) => e.preventDefault());
+    render();
+  }
+</script>
