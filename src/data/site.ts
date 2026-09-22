@@ -23,6 +23,16 @@ export const site = {
   // runs on meridium.sg. Edit the event itself (length, hours, questions) in
   // Calendly; only change this value if the event link changes.
   bookingHref: 'https://calendly.com/enquiries-meridium/30min',
+  // Resources page (src/pages/resources.astro). The compliance calendar is a
+  // gated PDF hosted on the HubSpot content domain resources.meridium.sg; the
+  // UTM parameters mark visits that come from the website, as distinct from
+  // the LinkedIn campaign link, in HubSpot's traffic analytics.
+  resources: {
+    complianceCalendarHref:
+      'https://resources.meridium.sg/en/singapore-compliance-calendar?utm_source=meridium.sg&utm_medium=website&utm_campaign=compliance-calendar',
+    irasRatesHref:
+      'https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-residency-and-tax-rates/individual-income-tax-rates',
+  },
   defaultDescription:
     'Licensed Singapore corporate services firm for foreign companies entering Asia: incorporation, compliance, tax and expansion, delivered by senior advisers.',
   // Contact form (src/components/ContactForm.astro). Submissions go straight
