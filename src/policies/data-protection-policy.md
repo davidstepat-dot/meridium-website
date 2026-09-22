@@ -67,19 +67,19 @@ Meridium makes reasonable efforts to ensure that personal data it collects is ac
 
 ### 4.6 Protection obligation
 
-Meridium protects personal data in its possession or under its control by making reasonable security arrangements to prevent unauthorised access, collection, use, disclosure, copying, modification, disposal or similar risks, and the loss of any storage medium or device on which personal data is stored. The security measures applied by the Company are described in section 12.
+Meridium protects personal data in its possession or under its control by making reasonable security arrangements to prevent unauthorised access, collection, use, disclosure, copying, modification, disposal or similar risks, and the loss of any storage medium or device on which personal data is stored. The security measures applied by the Company are described in section 13.
 
 ### 4.7 Retention limitation obligation
 
-Meridium ceases to retain personal data, or removes the means by which the data can be associated with particular individuals, as soon as it is reasonable to assume that retention no longer serves the purpose for which the data was collected, and is no longer necessary for legal or business purposes. Retention is governed by section 11.
+Meridium ceases to retain personal data, or removes the means by which the data can be associated with particular individuals, as soon as it is reasonable to assume that retention no longer serves the purpose for which the data was collected, and is no longer necessary for legal or business purposes. Retention is governed by section 12.
 
 ### 4.8 Transfer limitation obligation
 
-Meridium transfers personal data outside Singapore only where it has taken appropriate steps to ensure that the recipient is bound by legally enforceable obligations to provide a standard of protection comparable to that under the PDPA. Cross-border transfers are addressed in section 10.
+Meridium transfers personal data outside Singapore only where it has taken appropriate steps to ensure that the recipient is bound by legally enforceable obligations to provide a standard of protection comparable to that under the PDPA. Cross-border transfers are addressed in section 11.
 
 ### 4.9 Data breach notification obligation
 
-Meridium assesses data breaches affecting personal data in its possession or control and, where a breach is notifiable, notifies the PDPC and affected individuals within the timelines required by the PDPA. The Company's breach management procedure is set out in section 13.
+Meridium assesses data breaches affecting personal data in its possession or control and, where a breach is notifiable, notifies the PDPC and affected individuals within the timelines required by the PDPA. The Company's breach management procedure is set out in section 14.
 
 ### 4.10 Accountability obligation
 
@@ -95,27 +95,61 @@ The categories of personal data that Meridium handles, and the principal purpose
 | Directors, shareholders, beneficial owners and officers of client entities | Name, nationality, identification document details, residential and contact details, source of wealth or funds information | Incorporation and corporate secretarial services, statutory filings, customer due diligence and AML compliance |
 | Employees and job applicants | Identification, contact, employment, remuneration, tax, bank account and next of kin details | Recruitment, payroll, statutory contributions, work pass administration, performance and HR management |
 | Suppliers, partners and referrers | Name, contact details, banking details where relevant | Procurement, payment, partnership and referral administration |
-| Website visitors and event attendees | Contact details, communications, technical and usage data | Responding to enquiries, marketing where consent is given, event administration and website operation |
+| Website visitors, newsletter subscribers and event attendees | Contact details, communications, technical and usage data | Responding to enquiries, sending the newsletter where consent is given, event administration and website operation (see section 6) |
 
-## 6. Lawful bases and exceptions to consent
+## 6. Website, forms and online tools
+
+This section explains what happens to personal data when you use meridium.sg and the pages and tools linked from it. It applies together with the rest of this policy.
+
+### 6.1 Enquiry form and newsletter sign-up
+
+When you submit the enquiry form or subscribe to the Meridium newsletter, the details you enter (name, email address, and where provided company name, telephone number, the service you are interested in and your message) are sent from your browser directly to HubSpot, the customer relationship management platform Meridium uses, and stored as a contact record there. Meridium uses this data to respond to your enquiry, to prepare proposals and, where you have subscribed, to send you the newsletter you chose (English or German).
+
+The newsletter is sent monthly from newsletter@meridium.sg and covers business, regulatory, tax and compliance developments in Singapore and the region. Subscribing triggers an automated welcome email. Every newsletter contains an unsubscribe link, and you may also withdraw consent at any time by writing to enquiries@meridium.sg. Enquiry contacts are not added to the newsletter unless they subscribe separately.
+
+HubSpot processes this data on Meridium's behalf as a data intermediary, under a written data processing agreement, on servers located outside Singapore. Meridium relies on HubSpot's contractual commitments to provide a standard of protection comparable to the PDPA, as described in section 11.
+
+### 6.2 Income tax calculator
+
+The income tax calculator on the resources page runs entirely in your browser. The figures you enter are used only on your device to produce the estimate and are not transmitted to, or stored by, Meridium or any third party.
+
+### 6.3 Compliance calendar and other downloads
+
+Downloadable resources such as the Singapore compliance calendar are hosted for Meridium by HubSpot on the subdomain resources.meridium.sg. To receive a download you are asked for your name and email address, which are stored in HubSpot as described in section 6.1 and used to send you the file and, where you have consented, further communications. Pages on resources.meridium.sg are served by HubSpot and may set HubSpot cookies for page analytics and form operation; HubSpot's own cookie notice applies on those pages.
+
+### 6.4 Booking a call
+
+The "Book a call" buttons on this website link to Calendly, a third party scheduling service. Details you enter there (name, email address and any notes) are collected by Calendly under its own privacy policy and shared with Meridium to arrange and hold the call.
+
+### 6.5 Hosting, server logs and cookies
+
+meridium.sg is a static website hosted on GitHub Pages. In common with any web host, the hosting provider records standard server logs, which may include your IP address, browser type and the pages requested, for security and operational purposes. Meridium does not receive these logs in identifiable form.
+
+Meridium does not currently use analytics or advertising cookies on meridium.sg, and no HubSpot tracking script is loaded on the site. The site stores a single value in your browser to remember that the newsletter invitation has been shown or that you have subscribed, so that it is not shown again; this value contains no personal data and can be cleared through your browser settings. If Meridium introduces analytics or other cookies in future, this section will be updated before they are used.
+
+### 6.6 Email and correspondence
+
+Email correspondence with Meridium is held in Google Workspace, which processes data on Meridium's behalf on servers that may be located outside Singapore, under Google's data processing terms.
+
+## 7. Lawful bases and exceptions to consent
 
 In addition to obtaining consent, Meridium relies, where appropriate, on the exceptions recognised by the PDPA. These include the following, applied only where the relevant statutory conditions are satisfied:
 
 - deemed consent, including deemed consent by contractual necessity and deemed consent by notification, where the conditions in the PDPA are met;
 - legitimate interests, where the benefit to Meridium or another party outweighs any adverse effect on the individual and an assessment has been documented;
 - business improvement, for purposes such as improving services, operational efficiency and developing new offerings;
-- legal or regulatory requirement, where collection, use or disclosure is required or authorised under other written law, including the obligations described in sections 7 and 8; and
+- legal or regulatory requirement, where collection, use or disclosure is required or authorised under other written law, including the obligations described in sections 8 and 9; and
 - other PDPA exceptions, such as where collection, use or disclosure is necessary for an investigation or proceedings, or in the interest of the individual where consent cannot be obtained in a timely way.
 
 Where Meridium relies on the legitimate interests or business improvement exceptions, the relevant assessment is documented and retained by the DPO.
 
-## 7. National identifiers and sensitive personal data
+## 8. National identifiers and sensitive personal data
 
 Meridium handles national identification numbers, such as the NRIC or FIN, and copies of identification documents only where the collection, use or disclosure is required under law, or is necessary to accurately establish or verify an individual's identity to a high degree of fidelity. This approach is consistent with the PDPC's guidance on the handling of national identifiers. Where identity verification can be achieved by other means, Meridium uses those means instead. The Company does not use national identification numbers as a default reference, login or account identifier.
 
 Meridium recognises that certain personal data, such as identification documents, financial information, and information about source of wealth and funds, carries a higher risk of harm if compromised. Such data is subject to enhanced protection, access restriction and oversight.
 
-## 8. Customer due diligence and AML, CFT and counter proliferation financing
+## 9. Customer due diligence and AML, CFT and counter proliferation financing
 
 Where Meridium provides corporate services within the meaning of the Corporate Service Providers Act 2024, which took effect on 9 June 2025, it is required to register with the Accounting and Corporate Regulatory Authority and to comply with obligations relating to anti-money laundering, countering the financing of terrorism and counter proliferation financing. To meet these obligations, Meridium collects, uses, discloses and retains personal data through customer due diligence measures, including identification and verification of clients, beneficial owners and controllers, screening, and ongoing monitoring.
 
@@ -128,17 +162,17 @@ Personal data collected for customer due diligence is handled as follows:
 
 Where a disclosure to a competent authority is required by law, Meridium makes that disclosure in accordance with the relevant statutory regime, including any confidentiality and tipping off restrictions that apply.
 
-## 9. Data intermediaries and third party processors
+## 10. Data intermediaries and third party processors
 
 Meridium engages third party service providers, such as IT, cloud, payroll, screening and professional service providers, that process personal data on its behalf. The Company carries out reasonable due diligence on such providers and enters into written contracts that require the provider to protect personal data to a standard at least equivalent to that required by the PDPA, to process the data only on Meridium's instructions and for the agreed purposes, to assist with access and correction requests and breach response, and to return or securely dispose of the data on termination.
 
 Where Meridium acts as a data intermediary for a client, the Company processes personal data only in accordance with its contract with that client, and complies with the Protection and Retention Limitation Obligations and the data breach notification requirements that apply to data intermediaries under the PDPA, including notifying the client without undue delay where it has credible grounds to believe a breach has occurred.
 
-## 10. Cross border transfers of personal data
+## 11. Cross border transfers of personal data
 
 Meridium operates across Asia and works with international principals, and may transfer personal data outside Singapore for the purposes described in this policy. Before transferring personal data outside Singapore, Meridium takes appropriate steps to ensure that the recipient is bound by legally enforceable obligations to provide a standard of protection comparable to that under the PDPA. These steps may include contractual clauses, intra group data protection arrangements, binding corporate rules, or reliance on a recognised certification, as appropriate. Where a transfer relies on consent, the individual is informed of the transfer before it takes place.
 
-## 11. Data retention and disposal
+## 12. Data retention and disposal
 
 Meridium retains personal data only for as long as it is needed for the purposes for which it was collected, or to meet legal, regulatory, accounting or contractual requirements. Retention periods are set having regard to the requirements of the applicable laws, including the following examples:
 
@@ -152,7 +186,7 @@ Meridium retains personal data only for as long as it is needed for the purposes
 
 When personal data is no longer required and no retention obligation applies, Meridium disposes of it securely, or anonymises it so that individuals can no longer be identified. Physical records are shredded or otherwise securely destroyed, and electronic data is securely erased.
 
-## 12. Security of personal data
+## 13. Security of personal data
 
 Meridium applies reasonable administrative, technical and physical measures to protect personal data, proportionate to the sensitivity of the data and the risks involved. These measures include:
 
@@ -160,9 +194,9 @@ Meridium applies reasonable administrative, technical and physical measures to p
 - Technical measures: access controls and authentication, encryption of data in transit and, where appropriate, at rest, network and endpoint protection, logging and monitoring, secure backups, and patching.
 - Physical measures: secured premises, locked storage for physical records, clear desk practices, and controlled disposal of documents and media.
 
-Personnel must report any suspected weakness, loss or compromise of personal data to the DPO immediately, in accordance with section 13.
+Personnel must report any suspected weakness, loss or compromise of personal data to the DPO immediately, in accordance with section 14.
 
-## 13. Data breach management and notification
+## 14. Data breach management and notification
 
 Meridium maintains a data breach response procedure based on the PDPC's framework of containing the breach, assessing its impact, reporting where required, and evaluating the response to prevent recurrence.
 
@@ -174,7 +208,7 @@ Where Meridium acts as a data intermediary, it notifies the organisation on whos
 
 Meridium keeps a record of all data breaches, whether or not notifiable, together with the assessment and the remedial action taken.
 
-## 14. Individual rights and how to exercise them
+## 15. Individual rights and how to exercise them
 
 Individuals may, in relation to personal data held by Meridium:
 
@@ -185,29 +219,29 @@ Individuals may, in relation to personal data held by Meridium:
 
 Requests should be made in writing to the Data Protection Officer at enquiries@meridium.sg. Meridium will respond to an access or correction request as soon as reasonably possible, and will inform the individual within thirty days where it is unable to respond within that period. A reasonable fee may be charged for an access request, and the individual will be informed of any fee in advance. Meridium may decline a request where the PDPA permits or requires it to do so, and will inform the individual of the reason where it is required to.
 
-## 15. Marketing messages and the Do Not Call provisions
+## 16. Marketing messages and the Do Not Call provisions
 
 Where Meridium sends marketing messages, it does so in compliance with the consent and Do Not Call provisions of the PDPA and with the Spam Control Act 2007. Before sending a specified message to a Singapore telephone number, Meridium checks the relevant Do Not Call Registry unless it has clear and unambiguous consent in evidential form, or another exception applies. Marketing messages identify the Company as the sender, provide contact information, and offer a means to unsubscribe. Meridium acts on unsubscribe requests within the period required by law.
 
-## 16. Roles and responsibilities
+## 17. Roles and responsibilities
 
-### 16.1 Data Protection Officer
+### 17.1 Data Protection Officer
 
 The Company has appointed a Data Protection Officer who is responsible for overseeing compliance with the PDPA and this policy, acting as the contact point for individuals and the PDPC, fostering a culture of data protection, advising on data protection matters, handling access, correction and withdrawal requests, leading data breach response, and maintaining records of compliance. The DPO may be contacted at enquiries@meridium.sg. The appointment of a DPO does not relieve Meridium of its obligations under the PDPA.
 
-### 16.2 Management
+### 17.2 Management
 
 Management is responsible for supporting the DPO, allocating adequate resources, and ensuring that data protection is embedded in business processes and in the selection and oversight of vendors.
 
-### 16.3 All personnel
+### 17.3 All personnel
 
 All personnel must comply with this policy, handle personal data only as authorised and necessary for their role, keep personal data secure and confidential, report breaches and weaknesses promptly, and complete data protection training.
 
-## 17. Training and awareness
+## 18. Training and awareness
 
 Meridium provides data protection training to personnel on induction and at regular intervals, and additional training where roles involve higher data protection risk, such as client onboarding, compliance, payroll and IT. The DPO maintains a record of training delivered.
 
-## 18. Applicable laws and regulatory framework
+## 19. Applicable laws and regulatory framework
 
 This policy is designed to be consistent with the laws and regulatory instruments that apply to Meridium's handling of personal data, including the following. This list is not exhaustive and is read together with any guidance issued by the relevant authorities from time to time:
 
@@ -221,10 +255,10 @@ This policy is designed to be consistent with the laws and regulatory instrument
 
 Where any provision of this policy is inconsistent with a mandatory requirement of applicable law, that requirement prevails, and the remainder of the policy continues to apply.
 
-## 19. Queries, complaints and contact
+## 20. Queries, complaints and contact
 
 Any query or complaint about how Meridium handles personal data should be directed to the Data Protection Officer at enquiries@meridium.sg or to the registered office at 143 Cecil Street, #09-01 GB Building, Singapore 069542. Meridium will acknowledge and investigate complaints and respond in a reasonable time. If an individual is not satisfied with the Company's response, the individual may refer the matter to the Personal Data Protection Commission.
 
-## 20. Review and governance
+## 21. Review and governance
 
 This policy is reviewed at least annually, and whenever there is a material change in the applicable law, in the PDPC's guidance, or in Meridium's operations or systems. The DPO is responsible for proposing updates, and material changes are approved by management. The current version of this policy supersedes all previous versions.
