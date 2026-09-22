@@ -1,0 +1,12 @@
+---
+import Base from '@/layouts/Base.astro';
+import ResourcesPage from '@/components/ResourcesPage.astro';
+import { site } from '@/data/site';
+---
+
+<Base
+  title={`Resources | ${site.brand}`}
+  description="Free tools for Singapore entities: the Meridium compliance calendar of ACRA, IRAS and CPF deadlines, and an individual income tax calculator using current IRAS rates."
+>
+  <ResourcesPage lang="en" />
+</Base>
