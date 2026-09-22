@@ -1,78 +1,242 @@
 ---
-// The terms of use text, in English (the governing version), shared by the
-// English and German pages.
+// The terms of use text. English is the governing version; the German text is
+// a courtesy translation shown on /de/terms/ and says so in the page intro.
+// Keep the clause numbering identical in both languages.
 import { site } from '@/data/site';
+import type { Lang } from '@/data/i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const prefix = lang === 'de' ? '/de' : '';
 ---
 
-<div class="prose-m">
-  <h2>1. Who we are</h2>
-  <p>
-    This website is operated by {site.legalName} (UEN {site.uen}), a company incorporated in
-    Singapore with its registered office at {site.registeredAddress} (Meridium, we, us or our).
-  </p>
+{
+  lang === 'en' ? (
+    <div class="prose-m">
+      <h2>1. Who we are</h2>
+      <p>
+        This website is operated by {site.legalName} (UEN {site.uen}), a company incorporated in
+        Singapore with its registered office at {site.registeredAddress} (Meridium, we, us or our).
+      </p>
 
-  <h2>2. Acceptance of these terms</h2>
-  <p>
-    By using this website you agree to these terms of use. If you do not agree with them, please
-    do not use the site.
-  </p>
+      <h2>2. Acceptance of these terms</h2>
+      <p>
+        By using this website you agree to these terms of use. If you do not agree with them,
+        please do not use the site.
+      </p>
 
-  <h2>3. Information, not advice</h2>
-  <p>
-    The content of this website is general information about Meridium and about doing business
-    in Singapore and the region. It is not legal, tax, accounting or investment advice, and it
-    does not take account of your circumstances. Nothing on this site creates an adviser and
-    client relationship. Professional services are provided only under a written engagement
-    agreed with us, and you should not act on anything you read here without advice on your own
-    situation.
-  </p>
+      <h2>3. Information, not advice</h2>
+      <p>
+        The content of this website is general information about Meridium and about doing
+        business in Singapore and the region. It is not legal, tax, accounting or investment
+        advice, and it does not take account of your circumstances. Nothing on this site creates
+        an adviser and client relationship. Professional services are provided only under a
+        written engagement agreed with us, and you should not act on anything you read here
+        without advice on your own situation.
+      </p>
 
-  <h2>4. Accuracy and changes</h2>
-  <p>
-    We take reasonable care to keep the content of this site accurate and current, including
-    references to Singapore regulatory requirements, which change from time to time. We do not
-    warrant that the content is complete, accurate or up to date at any given moment, and we may
-    change or remove content without notice.
-  </p>
+      <h2>4. Free resources and tools</h2>
+      <p>
+        We make certain resources available free of charge, including the income tax calculator
+        and the compliance calendar on our <a href={`${prefix}/resources/`}>resources page</a>{' '}
+        (together, the tools). The tools are provided for general information and planning
+        purposes only and are not part of any professional service.
+      </p>
+      <p>
+        The calculator produces an estimate. It applies published rates, reliefs and thresholds
+        as at the verification date shown on the page, uses simplified assumptions that are
+        described on the page, and does not account for every relief, deduction, rebate or
+        special scheme that may apply to you. Rates and reliefs change, usually following the
+        annual Singapore Budget, and we may not have updated the tools at the time you use them.
+        Your actual tax liability is determined solely by the Inland Revenue Authority of
+        Singapore (IRAS) on assessment. The tools are not provided, reviewed or endorsed by IRAS
+        or any other authority; references to IRAS are source attributions only.
+      </p>
+      <p>
+        Using the tools does not create an adviser and client relationship, and no output of the
+        tools constitutes advice on your position. You are responsible for verifying any result
+        before relying on it, and Meridium accepts no liability for any decision taken, tax
+        provision made or filing submitted on the basis of the tools. If you need a figure you
+        can rely on, engage us in writing.
+      </p>
+      <p>
+        The calculator runs entirely in your browser. Figures you enter are not transmitted to
+        or stored by Meridium.
+      </p>
 
-  <h2>5. Intellectual property</h2>
-  <p>
-    The content of this website, including text, the Meridium name, the orchid mark and the site
-    design, belongs to Meridium or its licensors. You may view, download and print content for
-    your own reference, but you may not reproduce it commercially or present it as your own
-    without our written permission.
-  </p>
+      <h2>5. Accuracy and changes</h2>
+      <p>
+        We take reasonable care to keep the content of this site accurate and current, including
+        references to Singapore regulatory requirements, which change from time to time. We do
+        not warrant that the content is complete, accurate or up to date at any given moment,
+        and we may change or remove content, including the tools, without notice.
+      </p>
 
-  <h2>6. Acceptable use</h2>
-  <p>
-    You agree not to misuse this website: not to attempt unauthorised access, not to interfere
-    with its operation, not to use it to transmit malicious code, and not to use any content
-    harvesting or scraping tools against it.
-  </p>
+      <h2>6. Intellectual property</h2>
+      <p>
+        The content of this website, including text, the tools, the Meridium name, the orchid
+        mark and the site design, belongs to Meridium or its licensors. You may view, download
+        and print content for your own reference, but you may not reproduce it commercially,
+        embed or redistribute the tools, or present any of it as your own without our written
+        permission. Statutory rates and thresholds reproduced in the tools are public information
+        of the Government of Singapore.
+      </p>
 
-  <h2>7. Third party sites</h2>
-  <p>
-    Where this site links to third party websites, including government resources, those links
-    are provided for convenience. We are not responsible for the content of third party sites.
-  </p>
+      <h2>7. Acceptable use</h2>
+      <p>
+        You agree not to misuse this website: not to attempt unauthorised access, not to
+        interfere with its operation, not to use it to transmit malicious code, and not to use
+        any content harvesting or scraping tools against it.
+      </p>
 
-  <h2>8. Liability</h2>
-  <p>
-    To the fullest extent permitted by law, Meridium accepts no liability for loss arising from
-    reliance on the content of this website or from its unavailability. Nothing in these terms
-    excludes liability that cannot be excluded under Singapore law.
-  </p>
+      <h2>8. Third party sites</h2>
+      <p>
+        Where this site links to third party websites, including government resources and pages
+        hosted for us on resources.meridium.sg, those links are provided for convenience. We are
+        not responsible for the content of third party sites.
+      </p>
 
-  <h2>9. Personal data</h2>
-  <p>
-    Personal data submitted through this website, including through the enquiry form, is handled
-    in accordance with our
-    <a href="/privacy/">data protection policy</a>.
-  </p>
+      <h2>9. Liability</h2>
+      <p>
+        To the fullest extent permitted by law, Meridium accepts no liability for loss arising
+        from reliance on the content of this website or the tools, or from their unavailability.
+        Nothing in these terms excludes liability that cannot be excluded under Singapore law.
+      </p>
 
-  <h2>10. Governing law</h2>
-  <p>
-    These terms are governed by the laws of Singapore, and the courts of Singapore have
-    exclusive jurisdiction over any dispute arising from them or from the use of this website.
-  </p>
-</div>
+      <h2>10. Personal data</h2>
+      <p>
+        Personal data submitted through this website, including through the enquiry form and
+        the newsletter sign-up, and data collected by any analytics or similar tools we use, is
+        handled in accordance with our <a href="/privacy/">data protection policy</a>.
+      </p>
+
+      <h2>11. Governing law</h2>
+      <p>
+        These terms are governed by the laws of Singapore, and the courts of Singapore have
+        exclusive jurisdiction over any dispute arising from them or from the use of this
+        website.
+      </p>
+    </div>
+  ) : (
+    <div class="prose-m">
+      <h2>1. Wer wir sind</h2>
+      <p>
+        Diese Website wird betrieben von {site.legalName} (UEN {site.uen}), einer in Singapur
+        eingetragenen Gesellschaft mit Sitz in {site.registeredAddress} (Meridium, wir, uns oder
+        unser).
+      </p>
+
+      <h2>2. Geltung dieser Bedingungen</h2>
+      <p>
+        Mit der Nutzung dieser Website erklären Sie sich mit diesen Nutzungsbedingungen
+        einverstanden. Wenn Sie damit nicht einverstanden sind, nutzen Sie die Website bitte
+        nicht.
+      </p>
+
+      <h2>3. Information, keine Beratung</h2>
+      <p>
+        Die Inhalte dieser Website sind allgemeine Informationen über Meridium und über die
+        Geschäftstätigkeit in Singapur und der Region. Sie stellen keine Rechts-, Steuer-,
+        Buchhaltungs- oder Anlageberatung dar und berücksichtigen nicht Ihre persönlichen
+        Umstände. Nichts auf dieser Website begründet ein Mandats- oder Beratungsverhältnis.
+        Professionelle Dienstleistungen erbringen wir ausschließlich auf Grundlage eines
+        schriftlich vereinbarten Mandats. Handeln Sie nicht auf Grundlage der hier gelesenen
+        Inhalte, ohne sich zu Ihrer eigenen Situation beraten zu lassen.
+      </p>
+
+      <h2>4. Kostenlose Ressourcen und Werkzeuge</h2>
+      <p>
+        Wir stellen bestimmte Ressourcen kostenlos zur Verfügung, darunter den
+        Einkommensteuerrechner und den Compliance-Kalender auf unserer{' '}
+        <a href={`${prefix}/resources/`}>Ressourcen-Seite</a> (zusammen die Werkzeuge). Die
+        Werkzeuge dienen ausschließlich der allgemeinen Information und Planung und sind nicht
+        Bestandteil einer professionellen Dienstleistung.
+      </p>
+      <p>
+        Der Rechner liefert eine Schätzung. Er wendet die veröffentlichten Steuersätze,
+        Freibeträge und Schwellenwerte zum auf der Seite angegebenen Prüfdatum an, beruht auf
+        vereinfachten Annahmen, die auf der Seite beschrieben sind, und berücksichtigt nicht
+        jeden Freibetrag, Abzug, Steuerrabatt oder jede Sonderregelung, die auf Sie zutreffen
+        kann. Steuersätze und Freibeträge ändern sich, in der Regel im Anschluss an den
+        jährlichen Haushalt Singapurs (Budget), und die Werkzeuge sind zum Zeitpunkt Ihrer
+        Nutzung möglicherweise noch nicht aktualisiert. Ihre tatsächliche Steuerschuld wird
+        allein von der Inland Revenue Authority of Singapore (IRAS) im Rahmen der Veranlagung
+        festgesetzt. Die Werkzeuge werden nicht von IRAS oder einer anderen Behörde
+        bereitgestellt, geprüft oder gebilligt; Verweise auf IRAS sind reine Quellenangaben.
+      </p>
+      <p>
+        Die Nutzung der Werkzeuge begründet kein Mandats- oder Beratungsverhältnis, und kein
+        Ergebnis der Werkzeuge stellt eine Beratung zu Ihrer Situation dar. Sie sind selbst dafür
+        verantwortlich, ein Ergebnis zu überprüfen, bevor Sie sich darauf verlassen. Meridium
+        übernimmt keine Haftung für Entscheidungen, Steuerrückstellungen oder Steuererklärungen,
+        die auf Grundlage der Werkzeuge getroffen, gebildet oder eingereicht werden. Wenn Sie
+        eine belastbare Zahl benötigen, beauftragen Sie uns schriftlich.
+      </p>
+      <p>
+        Der Rechner läuft vollständig in Ihrem Browser. Die von Ihnen eingegebenen Zahlen werden
+        nicht an Meridium übermittelt oder von Meridium gespeichert.
+      </p>
+
+      <h2>5. Richtigkeit und Änderungen</h2>
+      <p>
+        Wir bemühen uns mit angemessener Sorgfalt, die Inhalte dieser Website richtig und aktuell
+        zu halten, einschließlich der Hinweise auf regulatorische Anforderungen in Singapur, die
+        sich von Zeit zu Zeit ändern. Wir gewährleisten nicht, dass die Inhalte zu einem
+        bestimmten Zeitpunkt vollständig, richtig oder aktuell sind, und können Inhalte,
+        einschließlich der Werkzeuge, ohne Ankündigung ändern oder entfernen.
+      </p>
+
+      <h2>6. Geistiges Eigentum</h2>
+      <p>
+        Die Inhalte dieser Website, einschließlich der Texte, der Werkzeuge, des Namens Meridium,
+        der Orchideen-Marke und des Website-Designs, gehören Meridium oder seinen Lizenzgebern.
+        Sie dürfen Inhalte zu Ihrer eigenen Information ansehen, herunterladen und ausdrucken,
+        sie jedoch ohne unsere schriftliche Zustimmung nicht kommerziell vervielfältigen, die
+        Werkzeuge nicht einbetten oder weiterverbreiten und nichts davon als Ihr eigenes Werk
+        ausgeben. Die in den Werkzeugen wiedergegebenen gesetzlichen Steuersätze und
+        Schwellenwerte sind öffentliche Informationen der Regierung Singapurs.
+      </p>
+
+      <h2>7. Zulässige Nutzung</h2>
+      <p>
+        Sie verpflichten sich, diese Website nicht zu missbrauchen: keinen unbefugten Zugriff zu
+        versuchen, ihren Betrieb nicht zu stören, sie nicht zur Übertragung von Schadcode zu
+        nutzen und keine Werkzeuge zum automatisierten Auslesen oder Sammeln von Inhalten
+        einzusetzen.
+      </p>
+
+      <h2>8. Websites Dritter</h2>
+      <p>
+        Soweit diese Website auf Websites Dritter verweist, einschließlich behördlicher Quellen
+        und für uns unter resources.meridium.sg gehosteter Seiten, dienen diese Verweise der
+        Bequemlichkeit. Für die Inhalte von Websites Dritter sind wir nicht verantwortlich.
+      </p>
+
+      <h2>9. Haftung</h2>
+      <p>
+        Soweit gesetzlich zulässig, übernimmt Meridium keine Haftung für Schäden, die aus dem
+        Vertrauen auf die Inhalte dieser Website oder die Werkzeuge oder aus deren
+        Nichtverfügbarkeit entstehen. Nichts in diesen Bedingungen schließt eine Haftung aus, die
+        nach dem Recht Singapurs nicht ausgeschlossen werden kann.
+      </p>
+
+      <h2>10. Personenbezogene Daten</h2>
+      <p>
+        Personenbezogene Daten, die über diese Website übermittelt werden, einschließlich über
+        das Kontaktformular und die Newsletter-Anmeldung, sowie Daten, die durch von uns
+        eingesetzte Analyse- oder ähnliche Werkzeuge erhoben werden, behandeln wir gemäß unserer{' '}
+        <a href="/de/privacy/">Datenschutzerklärung</a>.
+      </p>
+
+      <h2>11. Anwendbares Recht</h2>
+      <p>
+        Diese Bedingungen unterliegen dem Recht Singapurs. Für alle Streitigkeiten aus diesen
+        Bedingungen oder aus der Nutzung dieser Website sind ausschließlich die Gerichte
+        Singapurs zuständig.
+      </p>
+    </div>
+  )
+}
