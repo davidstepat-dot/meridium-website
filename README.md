@@ -43,6 +43,16 @@ npm run check      # type-check the templates and content
   this array has entries.
 - **Homepage sections** (differentiators, engagement steps, regions): the arrays at the
   top of `src/pages/index.astro`.
+- **Resources page** (`/resources/`, `/de/resources/`): copy in `ui.<lang>.resources` in
+  `src/data/i18n.ts`; the compliance calendar link (a gated PDF on the HubSpot content
+  domain resources.meridium.sg, tagged with website UTM parameters) and the IRAS source
+  link in `site.resources` in `src/data/site.ts`. The individual income tax calculator
+  (`src/components/TaxCalculator.astro`) runs entirely in the browser and sends nothing
+  anywhere. Its resident bands, the non-resident rules (employment income at 15% or the
+  resident rates, whichever is higher; director's fees and other income at 24%) and the
+  S$80,000 relief cap are hard-coded in that component in two places (template and
+  script); re-verify them against IRAS after each Budget and update the "basis" line in
+  `i18n.ts` with the year checked.
 - **Data protection policy**: `src/policies/data-protection-policy.md`.
 - **Photos**: `src/assets/`. Replace a file and rebuild; Astro regenerates the optimised
   responsive variants.
