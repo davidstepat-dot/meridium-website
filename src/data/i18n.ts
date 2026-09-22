@@ -155,7 +155,66 @@ export const ui = {
         otherHint: 'Optional. Rental income, trade income and other income taxable in Singapore.',
         reliefs: 'Personal reliefs',
         reliefsHint:
-          'Optional, tax residents only. Earned income relief, CPF relief, spouse and child reliefs, NSman relief, course fees, SRS and CPF cash top-ups. Total reliefs are capped at S$80,000.',
+          'Optional, tax residents only. Tick the reliefs you expect to claim. The question mark next to each one explains who qualifies.',
+        reliefsCap: 'Total personal reliefs are capped at S$80,000 a year.',
+        age: 'Your age on 31 December 2025',
+        ageUnder55: 'Under 55',
+        age55to59: '55 to 59',
+        age60plus: '60 and above',
+        helpLabel: 'Who qualifies',
+        reliefItems: {
+          earnedIncome: {
+            label: 'Earned income relief',
+            help: 'Granted automatically to anyone with income from employment, a trade, a business or a pension. The relief is the lower of your earned income and S$1,000 if you are under 55, S$6,000 if you are 55 to 59, or S$8,000 if you are 60 or above. Higher amounts apply to persons with disabilities.',
+          },
+          cpf: {
+            label: 'CPF relief',
+            help: 'For compulsory employee CPF contributions deducted from your salary. Only Singapore citizens and permanent residents contribute to CPF, so foreigners on work passes do not qualify. The estimate applies the employee contribution rate for your age band to wages up to the CPF annual wage ceiling of S$102,000. Voluntary contributions do not count.',
+          },
+          spouse: {
+            label: 'Spouse relief',
+            help: 'S$2,000 if you supported your spouse in 2025 and your spouse\u2019s own annual income did not exceed S$4,000. Only one of you can claim it. S$5,500 applies for a spouse with a disability, without the income condition.',
+          },
+          child: {
+            label: 'Qualifying child relief',
+            input: 'Number of children',
+            help: 'S$4,000 for each child who was unmarried and either under 16 or in full-time education in 2025, and whose own annual income did not exceed S$4,000. For children born on or after 1 January 2024 the relief is S$8,000. Parents may share the relief in any proportion; the estimate assumes you claim it in full.',
+          },
+          wmcr: {
+            label: 'Working mother\u2019s child relief',
+            input: 'Number of children',
+            help: 'For working mothers only, and only for children who are Singapore citizens and qualify for child relief. For children born before 2024 the relief is 15% of your earned income for the first child, 20% for the second and 25% for the third and each further child. For children born on or after 1 January 2024 it is a fixed S$8,000, S$10,000 and S$12,000 respectively. The estimate applies the percentages.',
+          },
+          parent: {
+            label: 'Parent relief',
+            input: 'Number of dependants',
+            help: 'For each parent, grandparent or parent-in-law who was 55 or above in 2025, or has a disability, and whose own annual income did not exceed S$8,000. S$9,000 if the dependant lived with you in Singapore, S$5,500 if not. Up to two dependants, and the relief is shared between siblings who support the same person. The estimate uses S$9,000 per dependant.',
+          },
+          nsman: {
+            label: 'NSman relief',
+            help: 'For operationally ready national servicemen. S$3,000 if you performed NS activities in 2025, S$1,500 if you did not. Key appointment holders receive S$5,000 or S$3,500. Wives and parents of NSmen may claim S$750. The estimate uses S$3,000.',
+          },
+          courseFees: {
+            label: 'Course fees relief',
+            input: 'Fees paid',
+            help: 'Fees, examination and tuition fees for courses, seminars and conferences relevant to your current employment or business, or leading to an approved academic, professional or vocational qualification. Capped at S$5,500 a year. Courses taken for general interest or as a hobby do not qualify.',
+          },
+          srs: {
+            label: 'SRS contributions',
+            input: 'Amount contributed',
+            help: 'Cash contributions to your Supplementary Retirement Scheme account in 2025. The relief equals the amount contributed, up to S$15,300 for Singapore citizens and permanent residents and S$35,700 for foreigners.',
+          },
+          cpfTopUp: {
+            label: 'CPF cash top-up relief',
+            input: 'Amount topped up',
+            help: 'Cash top-ups to your own CPF Special or Retirement Account and MediSave Account, up to S$8,000, plus a further S$8,000 for cash top-ups to the accounts of your parents, grandparents, spouse or siblings. Transfers from your Ordinary Account do not qualify.',
+          },
+          other: {
+            label: 'Other reliefs',
+            input: 'Total amount',
+            help: 'Any other relief you expect to claim, for example life insurance relief, grandparent caregiver relief, foreign domestic worker levy relief or a relief for a disability. Enter the total amount.',
+          },
+        },
         currency: 'S$',
         resultsHeading: 'Your estimate',
         totalIncome: 'Total income',
@@ -330,7 +389,66 @@ export const ui = {
         otherHint: 'Optional. Mieteinkünfte, gewerbliche Einkünfte und andere in Singapur steuerpflichtige Einkünfte.',
         reliefs: 'Persönliche Freibeträge',
         reliefsHint:
-          'Optional, nur für steuerlich Ansässige. Earned Income Relief, CPF Relief, Freibeträge für Ehepartner und Kinder, NSman Relief, Kursgebühren, SRS und CPF-Einzahlungen. Die Summe der Freibeträge ist auf 80.000 S$ begrenzt.',
+          'Optional, nur für steuerlich Ansässige. Wählen Sie die Freibeträge aus, die Sie voraussichtlich geltend machen. Das Fragezeichen erklärt jeweils, wer die Voraussetzungen erfüllt.',
+        reliefsCap: 'Die Summe der persönlichen Freibeträge ist auf 80.000 S$ pro Jahr begrenzt.',
+        age: 'Ihr Alter am 31. Dezember 2025',
+        ageUnder55: 'Unter 55',
+        age55to59: '55 bis 59',
+        age60plus: '60 und älter',
+        helpLabel: 'Voraussetzungen',
+        reliefItems: {
+          earnedIncome: {
+            label: 'Earned Income Relief',
+            help: 'Wird automatisch gewährt, wenn Sie Einkünfte aus Beschäftigung, Gewerbe, selbständiger Tätigkeit oder einer Pension haben. Der Freibetrag ist der niedrigere Betrag aus Ihrem Erwerbseinkommen und 1.000 S$ (unter 55), 6.000 S$ (55 bis 59) oder 8.000 S$ (ab 60). Für Menschen mit Behinderung gelten höhere Beträge.',
+          },
+          cpf: {
+            label: 'CPF Relief',
+            help: 'Für die vom Gehalt einbehaltenen Pflichtbeiträge des Arbeitnehmers zum CPF. Nur Staatsbürger und Permanent Residents Singapurs zahlen in den CPF ein; Ausländer mit Arbeitsvisum kommen daher nicht in Frage. Die Schätzung wendet den Arbeitnehmerbeitragssatz Ihrer Altersgruppe auf Löhne bis zur jährlichen CPF-Bemessungsgrenze von 102.000 S$ an. Freiwillige Beiträge zählen nicht.',
+          },
+          spouse: {
+            label: 'Spouse Relief',
+            help: '2.000 S$, wenn Sie 2025 Ihren Ehepartner unterhalten haben und dessen eigenes Jahreseinkommen 4.000 S$ nicht überstieg. Nur einer der Ehepartner kann den Freibetrag beanspruchen. Für einen Ehepartner mit Behinderung gelten 5.500 S$ ohne Einkommensgrenze.',
+          },
+          child: {
+            label: 'Qualifying Child Relief',
+            input: 'Anzahl Kinder',
+            help: '4.000 S$ für jedes Kind, das 2025 unverheiratet war und entweder unter 16 Jahre alt oder in Vollzeitausbildung war und dessen eigenes Jahreseinkommen 4.000 S$ nicht überstieg. Für Kinder, die am oder nach dem 1. Januar 2024 geboren wurden, beträgt der Freibetrag 8.000 S$. Eltern können den Freibetrag beliebig aufteilen; die Schätzung geht davon aus, dass Sie ihn vollständig beanspruchen.',
+          },
+          wmcr: {
+            label: 'Working Mother\u2019s Child Relief',
+            input: 'Anzahl Kinder',
+            help: 'Nur für berufstätige Mütter und nur für Kinder mit singapurischer Staatsbürgerschaft, die für den Child Relief in Frage kommen. Für vor 2024 geborene Kinder beträgt der Freibetrag 15 % des Erwerbseinkommens für das erste Kind, 20 % für das zweite und 25 % für das dritte und jedes weitere Kind. Für am oder nach dem 1. Januar 2024 geborene Kinder gelten feste Beträge von 8.000, 10.000 bzw. 12.000 S$. Die Schätzung wendet die Prozentsätze an.',
+          },
+          parent: {
+            label: 'Parent Relief',
+            input: 'Anzahl Angehörige',
+            help: 'Für jeden Elternteil, Großelternteil oder Schwiegerelternteil, der 2025 mindestens 55 Jahre alt war oder eine Behinderung hat und dessen eigenes Jahreseinkommen 8.000 S$ nicht überstieg. 9.000 S$, wenn die Person mit Ihnen in Singapur lebte, sonst 5.500 S$. Höchstens zwei Angehörige; Geschwister, die dieselbe Person unterstützen, teilen sich den Freibetrag. Die Schätzung verwendet 9.000 S$ pro Angehörigen.',
+          },
+          nsman: {
+            label: 'NSman Relief',
+            help: 'Für einsatzbereite Wehrpflichtige (Operationally Ready NSmen). 3.000 S$, wenn Sie 2025 Wehrdienstaktivitäten geleistet haben, sonst 1.500 S$. Inhaber von Schlüsselpositionen erhalten 5.000 bzw. 3.500 S$. Ehefrauen und Eltern von NSmen können 750 S$ geltend machen. Die Schätzung verwendet 3.000 S$.',
+          },
+          courseFees: {
+            label: 'Course Fees Relief',
+            input: 'Gezahlte Gebühren',
+            help: 'Kurs-, Prüfungs- und Studiengebühren für Kurse, Seminare und Konferenzen, die für Ihre aktuelle Tätigkeit relevant sind oder zu einer anerkannten akademischen, beruflichen oder fachlichen Qualifikation führen. Begrenzt auf 5.500 S$ pro Jahr. Kurse aus allgemeinem Interesse oder als Hobby zählen nicht.',
+          },
+          srs: {
+            label: 'SRS-Beiträge',
+            input: 'Eingezahlter Betrag',
+            help: 'Bareinzahlungen auf Ihr Konto im Supplementary Retirement Scheme im Jahr 2025. Der Freibetrag entspricht dem eingezahlten Betrag, höchstens 15.300 S$ für Staatsbürger und Permanent Residents Singapurs und 35.700 S$ für Ausländer.',
+          },
+          cpfTopUp: {
+            label: 'CPF Cash Top-up Relief',
+            input: 'Eingezahlter Betrag',
+            help: 'Bareinzahlungen auf Ihr eigenes CPF Special oder Retirement Account und MediSave Account bis 8.000 S$, zuzüglich weiterer 8.000 S$ für Bareinzahlungen auf die Konten Ihrer Eltern, Großeltern, Ihres Ehepartners oder Ihrer Geschwister. Übertragungen aus dem Ordinary Account zählen nicht.',
+          },
+          other: {
+            label: 'Sonstige Freibeträge',
+            input: 'Gesamtbetrag',
+            help: 'Alle weiteren Freibeträge, die Sie voraussichtlich geltend machen, zum Beispiel Life Insurance Relief, Grandparent Caregiver Relief, Foreign Domestic Worker Levy Relief oder Freibeträge bei Behinderung. Geben Sie den Gesamtbetrag ein.',
+          },
+        },
         currency: 'S$',
         resultsHeading: 'Ihre Schätzung',
         totalIncome: 'Gesamteinkommen',
