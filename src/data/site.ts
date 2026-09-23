@@ -30,6 +30,10 @@ export const site = {
   resources: {
     complianceCalendarHref:
       'https://resources.meridium.sg/en/singapore-compliance-calendar?utm_source=meridium.sg&utm_medium=website&utm_campaign=compliance-calendar',
+    // Gated PDF guide "Singapore for HR and Payroll Professionals" on the same
+    // HubSpot content domain (HubSpot form "HR and payroll guide download (meridium.sg)").
+    hrPayrollGuideHref:
+      'https://resources.meridium.sg/en/singapore-hr-payroll-guide?utm_source=meridium.sg&utm_medium=website&utm_campaign=hr-payroll-guide',
     irasRatesHref:
       'https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-residency-and-tax-rates/individual-income-tax-rates',
   },

@@ -124,7 +124,7 @@ export const ui = {
       eyebrow: 'Resources',
       heading: 'Practical tools for running a Singapore entity.',
       intro:
-        'Reference material we use with clients, made available to anyone who finds it useful. Start with the compliance calendar, then use the calculator to estimate individual income tax in Singapore.',
+        'Reference material we use with clients, made available to anyone who finds it useful. Start with the compliance calendar and the HR and payroll guide, then use the calculator to estimate individual income tax in Singapore.',
       calendar: {
         eyebrow: 'Compliance calendar',
         heading: 'Every filing deadline for a Singapore private company, on one page.',
@@ -138,6 +138,21 @@ export const ui = {
         ],
         cta: 'Open the compliance calendar',
         note: 'Opens on resources.meridium.sg in a new tab. The calendar is a free PDF; you will be asked for your name and email before download.',
+      },
+      guide: {
+        eyebrow: 'HR and payroll guide',
+        heading: 'Hire, pay and manage employees in Singapore, in one guide.',
+        body:
+          'A 57-page practitioner guide for foreign companies employing in Singapore for the first time, and a working reference for experienced HR and payroll teams. Work passes, CPF, payroll, leave, employee income tax and exits, current to September 2026, with checklists, a compliance calendar and the changes announced to 2028.',
+        points: [
+          'Registrations to complete before the first payroll run',
+          'EP, S Pass and COMPASS, including the 2027 salary increases',
+          'CPF, SDL, IR8A and IR21, step by step',
+          'Checklists for hiring and offboarding foreign employees',
+        ],
+        cta: 'Get the HR and payroll guide',
+        note: 'Opens on resources.meridium.sg in a new tab. The guide is a free PDF; you will be asked for your name and email before download.',
+        imageAlt: 'Cover of the guide Singapore for HR and Payroll Professionals',
       },
       calculator: {
         eyebrow: 'Income tax calculator',
@@ -358,7 +373,7 @@ export const ui = {
       eyebrow: 'Ressourcen',
       heading: 'Praktische Werkzeuge für den Betrieb einer Gesellschaft in Singapur.',
       intro:
-        'Referenzmaterial, das wir in der Mandatsarbeit nutzen und allen zugänglich machen, die es brauchen können. Beginnen Sie mit dem Compliance-Kalender und schätzen Sie dann mit dem Rechner die Einkommensteuer für natürliche Personen in Singapur.',
+        'Referenzmaterial, das wir in der Mandatsarbeit nutzen und allen zugänglich machen, die es brauchen können. Beginnen Sie mit dem Compliance-Kalender und dem HR- und Payroll-Leitfaden und schätzen Sie dann mit dem Rechner die Einkommensteuer für natürliche Personen in Singapur.',
       calendar: {
         eyebrow: 'Compliance-Kalender',
         heading: 'Alle Fristen einer Singapore Private Company auf einer Seite.',
@@ -372,6 +387,21 @@ export const ui = {
         ],
         cta: 'Compliance-Kalender öffnen',
         note: 'Öffnet resources.meridium.sg in einem neuen Tab. Der Kalender ist ein kostenloses PDF (englisch); vor dem Download werden Name und E-Mail abgefragt.',
+      },
+      guide: {
+        eyebrow: 'HR- und Payroll-Leitfaden',
+        heading: 'Mitarbeitende in Singapur einstellen, bezahlen und führen: alles in einem Leitfaden.',
+        body:
+          'Ein 57-seitiger Praxisleitfaden für ausländische Unternehmen, die in Singapur erstmals Personal beschäftigen, und ein Nachschlagewerk für erfahrene HR- und Payroll-Teams. Arbeitsgenehmigungen, CPF, Lohnabrechnung, Urlaub, Einkommensteuer der Mitarbeitenden und Austritte, Stand September 2026, mit Checklisten, Compliance-Kalender und den bis 2028 angekündigten Änderungen.',
+        points: [
+          'Registrierungen vor der ersten Lohnabrechnung',
+          'EP, S Pass und COMPASS, einschließlich der Gehaltsanhebungen 2027',
+          'CPF, SDL, IR8A und IR21 Schritt für Schritt',
+          'Checklisten für Einstellung und Austritt ausländischer Mitarbeitender',
+        ],
+        cta: 'HR- und Payroll-Leitfaden öffnen',
+        note: 'Öffnet resources.meridium.sg in einem neuen Tab. Der Leitfaden ist ein kostenloses PDF (englisch); vor dem Download werden Name und E-Mail abgefragt.',
+        imageAlt: 'Titelseite des Leitfadens Singapore for HR and Payroll Professionals',
       },
       calculator: {
         eyebrow: 'Einkommensteuerrechner',
