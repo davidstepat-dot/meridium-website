@@ -7,6 +7,7 @@ import TaxCalculator from '@/components/TaxCalculator.astro';
 import { site } from '@/data/site';
 import { ui, type Lang } from '@/data/i18n';
 import supertreesDawn from '@/assets/supertrees-dawn.jpg';
+import guideCover from '@/assets/hr-payroll-guide-cover.jpg';
 
 interface Props {
   lang?: Lang;
@@ -25,6 +26,7 @@ const t = ui[lang].resources;
     <p class="mt-6 max-w-[62ch] text-lg leading-relaxed">{t.intro}</p>
     <div class="mt-8 flex flex-wrap gap-3">
       <a href="#compliance-calendar" class="btn-outline-navy">{t.calendar.eyebrow}</a>
+      <a href="#hr-payroll-guide" class="btn-outline-navy">{t.guide.eyebrow}</a>
       <a href="#income-tax-calculator" class="btn-outline-navy">{t.calculator.eyebrow}</a>
     </div>
   </div>
@@ -68,6 +70,49 @@ const t = ui[lang].resources;
         loading="lazy"
       />
     </a>
+  </div>
+</section>
+
+<section id="hr-payroll-guide" class="scroll-mt-24 border-t border-line bg-white">
+  <div class="container-m section grid items-center gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-20">
+    <a href={site.resources.hrPayrollGuideHref} target="_blank" rel="noopener" class="group order-last block lg:order-first" tabindex="-1" aria-hidden="true">
+      <div class="mx-auto max-w-[340px] bg-ivory p-8 sm:p-10 lg:max-w-none">
+        <Image
+          src={guideCover}
+          alt={t.guide.imageAlt}
+          widths={[320, 480, 640]}
+          sizes="(min-width: 1024px) 28vw, 80vw"
+          class="mx-auto aspect-[210/297] w-full max-w-[300px] rounded-[2px] object-cover shadow-[0_14px_36px_rgba(11,26,70,0.18)] transition-opacity group-hover:opacity-90"
+          loading="lazy"
+        />
+      </div>
+    </a>
+    <div>
+      <p class="eyebrow">{t.guide.eyebrow}</p>
+      <h2 class="mt-4 font-serif text-3xl font-semibold tracking-tight text-navy">{t.guide.heading}</h2>
+      <p class="mt-5 max-w-[58ch] leading-relaxed">{t.guide.body}</p>
+      <ul class="mt-6 max-w-[58ch] space-y-2.5 text-[15px] leading-relaxed">
+        {
+          t.guide.points.map((point) => (
+            <li class="flex gap-3">
+              <svg class="mt-1.5 h-3.5 w-3.5 shrink-0 text-red" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span>{point}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-8">
+        <a href={site.resources.hrPayrollGuideHref} target="_blank" rel="noopener" class="btn-red">
+          {t.guide.cta}
+          <svg class="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M6 3h7v7M13 3L4 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </a>
+        <p class="mt-3 max-w-[52ch] text-[13px] leading-relaxed text-body/70">{t.guide.note}</p>
+      </div>
+    </div>
   </div>
 </section>
 
