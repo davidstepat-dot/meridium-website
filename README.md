@@ -5,7 +5,13 @@ a Singapore corporate services firm. Built with Astro 5 and Tailwind CSS 4, full
 no CMS. Every push to `main` builds the site and publishes it to GitHub Pages under the
 custom domain.
 
-The site loads no third-party scripts, trackers or cookies. The two things that talk to
+The only third-party script is the Google tag (Google Analytics and Google Ads,
+`src/components/GoogleTag.astro`), which runs in Google Consent Mode v2 with everything
+denied until the visitor clicks Accept in the cookie banner
+(`src/components/ConsentBanner.astro`); the measurement ID is `site.googleTag.id` in
+`src/data/site.ts`, and emptying it removes both the tag and the banner. If tracking
+changes, update section 6.6 of the data protection policy (both languages) first. Apart
+from that, the site loads no trackers or cookies. The two things that talk to
 outside services (the contact form and the newsletter sign-up) send data from the
 visitor's browser directly to HubSpot's Forms API; "Book a call" opens Calendly in a new
 tab. Nothing in this repository is secret: the HubSpot portal, form and subscription IDs

@@ -1,0 +1,55 @@
+---
+// Google tag (gtag.js) in Google Consent Mode v2. Rendered in <head> from
+// Base.astro, before any other script, so the consent defaults are in place
+// before gtag.js loads.
+//
+//   - Every storage type starts as "denied": gtag.js sets no cookies and
+//     uses no advertising identifiers, and ad click IDs are redacted.
+//   - If the visitor accepted in the cookie banner (ConsentBanner.astro)
+//     within the last 12 months, the stored choice is applied straight away
+//     on each page load, before the first hit is sent.
+//   - Otherwise the banner asks, and its Accept button sends the update.
+//
+// The measurement ID lives in src/data/site.ts (site.googleTag.id).
+import { site } from '@/data/site';
+
+const tagId = site.googleTag.id;
+---
+
+{
+  tagId && (
+    <>
+      <script is:inline define:vars={{ tagId }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+          dataLayer.push(arguments);
+        }
+        window.gtag = gtag;
+        gtag('consent', 'default', {
+          ad_storage: 'denied',
+          ad_user_data: 'denied',
+          ad_personalization: 'denied',
+          analytics_storage: 'denied',
+          wait_for_update: 500,
+        });
+        try {
+          var saved = JSON.parse(localStorage.getItem('meridium-consent') || 'null');
+          if (saved && saved.choice === 'granted' && Date.now() - saved.at < 365 * 86400000) {
+            gtag('consent', 'update', {
+              ad_storage: 'granted',
+              ad_user_data: 'granted',
+              ad_personalization: 'granted',
+              analytics_storage: 'granted',
+            });
+          }
+        } catch (e) {
+          /* storage blocked: stay on the denied defaults */
+        }
+        gtag('set', 'ads_data_redaction', true);
+        gtag('js', new Date());
+        gtag('config', tagId);
+      </script>
+      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${tagId}`} />
+    </>
+  )
+}
