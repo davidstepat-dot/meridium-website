@@ -37,6 +37,15 @@ export const site = {
     irasRatesHref:
       'https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-residency-and-tax-rates/individual-income-tax-rates',
   },
+  // Google tag (gtag.js) for Google Analytics 4 and Google Ads, loaded on
+  // every page from src/components/ConsentBanner.astro. It runs in Google
+  // Consent Mode v2 with every storage type denied by default: no Google
+  // cookie is set and no advertising identifier is used until the visitor
+  // clicks "Accept" in the cookie banner. "Decline" (or ignoring the banner)
+  // keeps it that way. Empty the id to remove the tag and the banner entirely.
+  googleTag: {
+    id: 'G-277R1EST4G',
+  },
   defaultDescription:
     'Licensed Singapore corporate services firm for foreign companies entering Asia: incorporation, compliance, tax, payroll and EOR, and expansion, delivered by senior advisers.',
   // Contact form (src/components/ContactForm.astro). Submissions go straight

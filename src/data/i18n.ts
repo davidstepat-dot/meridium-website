@@ -32,6 +32,7 @@ export const ui = {
       privacy: 'Data protection policy',
       terms: 'Terms of use',
       newsletter: 'Newsletter',
+      cookies: 'Cookie settings',
       registeredOffice: 'Registered office',
       licenceLabel: 'ACRA CSP licence',
       uenLabel: 'UEN',
@@ -84,6 +85,13 @@ export const ui = {
       errorTitle: 'Your enquiry could not be sent.',
       errorPre: 'Please write to',
       errorPost: 'instead, or try again in a moment.',
+    },
+    consent: {
+      label: 'Cookie preferences',
+      body: 'With your permission, we use Google Analytics and Google Ads cookies to understand how visitors use this site and to measure our advertising. No cookies are set unless you accept, and you can change your choice at any time under Cookie settings at the foot of each page.',
+      policyLink: 'Data protection policy',
+      accept: 'Accept',
+      decline: 'Decline',
     },
     newsletter: {
       eyebrow: 'Newsletter',
@@ -283,6 +291,7 @@ export const ui = {
       privacy: 'Datenschutzrichtlinie',
       terms: 'Nutzungsbedingungen',
       newsletter: 'Newsletter',
+      cookies: 'Cookie-Einstellungen',
       registeredOffice: 'Sitz',
       licenceLabel: 'ACRA-CSP-Lizenz',
       uenLabel: 'UEN',
@@ -335,6 +344,13 @@ export const ui = {
       errorTitle: 'Ihre Anfrage konnte nicht gesendet werden.',
       errorPre: 'Bitte schreiben Sie stattdessen an',
       errorPost: 'oder versuchen Sie es in einem Moment erneut.',
+    },
+    consent: {
+      label: 'Cookie-Einstellungen',
+      body: 'Mit Ihrer Einwilligung verwenden wir Cookies von Google Analytics und Google Ads, um zu verstehen, wie Besucher diese Website nutzen, und um unsere Werbung zu messen. Ohne Ihre Zustimmung werden keine Cookies gesetzt. Sie können Ihre Wahl jederzeit über die Cookie-Einstellungen am Seitenende ändern.',
+      policyLink: 'Datenschutzrichtlinie',
+      accept: 'Akzeptieren',
+      decline: 'Ablehnen',
     },
     newsletter: {
       eyebrow: 'Newsletter',
