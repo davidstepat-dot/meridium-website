@@ -38,7 +38,7 @@ export const site = {
       'https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/tax-residency-and-tax-rates/individual-income-tax-rates',
   },
   defaultDescription:
-    'Licensed Singapore corporate services firm for foreign companies entering Asia: incorporation, compliance, tax and expansion, delivered by senior advisers.',
+    'Licensed Singapore corporate services firm for foreign companies entering Asia: incorporation, compliance, tax, payroll and EOR, and expansion, delivered by senior advisers.',
   // Contact form (src/components/ContactForm.astro). Submissions go straight
   // from the visitor's browser to HubSpot's Forms API, so every enquiry
   // becomes a HubSpot contact and HubSpot notifies the team; no HubSpot
