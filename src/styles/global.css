@@ -20,6 +20,8 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Keep in-page anchors (for example #employer-of-record) clear of the sticky header (h-16, md:h-[4.5rem]). */
+    scroll-padding-top: 6rem;
   }
   @media (prefers-reduced-motion: reduce) {
     html {
