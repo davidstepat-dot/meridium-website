@@ -5,6 +5,8 @@
 //   - opens after 10 seconds on the page, or once the visitor has scrolled
 //     40% of the way down, whichever comes first;
 //   - never on the contact, data protection or terms pages;
+//   - held back while the cookie banner is waiting for an answer, then
+//     shown shortly after the visitor chooses;
 //   - shown once per visitor per 30 days (localStorage); never again after
 //     a successful subscription;
 //   - any element with data-newsletter-open (the footer link) opens it on
@@ -228,6 +230,14 @@ const linkClass =
       let armed = true;
       const fire = () => {
         if (!armed) return;
+        // Never stack the popup on top of an unanswered cookie banner
+        // (ConsentBanner.astro): wait for the visitor's choice, then open.
+        if (document.querySelector('[data-consent-banner]:not(.hidden)')) {
+          clearTimeout(timer);
+          removeEventListener('scroll', onScroll);
+          addEventListener('meridium:consent', () => setTimeout(fire, 1500), { once: true });
+          return;
+        }
         armed = false;
         clearTimeout(timer);
         removeEventListener('scroll', onScroll);

@@ -1,0 +1,144 @@
+---
+// Cookie consent banner for the Google tag (GoogleTag.astro). Rendered once
+// per page from Base.astro.
+//
+// Behaviour (all in the script below):
+//   - shown at the foot of the screen until the visitor chooses Accept or
+//     Decline; Accept and Decline carry equal weight;
+//   - the choice is kept in localStorage ("meridium-consent") for 12 months,
+//     then the banner asks again;
+//   - Accept grants analytics and advertising storage in Google Consent Mode;
+//     Decline keeps everything denied and clears any Google cookies an
+//     earlier Accept had set;
+//   - any element with data-consent-open (the "Cookie settings" link in the
+//     footer) reopens the banner so the visitor can change their mind.
+//
+// Copy lives in src/data/i18n.ts (ui.<lang>.consent). Nothing renders when
+// site.googleTag.id is empty.
+import { site } from '@/data/site';
+import { langPrefix, ui, type Lang } from '@/data/i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = ui[lang].consent;
+const prefix = langPrefix(lang);
+const enabled = Boolean(site.googleTag.id);
+const linkClass =
+  'font-medium text-navy underline decoration-navy/30 underline-offset-4 hover:decoration-navy';
+---
+
+{
+  enabled && (
+    <section
+      class="fixed inset-x-0 bottom-0 z-40 hidden px-4 pb-4 sm:px-6 sm:pb-6"
+      role="region"
+      aria-label={t.label}
+      data-consent-banner
+    >
+      <div class="mx-auto flex max-w-4xl flex-col gap-4 rounded-[3px] border border-line bg-white p-5 text-body shadow-2xl shadow-navy/20 sm:flex-row sm:items-center sm:gap-6 sm:p-6">
+        <p class="text-sm leading-relaxed">
+          {t.body}{' '}
+          <a href={`${prefix}/privacy/`} class={linkClass}>{t.policyLink}</a>.
+        </p>
+        <div class="flex shrink-0 gap-3">
+          <button type="button" class="btn-outline-navy flex-1 px-5 py-2.5 sm:flex-none" data-consent-choice="denied">
+            {t.decline}
+          </button>
+          <button type="button" class="btn-outline-navy flex-1 px-5 py-2.5 sm:flex-none" data-consent-choice="granted">
+            {t.accept}
+          </button>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  const banner = document.querySelector<HTMLElement>('[data-consent-banner]');
+
+  if (banner) {
+    const STORAGE_KEY = 'meridium-consent';
+    const VALID_MS = 365 * 86_400_000;
+    type Choice = 'granted' | 'denied';
+
+    const gtag = (...args: unknown[]) => {
+      const w = window as unknown as { gtag?: (...a: unknown[]) => void };
+      w.gtag?.(...args);
+    };
+
+    const readChoice = (): Choice | null => {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null');
+        if (saved && (saved.choice === 'granted' || saved.choice === 'denied') && Date.now() - saved.at < VALID_MS) {
+          return saved.choice;
+        }
+      } catch {
+        /* storage blocked or value unreadable: ask again */
+      }
+      return null;
+    };
+    const writeChoice = (choice: Choice) => {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({ choice, at: Date.now() }));
+      } catch {
+        /* private mode: the choice holds for this page only */
+      }
+    };
+
+    // Remove Google Analytics and Google Ads cookies set under an earlier
+    // Accept, on this host and on the parent domain.
+    const clearGoogleCookies = () => {
+      const host = location.hostname;
+      const domains = ['', host, `.${host.replace(/^www\./, '')}`];
+      document.cookie
+        .split(';')
+        .map((c) => c.split('=')[0].trim())
+        .filter((name) => /^(_ga|_ga_.+|_gid|_gat.*|_gcl_.+)$/.test(name))
+        .forEach((name) => {
+          domains.forEach((domain) => {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${domain ? `; domain=${domain}` : ''}`;
+          });
+        });
+    };
+
+    const show = () => banner.classList.remove('hidden');
+    const hide = () => banner.classList.add('hidden');
+
+    const apply = (choice: Choice) => {
+      const value = choice === 'granted' ? 'granted' : 'denied';
+      gtag('consent', 'update', {
+        ad_storage: value,
+        ad_user_data: value,
+        ad_personalization: value,
+        analytics_storage: value,
+      });
+      if (choice === 'denied') clearGoogleCookies();
+    };
+
+    banner.querySelectorAll<HTMLButtonElement>('[data-consent-choice]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const choice = button.dataset.consentChoice as Choice;
+        writeChoice(choice);
+        apply(choice);
+        hide();
+        // Lets the newsletter popup open once the banner is out of the way.
+        dispatchEvent(new CustomEvent('meridium:consent', { detail: choice }));
+      });
+    });
+
+    document.querySelectorAll<HTMLElement>('[data-consent-open]').forEach((el) => {
+      el.addEventListener('click', (event) => {
+        event.preventDefault();
+        show();
+        banner.querySelector<HTMLButtonElement>('[data-consent-choice]')?.focus();
+      });
+    });
+
+    // A stored Accept is already applied in <head> (GoogleTag.astro) before
+    // the first hit; only an unanswered or expired choice needs the banner.
+    if (!readChoice()) show();
+  }
+</script>
