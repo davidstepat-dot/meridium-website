@@ -125,9 +125,20 @@ Die Schaltflächen "Gespräch vereinbaren" auf dieser Website verweisen auf Cale
 
 meridium.sg ist eine statische Website, die auf GitHub Pages gehostet wird. Wie jeder Webhoster führt der Hosting-Anbieter übliche Server-Protokolle, die Ihre IP-Adresse, den Browsertyp und die aufgerufenen Seiten enthalten können, zu Sicherheits- und Betriebszwecken. Meridium erhält diese Protokolle nicht in identifizierbarer Form.
 
-Meridium setzt auf meridium.sg derzeit keine Analyse- oder Werbe-Cookies ein, und es wird kein HubSpot-Tracking-Skript geladen. Die Website speichert in Ihrem Browser einen einzelnen Wert, der festhält, dass die Newsletter-Einladung angezeigt wurde oder dass Sie sich angemeldet haben, damit sie nicht erneut erscheint; dieser Wert enthält keine personenbezogenen Daten und kann über die Browser-Einstellungen gelöscht werden. Sollte Meridium künftig Analyse- oder andere Cookies einführen, wird dieser Abschnitt vor deren Einsatz aktualisiert.
+Auf meridium.sg wird kein HubSpot-Tracking-Skript geladen. Die Website speichert in Ihrem Browser zwei Werte: Der eine hält fest, dass die Newsletter-Einladung angezeigt wurde oder dass Sie sich angemeldet haben, damit sie nicht erneut erscheint; der andere speichert Ihre Cookie-Auswahl (siehe Abschnitt 6.6). Keiner der beiden Werte enthält personenbezogene Daten, und beide können über die Browser-Einstellungen gelöscht werden.
 
-### 6.6 E-Mail und Korrespondenz
+### 6.6 Analyse- und Werbe-Cookies (Google)
+
+Meridium verwendet das Google-Tag (Google Analytics und Google Ads, bereitgestellt von Google), um zu verstehen, wie Besucher meridium.sg finden und nutzen, und um die Ergebnisse seiner Online-Werbung zu messen. Das Tag läuft im Google-Einwilligungsmodus (Consent Mode). Beim ersten Besuch fragt ein Cookie-Banner nach Ihrer Auswahl:
+
+- **Wenn Sie akzeptieren**, werden Cookies von Google Analytics und Google Ads in Ihrem Browser gesetzt. Sie erfassen Informationen wie die besuchten Seiten, wie Sie auf die Website gelangt sind (einschließlich der Frage, ob Sie auf eine Meridium-Anzeige geklickt haben), Ihren ungefähren, aus der IP-Adresse abgeleiteten Standort sowie Ihren Geräte- und Browsertyp. Meridium nutzt diese Informationen in zusammengefasster Form, um die Website und seine Werbung zu verbessern; Google kann sie verwenden, um die Werbeleistung zu messen und, soweit zulässig, Werbung zu personalisieren.
+- **Wenn Sie ablehnen oder keine Auswahl treffen**, werden keine Cookies von Google Analytics oder Google Ads gesetzt und keine Werbekennungen verwendet. Das Google-Tag kann Google weiterhin begrenzte, cookielose Signale übermitteln (etwa, dass eine Seite aufgerufen wurde), wobei Werbe-Klickkennungen entfernt werden; Google nutzt diese in zusammengefasster und modellierter Form, um Besucherzahlen und Werbeergebnisse zu schätzen.
+
+Ihre Auswahl wird zwölf Monate gespeichert. Sie können sie jederzeit über den Link "Cookie-Einstellungen" am Ende jeder Seite ändern oder widerrufen; ein Widerruf entfernt die auf meridium.sg gesetzten Google-Cookies.
+
+Google verarbeitet diese Daten gemäß seiner Datenschutzerklärung und seinen Bedingungen zur Verarbeitung von Geschäftsdaten auf Servern, die sich außerhalb Singapurs befinden können, einschließlich der Vereinigten Staaten. Meridium stützt sich auf die vertraglichen Zusagen von Google, ein dem PDPA vergleichbares Schutzniveau zu gewährleisten, wie in Abschnitt 11 beschrieben. Soweit die Datenschutz-Grundverordnung (DSGVO) auf Ihren Besuch anwendbar ist, beruht der Einsatz dieser Cookies auf Ihrer Einwilligung. Die Personalisierung von Werbung können Sie zusätzlich über die Anzeigeneinstellungen von Google einschränken.
+
+### 6.7 E-Mail und Korrespondenz
 
 E-Mail-Korrespondenz mit Meridium wird in Google Workspace geführt; Google verarbeitet die Daten im Auftrag von Meridium nach den Datenverarbeitungsbedingungen von Google auf Servern, die sich außerhalb Singapurs befinden können.
 

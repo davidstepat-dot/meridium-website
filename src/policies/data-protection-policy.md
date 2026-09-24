@@ -125,9 +125,20 @@ The "Book a call" buttons on this website link to Calendly, a third party schedu
 
 meridium.sg is a static website hosted on GitHub Pages. In common with any web host, the hosting provider records standard server logs, which may include your IP address, browser type and the pages requested, for security and operational purposes. Meridium does not receive these logs in identifiable form.
 
-Meridium does not currently use analytics or advertising cookies on meridium.sg, and no HubSpot tracking script is loaded on the site. The site stores a single value in your browser to remember that the newsletter invitation has been shown or that you have subscribed, so that it is not shown again; this value contains no personal data and can be cleared through your browser settings. If Meridium introduces analytics or other cookies in future, this section will be updated before they are used.
+No HubSpot tracking script is loaded on meridium.sg. The site stores two values in your browser: one remembers that the newsletter invitation has been shown or that you have subscribed, so that it is not shown again, and the other remembers your cookie choice (described in section 6.6). Neither value contains personal data, and both can be cleared through your browser settings.
 
-### 6.6 Email and correspondence
+### 6.6 Analytics and advertising cookies (Google)
+
+Meridium uses the Google tag (Google Analytics and Google Ads, provided by Google) to understand how visitors find and use meridium.sg and to measure the results of its online advertising. The tag runs in Google Consent Mode. When you first visit, a cookie banner asks for your choice:
+
+- **If you accept**, Google Analytics and Google Ads cookies are set in your browser. They record information such as the pages you visit, how you arrived at the site (including whether you clicked a Meridium advertisement), your approximate location derived from your IP address, and your device and browser type. Meridium uses this information in aggregated form to improve the website and its advertising, and it may be used by Google to measure advertising performance and, where permitted, to personalise advertising.
+- **If you decline or make no choice**, no Google Analytics or Google Ads cookies are set and no advertising identifiers are used. The Google tag may still send Google limited, cookieless signals (for example that a page was viewed), with advertising click identifiers removed, which Google uses in aggregated and modelled form to estimate site traffic and advertising results.
+
+Your choice is remembered for twelve months. You can change or withdraw it at any time through the "Cookie settings" link at the foot of every page; withdrawing consent removes the Google cookies set on meridium.sg.
+
+Google processes this data as described in Google's privacy policy and business data processing terms, on servers that may be located outside Singapore, including in the United States. Meridium relies on Google's contractual commitments to provide a standard of protection comparable to the PDPA, as described in section 11. Where the General Data Protection Regulation applies to your visit, Meridium relies on your consent for these cookies. You can also limit advertising personalisation through Google's own ad settings.
+
+### 6.7 Email and correspondence
 
 Email correspondence with Meridium is held in Google Workspace, which processes data on Meridium's behalf on servers that may be located outside Singapore, under Google's data processing terms.
 
