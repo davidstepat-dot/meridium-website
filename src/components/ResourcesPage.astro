@@ -4,6 +4,7 @@
 import { Image } from 'astro:assets';
 import CTABand from '@/components/CTABand.astro';
 import TaxCalculator from '@/components/TaxCalculator.astro';
+import EpSalaryCalculator from '@/components/EpSalaryCalculator.astro';
 import { site } from '@/data/site';
 import { ui, type Lang } from '@/data/i18n';
 import supertreesDawn from '@/assets/supertrees-dawn.jpg';
@@ -27,6 +28,7 @@ const t = ui[lang].resources;
     <div class="mt-8 flex flex-wrap gap-3">
       <a href="#compliance-calendar" class="btn-outline-navy">{t.calendar.eyebrow}</a>
       <a href="#hr-payroll-guide" class="btn-outline-navy">{t.guide.eyebrow}</a>
+      <a href="#ep-salary-calculator" class="btn-outline-navy">{t.epCalculator.eyebrow}</a>
       <a href="#income-tax-calculator" class="btn-outline-navy">{t.calculator.eyebrow}</a>
     </div>
   </div>
@@ -112,6 +114,19 @@ const t = ui[lang].resources;
         </a>
         <p class="mt-3 max-w-[52ch] text-[13px] leading-relaxed text-body/70">{t.guide.note}</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section id="ep-salary-calculator" class="scroll-mt-24 border-t border-line bg-white">
+  <div class="container-m section">
+    <div class="max-w-2xl">
+      <p class="eyebrow">{t.epCalculator.eyebrow}</p>
+      <h2 class="mt-4 font-serif text-3xl font-semibold tracking-tight text-navy">{t.epCalculator.heading}</h2>
+      <p class="mt-5 leading-relaxed">{t.epCalculator.body}</p>
+    </div>
+    <div class="mt-10">
+      <EpSalaryCalculator lang={lang} />
     </div>
   </div>
 </section>

@@ -78,7 +78,7 @@ Every foreign hire needs the right pass, and the right pass depends on the perso
 
 ### Employment Pass
 
-The standard pass for professionals, managers and executives. Eligibility runs in two stages: a minimum qualifying salary, currently from S$5,600 a month for the youngest candidates rising progressively with age to S$10,700 at age 45 and above (higher in financial services, from S$6,200 to S$11,800), and then the COMPASS points framework, where an application must score 40 points on attributes of the candidate and the employing firm. MOM's published processing time is within ten business days for most online applications from Singapore-registered employers.
+The standard pass for professionals, managers and executives. Eligibility runs in two stages: a minimum qualifying salary, currently from S$5,600 a month for the youngest candidates rising progressively with age to S$10,700 at age 45 and above (higher in financial services, from S$6,200 to S$11,800), and then the COMPASS points framework, where an application must score 40 points on attributes of the candidate and the employing firm. MOM's published processing time is within ten business days for most online applications from Singapore-registered employers. To check the figures for a specific candidate, including the increases from 2027, use our [Employment Pass salary calculator](/resources/#ep-salary-calculator).
 <!-- Verified 12 Aug 2026: https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility and .../apply-for-a-pass -->
 
 ### S Pass

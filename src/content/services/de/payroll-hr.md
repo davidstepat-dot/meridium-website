@@ -78,7 +78,7 @@ Jede ausländische Einstellung braucht den richtigen Pass, und der richtige Pass
 
 ### Employment Pass
 
-Der Standardpass für Fachkräfte, Führungskräfte und leitende Angestellte. Die Zulassung erfolgt in zwei Stufen: zunächst ein Mindestgehalt, derzeit ab S$ 5.600 pro Monat für die jüngsten Kandidaten, progressiv steigend mit dem Alter bis S$ 10.700 ab 45 Jahren (im Finanzsektor höher, von S$ 6.200 bis S$ 11.800), und anschließend das COMPASS-Punktesystem, in dem ein Antrag 40 Punkte anhand von Merkmalen des Kandidaten und des einstellenden Unternehmens erreichen muss. Die vom MOM veröffentlichte Bearbeitungszeit beträgt bis zu zehn Werktage für die meisten Online-Anträge in Singapur registrierter Arbeitgeber.
+Der Standardpass für Fachkräfte, Führungskräfte und leitende Angestellte. Die Zulassung erfolgt in zwei Stufen: zunächst ein Mindestgehalt, derzeit ab S$ 5.600 pro Monat für die jüngsten Kandidaten, progressiv steigend mit dem Alter bis S$ 10.700 ab 45 Jahren (im Finanzsektor höher, von S$ 6.200 bis S$ 11.800), und anschließend das COMPASS-Punktesystem, in dem ein Antrag 40 Punkte anhand von Merkmalen des Kandidaten und des einstellenden Unternehmens erreichen muss. Die vom MOM veröffentlichte Bearbeitungszeit beträgt bis zu zehn Werktage für die meisten Online-Anträge in Singapur registrierter Arbeitgeber. Die Zahlen für einen konkreten Kandidaten, einschließlich der Erhöhungen ab 2027, prüfen Sie mit unserem [Gehaltsrechner für den Employment Pass](/de/resources/#ep-salary-calculator).
 <!-- Verified 12 Aug 2026: https://www.mom.gov.sg/passes-and-permits/employment-pass/eligibility and .../apply-for-a-pass -->
 
 ### S Pass

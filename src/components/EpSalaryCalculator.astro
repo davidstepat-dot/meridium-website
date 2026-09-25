@@ -1,0 +1,371 @@
+---
+// Employment Pass salary calculator. Runs entirely in the visitor's browser;
+// nothing is sent anywhere. All figures and the rule-change dates live in
+// src/data/ep-salary.ts with their MOM sources; re-verify them each August.
+// Copy for both languages: ui.<lang>.resources.epCalculator (src/data/i18n.ts).
+import { site } from '@/data/site';
+import { ui, langPrefix, type Lang } from '@/data/i18n';
+import { SECTORS, DEFAULT_SECTOR } from '@/data/ep-salary';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const t = ui[lang].resources.epCalculator;
+const locale = lang === 'de' ? 'de-DE' : 'en-SG';
+const serviceHref = `${langPrefix(lang)}/services/payroll-hr/`;
+---
+
+<div
+  class="grid gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-14"
+  data-ep-calculator
+  data-locale={locale}
+  data-copy={JSON.stringify(t)}
+>
+  <form class="space-y-7 lg:sticky lg:top-28 lg:self-start" novalidate>
+    <fieldset>
+      <legend class="text-sm font-semibold text-navy">{t.typeLabel}</legend>
+      <div class="mt-3 grid grid-cols-2 gap-3">
+        <label class="flex cursor-pointer items-center gap-3 rounded-[3px] border border-line bg-white px-4 py-3 has-[:checked]:border-navy">
+          <input type="radio" name="ep-type" value="new" class="accent-navy" checked />
+          <span class="font-medium text-navy">{t.typeNew}</span>
+        </label>
+        <label class="flex cursor-pointer items-center gap-3 rounded-[3px] border border-line bg-white px-4 py-3 has-[:checked]:border-navy">
+          <input type="radio" name="ep-type" value="renewal" class="accent-navy" />
+          <span class="font-medium text-navy">{t.typeRenewal}</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <div>
+      <label for="ep-date" class="text-sm font-semibold text-navy" data-date-label>{t.dateNew}</label>
+      <input
+        id="ep-date"
+        name="date"
+        type="date"
+        min="2026-01-01"
+        max="2030-12-31"
+        class="mt-2 w-full rounded-[3px] border border-line bg-white px-4 py-3 text-navy focus:border-navy focus:outline-none"
+      />
+      <p class="mt-1.5 text-[13px] leading-snug text-body/80" data-date-hint>{t.dateHintNew}</p>
+    </div>
+
+    <div>
+      <label for="ep-age" class="text-sm font-semibold text-navy">{t.age}</label>
+      <div class="mt-2 grid grid-cols-[1fr_5.5rem] items-center gap-4">
+        <input type="range" min="20" max="60" step="1" value="32" class="w-full accent-navy" aria-label={t.age} data-age-range />
+        <input
+          id="ep-age"
+          name="age"
+          type="number"
+          min="18"
+          max="70"
+          step="1"
+          value="32"
+          inputmode="numeric"
+          class="w-full rounded-[3px] border border-line bg-white px-3 py-3 text-navy tabular-nums focus:border-navy focus:outline-none"
+        />
+      </div>
+      <p class="mt-1.5 text-[13px] leading-snug text-body/80">{t.ageHint}</p>
+    </div>
+
+    <div>
+      <label for="ep-sector" class="text-sm font-semibold text-navy">{t.sector}</label>
+      <select
+        id="ep-sector"
+        name="sector"
+        class="mt-2 w-full rounded-[3px] border border-line bg-white px-3 py-3 text-navy focus:border-navy focus:outline-none"
+      >
+        {SECTORS.map((s, i) => <option value={i} selected={s.name === DEFAULT_SECTOR}>{s.name}</option>)}
+      </select>
+      <p class="mt-1.5 text-[13px] leading-snug text-body/80">{t.sectorHint}</p>
+    </div>
+
+    <div>
+      <label for="ep-salary" class="text-sm font-semibold text-navy">{t.salary}</label>
+      <div class="relative mt-2">
+        <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-sm text-body/70">S$</span>
+        <input
+          id="ep-salary"
+          name="salary"
+          type="text"
+          inputmode="numeric"
+          autocomplete="off"
+          placeholder="9,500"
+          class="w-full rounded-[3px] border border-line bg-white py-3 pl-11 pr-4 text-navy tabular-nums focus:border-navy focus:outline-none"
+        />
+      </div>
+      <p class="mt-1.5 text-[13px] leading-snug text-body/80">{t.salaryHint}</p>
+    </div>
+  </form>
+
+  <div class="min-w-0 space-y-6">
+    <div class="border border-line bg-white" aria-live="polite">
+      <div class="border-b border-line p-6 sm:p-8">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <h3 class="font-serif text-2xl font-semibold tracking-tight text-navy" data-out="head">{t.vEnterHead}</h3>
+          <span class="rounded-full px-3 py-1 text-[13px] font-semibold" data-out="pill">{t.vEnterPill}</span>
+        </div>
+
+        <dl class="mt-6 grid gap-px border border-line bg-line sm:grid-cols-3">
+          <div class="bg-white p-4">
+            <dt class="text-[12px] font-semibold uppercase tracking-[0.08em] text-body/70">{t.kpiQs}</dt>
+            <dd class="mt-1 font-serif text-[1.7rem] font-semibold leading-tight text-navy tabular-nums" data-out="qs">&ndash;</dd>
+            <dd class="mt-1 text-[12.5px] leading-snug text-body/70" data-out="qsSub"></dd>
+          </div>
+          <div class="bg-white p-4">
+            <dt class="text-[12px] font-semibold uppercase tracking-[0.08em] text-body/70">{t.kpiPts}</dt>
+            <dd class="mt-1 font-serif text-[1.7rem] font-semibold leading-tight text-navy tabular-nums" data-out="pts">&ndash;</dd>
+            <dd class="mt-1 text-[12.5px] leading-snug text-body/70">{t.kpiPtsSub}</dd>
+          </div>
+          <div class="bg-white p-4">
+            <dt class="text-[12px] font-semibold uppercase tracking-[0.08em] text-body/70">{t.kpi90}</dt>
+            <dd class="mt-1 font-serif text-[1.7rem] font-semibold leading-tight text-navy tabular-nums" data-out="p90">&ndash;</dd>
+            <dd class="mt-1 text-[12.5px] leading-snug text-body/70">{t.kpi90Sub}</dd>
+          </div>
+        </dl>
+
+        <p class="mt-6 max-w-[68ch] leading-relaxed" data-out="summary">{t.vEnterBody}</p>
+      </div>
+
+      <div class="p-6 sm:p-8">
+        <h4 class="font-serif text-lg font-semibold tracking-tight text-navy">{t.ladderHeading}</h4>
+        <ul class="mt-4 border-t border-line" data-out="ladder"></ul>
+        <div class="mt-6 space-y-1.5 rounded-[3px] bg-tint px-4 py-3 text-[13px] leading-relaxed text-body" data-out="rules"></div>
+      </div>
+    </div>
+
+    <div class="border border-line bg-white p-6 sm:p-8">
+      <h4 class="font-serif text-lg font-semibold tracking-tight text-navy">{t.tableHeading}</h4>
+      <p class="mt-2 text-[13px] leading-relaxed text-body/80" data-out="tableHint"></p>
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full border-collapse text-[14px] leading-snug tabular-nums">
+          <thead>
+            <tr class="text-body/80">
+              <th class="border-b-2 border-navy/20 py-2 pr-3 text-left align-bottom font-medium">{t.thAge}</th>
+              <th class="border-b-2 border-navy/20 py-2 pr-3 text-right align-bottom font-medium">{t.thQs}</th>
+              <th class="border-b-2 border-navy/20 py-2 pr-3 text-right align-bottom font-medium">{t.th65}</th>
+              <th class="border-b-2 border-navy/20 py-2 pr-3 text-right align-bottom font-medium">{t.th90}</th>
+              <th class="border-b-2 border-navy/20 py-2 text-right align-bottom font-medium" data-out="thOther">{t.thOtherNext}</th>
+            </tr>
+          </thead>
+          <tbody data-out="table"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="bg-navy p-6 text-white sm:p-8">
+      <h4 class="font-serif text-xl font-semibold tracking-tight">{t.ctaHeading}</h4>
+      <p class="mt-3 max-w-[60ch] leading-relaxed text-white/85">{t.ctaBody}</p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href={site.bookingHref} target="_blank" rel="noopener" class="btn-red">{ui[lang].nav.bookCall}</a>
+        <a href={serviceHref} class="btn-outline-white">{t.ctaService}</a>
+      </div>
+    </div>
+
+    <div class="space-y-2 text-[13px] leading-relaxed text-body/80">
+      <p>{t.how}</p>
+      <p>{t.basis}</p>
+      <p>{t.disclaimer}</p>
+      <p class="font-medium text-navy">{t.source}</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { SECTORS, QUALIFYING_SALARY, COMPASS_EXEMPTION, DATES } from '@/data/ep-salary';
+
+  const root = document.querySelector<HTMLElement>('[data-ep-calculator]');
+  if (root) {
+    const locale = root.dataset.locale || 'en-SG';
+    const t = JSON.parse(root.dataset.copy || '{}') as Record<string, string>;
+    const num = new Intl.NumberFormat(locale, { maximumFractionDigits: 0 });
+    const money = (n: number) => `${t.currency}${num.format(Math.round(n))}`;
+    const fill = (s: string, v: Record<string, string | number>) =>
+      s.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ''));
+    const esc = (s: string) =>
+      s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+    const form = root.querySelector<HTMLFormElement>('form')!;
+    const dateInput = form.elements.namedItem('date') as HTMLInputElement;
+    const ageInput = form.elements.namedItem('age') as HTMLInputElement;
+    const ageRange = root.querySelector<HTMLInputElement>('[data-age-range]')!;
+    const sectorSelect = form.elements.namedItem('sector') as HTMLSelectElement;
+    const salaryInput = form.elements.namedItem('salary') as HTMLInputElement;
+    const dateLabel = root.querySelector<HTMLElement>('[data-date-label]')!;
+    const dateHint = root.querySelector<HTMLElement>('[data-date-hint]')!;
+    const out = (k: string) => root.querySelector<HTMLElement>(`[data-out="${k}"]`)!;
+
+    const today = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    dateInput.value = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+
+    const clampAge = (a: number) => Math.min(45, Math.max(23, a));
+    const lerp = ([lo, hi]: readonly number[], age: number) => lo + ((hi - lo) * (clampAge(age) - 23)) / 22;
+
+    type Rule = { schedule: 'current' | 'from2027'; table: 'aug2025' | 'aug2026'; notes: string[]; review: boolean };
+    const ruleFor = (type: string, d: string): Rule => {
+      if (type === 'new') {
+        const late = d >= DATES.newApplicationsSwitch;
+        return {
+          schedule: late ? 'from2027' : 'current',
+          table: late ? 'aug2026' : 'aug2025',
+          notes: [late ? t.rNewNext : t.rNewCur],
+          review: d >= DATES.newApplicationsReviewAfter,
+        };
+      }
+      const qsLate = d >= DATES.renewalQualifyingSwitch;
+      const c1Late = d >= DATES.renewalC1Switch;
+      return {
+        schedule: qsLate ? 'from2027' : 'current',
+        table: c1Late ? 'aug2026' : 'aug2025',
+        notes: [qsLate ? t.rQsRenNext : t.rQsRenCur, c1Late ? t.rC1RenNext : t.rC1RenCur],
+        review: d >= DATES.renewalsReviewAfter,
+      };
+    };
+
+    const compute = (age: number, si: number, schedule: Rule['schedule'], table: Rule['table']) => {
+      const s = SECTORS[si];
+      const q = QUALIFYING_SALARY[schedule][s.fs ? 'fs' : 'general'];
+      const b = s[table];
+      return {
+        qs: Math.ceil(lerp(q, age)),
+        p65: Math.round(lerp([b[0], b[2]], age)),
+        p90: Math.round(lerp([b[1], b[3]], age)),
+      };
+    };
+
+    const parseMoney = (v: string) => {
+      const n = Number(v.replace(/[^\d]/g, ''));
+      return Number.isFinite(n) && n > 0 ? n : 0;
+    };
+    const ageLabel = (a: number) =>
+      a <= 23 ? fill(t.ageOrBelow, { age: 23 }) : a >= 45 ? fill(t.ageOrAbove, { age: 45 }) : String(a);
+
+    const PILL = {
+      ok: 'bg-emerald-50 text-emerald-800',
+      warn: 'bg-amber-50 text-amber-800',
+      bad: 'bg-red/10 text-red-dark',
+    } as const;
+
+    const render = () => {
+      const type = (form.elements.namedItem('ep-type') as RadioNodeList).value || 'new';
+      let age = parseInt(ageInput.value, 10);
+      if (!Number.isFinite(age)) age = 32;
+      const si = parseInt(sectorSelect.value, 10) || 0;
+      const sector = SECTORS[si];
+      const salary = parseMoney(salaryInput.value);
+      const has = salary > 0;
+      const rule = ruleFor(type, dateInput.value || dateInput.min);
+      const r = compute(age, si, rule.schedule, rule.table);
+
+      dateLabel.textContent = type === 'new' ? t.dateNew : t.dateRenewal;
+      dateHint.textContent = type === 'new' ? t.dateHintNew : t.dateHintRenewal;
+
+      const pts = !has ? null : salary >= r.p90 ? 20 : salary >= r.p65 ? 10 : 0;
+      const exempt = has && salary >= COMPASS_EXEMPTION;
+      const passQs = has && salary >= r.qs;
+
+      out('qs').textContent = money(r.qs);
+      out('qsSub').textContent = fill(sector.fs ? t.qsFs : t.qsGeneral, { age: ageLabel(age) });
+      out('pts').textContent = exempt ? t.exemptShort : pts === null ? '–' : String(pts);
+      out('p90').textContent = money(r.p90);
+
+      const v = { salary: money(salary), gap: money(r.qs - salary), qs: money(r.qs), exempt: money(COMPASS_EXEMPTION), pts: pts ?? 0 };
+      let head = t.vEnterHead, pill = t.vEnterPill, tone: keyof typeof PILL = 'warn', summary = t.vEnterBody;
+      if (has && !passQs) {
+        head = t.vLowHead; pill = t.vLowPill; tone = 'bad'; summary = fill(t.vLowBody, v);
+      } else if (exempt) {
+        head = t.vExemptHead; pill = t.vExemptPill; tone = 'ok'; summary = fill(t.vExemptBody, v);
+      } else if (has && pts !== null) {
+        head = t.vOkHead; pill = fill(t.vOkPill, v); tone = pts > 0 ? 'ok' : 'warn';
+        summary = fill(t.vOkBody, { ...v, need: 40 - pts });
+        if (pts < 20) summary += fill(t.vUpgrade, { next: money(pts === 0 ? r.p65 : r.p90), nextPts: pts === 0 ? 10 : 20 });
+      }
+      out('head').textContent = head;
+      const pillEl = out('pill');
+      pillEl.textContent = pill;
+      pillEl.className = `rounded-full px-3 py-1 text-[13px] font-semibold ${PILL[tone]}`;
+      out('summary').textContent = summary;
+
+      // Threshold ladder, lowest first, with the proposed salary slotted in.
+      const rows = [
+        { amt: r.qs, title: t.lQs, sub: t.lQsSub },
+        { amt: r.p65, title: t.l65, sub: fill(t.l65Sub, { sector: sector.name }) },
+        { amt: r.p90, title: t.l90, sub: fill(t.l90Sub, { sector: sector.name }) },
+        { amt: COMPASS_EXEMPTION, title: t.lEx, sub: fill(t.lExSub, { exempt: money(COMPASS_EXEMPTION) }) },
+      ].sort((a, b) => a.amt - b.amt);
+      const li = (mark: string, title: string, sub: string, amount: string, extra = '', cls = '') =>
+        `<li class="grid grid-cols-[1.75rem_minmax(0,1fr)_auto] items-center gap-3 border-b border-line px-1 py-3 ${cls}">` +
+        mark +
+        `<span class="min-w-0"><span class="block text-[15px] font-semibold text-navy">${esc(title)}</span>` +
+        `<span class="block text-[13px] leading-snug text-body/70">${esc(sub)}</span></span>` +
+        `<span class="whitespace-nowrap text-right font-semibold text-navy tabular-nums">${esc(amount)}${extra}</span></li>`;
+      const you = () =>
+        li(
+          '<span class="flex h-6 w-6 items-center justify-center rounded-full bg-navy" aria-hidden="true"><span class="h-2 w-2 rounded-full bg-white"></span></span>',
+          t.lYou, t.lYouSub, money(salary), '', 'rounded-[3px] border-transparent bg-tint'
+        );
+      let html = '';
+      let placed = false;
+      for (const row of rows) {
+        if (has && !placed && salary < row.amt) { html += you(); placed = true; }
+        const ok = has && salary >= row.amt;
+        const mark = ok
+          ? `<span class="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-50 text-emerald-800" role="img" aria-label="${esc(t.met)}"><svg class="h-3.5 w-3.5" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`
+          : `<span class="flex h-6 w-6 items-center justify-center rounded-full border border-line text-body/40" role="img" aria-label="${esc(t.notMet)}"><span class="h-1.5 w-1.5 rounded-full bg-current"></span></span>`;
+        const extra = has && !ok ? `<span class="block text-[12.5px] font-normal text-body/70">${esc(fill(t.short, { gap: money(row.amt - salary) }))}</span>` : '';
+        html += li(mark, row.title, row.sub, money(row.amt), extra);
+      }
+      if (has && !placed) html += you();
+      out('ladder').innerHTML = html;
+
+      const notes = [...rule.notes];
+      if (sector.fs) notes.push(t.rFs);
+      if (rule.review) notes.push(t.rFuture);
+      out('rules').innerHTML = notes
+        .map((n, i) => `<p>${i === 0 ? `<span class="font-semibold text-navy">${esc(t.rulesLabel)}</span> ` : ''}${esc(n)}</p>`)
+        .join('');
+
+      // Age table under the selected rules, plus the other qualifying salary schedule.
+      const a0 = clampAge(age);
+      const ages = [23, 25, 30, 35, 40, 45];
+      if (!ages.includes(a0)) ages.push(a0);
+      ages.sort((a, b) => a - b);
+      const other: Rule['schedule'] = rule.schedule === 'current' ? 'from2027' : 'current';
+      out('thOther').textContent = other === 'from2027' ? t.thOtherNext : t.thOtherPrev;
+      out('tableHint').textContent = fill(t.tableHint, { sector: sector.name, other: other === 'from2027' ? t.otherNext : t.otherPrev });
+      out('table').innerHTML = ages
+        .map((a) => {
+          const x = compute(a, si, rule.schedule, rule.table);
+          const y = compute(a, si, other, rule.table);
+          const cur = a === a0;
+          const td = (s: string, left = false) =>
+            `<td class="border-b border-line py-2 ${left ? 'pr-3 text-left' : 'pr-3 text-right last:pr-0'} ${cur ? 'font-semibold text-navy' : 'text-body'}">${esc(s)}</td>`;
+          const label = ageLabel(a) + (cur ? ` (${t.candidate})` : '');
+          return `<tr>${td(label, true)}${td(money(x.qs))}${td(money(x.p65))}${td(money(x.p90))}${td(money(y.qs))}</tr>`;
+        })
+        .join('');
+    };
+
+    ageRange.addEventListener('input', () => {
+      ageInput.value = ageRange.value;
+      render();
+    });
+    ageInput.addEventListener('input', () => {
+      const v = parseInt(ageInput.value, 10);
+      if (Number.isFinite(v)) ageRange.value = String(Math.min(60, Math.max(20, v)));
+      render();
+    });
+    salaryInput.addEventListener('input', () => {
+      const n = parseMoney(salaryInput.value);
+      salaryInput.value = salaryInput.value.trim() === '' || n === 0 ? salaryInput.value.replace(/[^\d]/g, '') : num.format(n);
+      render();
+    });
+    form.addEventListener('change', render);
+    form.addEventListener('input', render);
+    form.addEventListener('submit', (e) => e.preventDefault());
+    render();
+  }
+</script>
