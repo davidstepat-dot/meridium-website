@@ -59,6 +59,14 @@ npm run check      # type-check the templates and content
   S$80,000 relief cap are hard-coded in that component in two places (template and
   script); re-verify them against IRAS after each Budget and update the "basis" line in
   `i18n.ts` with the year checked.
+- **Employment Pass salary calculator** (`src/components/EpSalaryCalculator.astro`, on
+  the Resources page at `#ep-salary-calculator`) also runs entirely in the browser and
+  sends nothing anywhere. Its copy is in `ui.<lang>.resources.epCalculator`; every figure
+  and rule-change date is in `src/data/ep-salary.ts`, with the MOM sources in comments.
+  Update that file each August when MOM publishes the next COMPASS C1 salary benchmark
+  table (add the new table, move the switch dates) and whenever MOM announces a new EP
+  qualifying salary. Sources are cited as plain text; MOM's terms of use ask for
+  permission before deep-linking to its pages.
 - **Data protection policy**: `src/policies/data-protection-policy.md`.
 - **Photos**: `src/assets/`. Replace a file and rebuild; Astro regenerates the optimised
   responsive variants.
