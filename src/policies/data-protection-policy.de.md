@@ -109,9 +109,9 @@ Der Newsletter erscheint monatlich, wird von newsletter@meridium.sg versandt und
 
 HubSpot verarbeitet diese Daten im Auftrag von Meridium als Auftragsverarbeiter auf Grundlage eines schriftlichen Auftragsverarbeitungsvertrags auf Servern außerhalb Singapurs. Meridium stützt sich auf die vertraglichen Zusagen von HubSpot, ein mit dem PDPA vergleichbares Schutzniveau zu gewährleisten, wie in Abschnitt 11 beschrieben.
 
-### 6.2 Einkommensteuerrechner
+### 6.2 Online-Rechner
 
-Der Einkommensteuerrechner auf der Ressourcen-Seite läuft vollständig in Ihrem Browser. Die von Ihnen eingegebenen Zahlen werden ausschließlich auf Ihrem Gerät zur Berechnung der Schätzung verwendet und weder an Meridium noch an Dritte übermittelt oder gespeichert.
+Der Einkommensteuerrechner und der Gehaltsrechner für den Employment Pass auf der Ressourcen-Seite laufen vollständig in Ihrem Browser. Die von Ihnen eingegebenen Angaben, etwa Einkommen, Alter oder Gehalt, werden ausschließlich auf Ihrem Gerät zur Berechnung des Ergebnisses verwendet und weder an Meridium noch an Dritte übermittelt oder gespeichert.
 
 ### 6.3 Compliance-Kalender und andere Downloads
 
