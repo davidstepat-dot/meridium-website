@@ -109,9 +109,9 @@ The newsletter is sent monthly from newsletter@meridium.sg and covers business, 
 
 HubSpot processes this data on Meridium's behalf as a data intermediary, under a written data processing agreement, on servers located outside Singapore. Meridium relies on HubSpot's contractual commitments to provide a standard of protection comparable to the PDPA, as described in section 11.
 
-### 6.2 Income tax calculator
+### 6.2 Online calculators
 
-The income tax calculator on the resources page runs entirely in your browser. The figures you enter are used only on your device to produce the estimate and are not transmitted to, or stored by, Meridium or any third party.
+The income tax calculator and the Employment Pass salary calculator on the resources page run entirely in your browser. The figures you enter, such as income, age or salary, are used only on your device to produce the result and are not transmitted to, or stored by, Meridium or any third party.
 
 ### 6.3 Compliance calendar and other downloads
 
