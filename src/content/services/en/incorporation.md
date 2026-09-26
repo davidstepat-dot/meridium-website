@@ -5,6 +5,9 @@ outcome: "A Singapore private limited company, set up correctly and ready to ope
 headline: "Your Singapore company, incorporated correctly from day one."
 intro: "Meridium incorporates Singapore private limited companies for foreign founders and corporate groups. We advise on structure before anything is filed, put the statutory roles in place, and stay accountable for the entity long after the certificate is issued."
 ctaNoun: "incorporation"
+planner:
+  heading: "Not sure which structure you need?"
+  body: "The setup planner compares a private limited company, a branch and a representative office for your situation, and shows the director, timeline and government fees involved. It takes about two minutes."
 seoTitle: "Company Incorporation in Singapore for Foreign Founders | Meridium"
 seoDescription: "Incorporate a Singapore private limited company with senior advisers: resident director, registered office, company secretary and bank account support."
 included:

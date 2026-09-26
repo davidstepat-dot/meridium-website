@@ -6,7 +6,7 @@ import CTABand from '@/components/CTABand.astro';
 import TaxCalculator from '@/components/TaxCalculator.astro';
 import EpSalaryCalculator from '@/components/EpSalaryCalculator.astro';
 import { site } from '@/data/site';
-import { ui, type Lang } from '@/data/i18n';
+import { ui, langPrefix, type Lang } from '@/data/i18n';
 import supertreesDawn from '@/assets/supertrees-dawn.jpg';
 import guideCover from '@/assets/hr-payroll-guide-cover.jpg';
 
@@ -16,6 +16,7 @@ interface Props {
 
 const { lang = 'en' } = Astro.props;
 const t = ui[lang].resources;
+const plannerHref = `${langPrefix(lang)}/resources/setup-planner/`;
 ---
 
 <section class="border-b border-line bg-ivory">
@@ -26,6 +27,7 @@ const t = ui[lang].resources;
     </h1>
     <p class="mt-6 max-w-[62ch] text-lg leading-relaxed">{t.intro}</p>
     <div class="mt-8 flex flex-wrap gap-3">
+      <a href={plannerHref} class="btn-outline-navy">{t.planner.eyebrow}</a>
       <a href="#compliance-calendar" class="btn-outline-navy">{t.calendar.eyebrow}</a>
       <a href="#hr-payroll-guide" class="btn-outline-navy">{t.guide.eyebrow}</a>
       <a href="#ep-salary-calculator" class="btn-outline-navy">{t.epCalculator.eyebrow}</a>
@@ -34,7 +36,56 @@ const t = ui[lang].resources;
   </div>
 </section>
 
-<section id="compliance-calendar" class="scroll-mt-24 bg-white">
+<section id="setup-planner" class="scroll-mt-24 bg-white">
+  <div class="container-m section grid items-center gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
+    <div>
+      <p class="eyebrow">{t.planner.eyebrow}</p>
+      <h2 class="mt-4 font-serif text-3xl font-semibold tracking-tight text-navy">{t.planner.heading}</h2>
+      <p class="mt-5 max-w-[58ch] leading-relaxed">{t.planner.body}</p>
+      <ul class="mt-6 max-w-[58ch] space-y-2.5 text-[15px] leading-relaxed">
+        {
+          t.planner.points.map((point) => (
+            <li class="flex gap-3">
+              <svg class="mt-1.5 h-3.5 w-3.5 shrink-0 text-red" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span>{point}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-8">
+        <a href={plannerHref} class="btn-red">{t.planner.cta}</a>
+        <p class="mt-3 max-w-[52ch] text-[13px] leading-relaxed text-body/70">{t.planner.note}</p>
+      </div>
+    </div>
+    <a href={plannerHref} class="group block bg-ivory p-6 sm:p-10" tabindex="-1" aria-hidden="true">
+      <div class="border border-line border-t-[3px] border-t-red bg-white p-6 shadow-[0_14px_36px_rgba(11,26,70,0.10)] transition-transform group-hover:-translate-y-0.5">
+        <p class="text-[11px] font-semibold uppercase tracking-[0.18em] text-navy/60">{t.planner.previewLabel}</p>
+        <p class="mt-3 font-serif text-2xl font-semibold leading-tight tracking-tight text-navy">{t.planner.previewTitle}</p>
+        <p class="mt-1 text-[14px] text-body/80">{t.planner.previewSub}</p>
+        <div class="mt-6 space-y-3">
+          {
+            t.planner.previewRows.map((row, i) => (
+              <div class="grid grid-cols-[minmax(0,42%)_1fr] items-center gap-3">
+                <span class="text-[13px] font-semibold leading-tight text-navy">{row}</span>
+                <span class="relative h-2.5 rounded-[2px] bg-tint">
+                  <span
+                    class="absolute inset-y-0 rounded-[2px] bg-navy"
+                    style={`left:${[14, 29, 29][i]}%;width:${[15, 71, 43][i]}%`}
+                  />
+                </span>
+              </div>
+            ))
+          }
+        </div>
+        <p class="mt-6 border-t border-line pt-4 text-[14px] font-semibold text-navy">{t.planner.previewReady}</p>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section id="compliance-calendar" class="scroll-mt-24 border-t border-line bg-white">
   <div class="container-m section grid items-center gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-20">
     <div>
       <p class="eyebrow">{t.calendar.eyebrow}</p>

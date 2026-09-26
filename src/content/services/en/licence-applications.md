@@ -5,6 +5,9 @@ outcome: "The regulatory permissions your business model requires, prepared and 
 headline: "Regulated activities entered with the right permissions in hand."
 intro: "Many activities in Singapore require a licence, registration or permit before the first dollar of revenue. Meridium assesses what your business model actually requires, prepares and submits the applications, and manages the regulator's questions until a decision is reached. We manage the process with care; no adviser can promise the outcome, and we will not pretend otherwise."
 ctaNoun: "licence applications"
+planner:
+  heading: "Not sure which approvals your activity needs?"
+  body: "The setup planner flags the licences common to regulated activities, such as MAS, CPE, MOH and employment agency licences, and shows how they shape your timeline. It takes about two minutes."
 seoTitle: "Business Licence and Permit Applications in Singapore | Meridium"
 seoDescription: "Assessment, preparation and management of Singapore licence applications across IMDA, HSA, Singapore Customs and other regulators."
 included:

@@ -5,6 +5,9 @@ outcome: "Die regulatorischen Genehmigungen, die Ihr Geschäftsmodell erfordert,
 headline: "Regulierte Tätigkeiten aufnehmen, mit den richtigen Genehmigungen in der Hand."
 intro: "Viele Tätigkeiten in Singapur erfordern eine Lizenz, Registrierung oder Genehmigung, bevor der erste Dollar Umsatz erzielt werden darf. Meridium prüft, was Ihr Geschäftsmodell tatsächlich erfordert, bereitet die Anträge vor, reicht sie ein und begleitet die Rückfragen der Behörde bis zur Entscheidung. Wir führen den Prozess mit Sorgfalt; kein Berater kann das Ergebnis versprechen, und wir werden nichts anderes vorgeben."
 ctaNoun: "Ihre Lizenzanträge"
+planner:
+  heading: "Unsicher, welche Genehmigungen Ihre Tätigkeit braucht?"
+  body: "Der Setup-Planer weist auf die Lizenzen hin, die bei regulierten Tätigkeiten üblich sind, etwa von MAS, CPE, MOH oder für Arbeitsvermittlungen, und zeigt, wie sie Ihren Zeitplan bestimmen. Das dauert rund zwei Minuten."
 seoTitle: "Lizenz- und Genehmigungsanträge in Singapur | Meridium"
 seoDescription: "Prüfung, Vorbereitung und Begleitung von Lizenzanträgen in Singapur bei IMDA, HSA, Singapore Customs und weiteren Behörden."
 included:

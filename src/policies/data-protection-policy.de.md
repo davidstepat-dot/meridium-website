@@ -103,15 +103,17 @@ Dieser Abschnitt erläutert, was mit personenbezogenen Daten geschieht, wenn Sie
 
 ### 6.1 Kontaktformular und Newsletter-Anmeldung
 
-Wenn Sie das Kontaktformular absenden oder den Meridium-Newsletter abonnieren, werden die von Ihnen eingegebenen Angaben (Name, E-Mail-Adresse und, soweit angegeben, Unternehmen, Telefonnummer, die Leistung, an der Sie interessiert sind, und Ihre Nachricht) aus Ihrem Browser direkt an HubSpot übermittelt, die von Meridium genutzte CRM-Plattform, und dort als Kontaktdatensatz gespeichert. Meridium verwendet diese Daten, um Ihre Anfrage zu beantworten, Angebote zu erstellen und Ihnen, sofern Sie sich angemeldet haben, den von Ihnen gewählten Newsletter (englisch oder deutsch) zuzusenden.
+Wenn Sie das Kontaktformular absenden, Ihren Plan aus dem Setup-Planer senden (Abschnitt 6.2) oder den Meridium-Newsletter abonnieren, werden die von Ihnen eingegebenen Angaben (Name, E-Mail-Adresse und, soweit angegeben, Unternehmen, Telefonnummer, die Leistung, an der Sie interessiert sind, und Ihre Nachricht) aus Ihrem Browser direkt an HubSpot übermittelt, die von Meridium genutzte CRM-Plattform, und dort als Kontaktdatensatz gespeichert. Meridium verwendet diese Daten, um Ihre Anfrage zu beantworten, Angebote zu erstellen und Ihnen, sofern Sie sich angemeldet haben, den von Ihnen gewählten Newsletter (englisch oder deutsch) zuzusenden.
 
 Der Newsletter erscheint monatlich, wird von newsletter@meridium.sg versandt und behandelt geschäftliche, regulatorische, steuerliche und Compliance-Entwicklungen in Singapur und der Region. Mit der Anmeldung wird eine automatische Willkommens-E-Mail ausgelöst. Jeder Newsletter enthält einen Abmeldelink; Sie können Ihre Einwilligung außerdem jederzeit per E-Mail an enquiries@meridium.sg widerrufen. Kontakte aus dem Kontaktformular werden nicht in den Newsletter aufgenommen, es sei denn, sie melden sich gesondert an.
 
 HubSpot verarbeitet diese Daten im Auftrag von Meridium als Auftragsverarbeiter auf Grundlage eines schriftlichen Auftragsverarbeitungsvertrags auf Servern außerhalb Singapurs. Meridium stützt sich auf die vertraglichen Zusagen von HubSpot, ein mit dem PDPA vergleichbares Schutzniveau zu gewährleisten, wie in Abschnitt 11 beschrieben.
 
-### 6.2 Online-Rechner
+### 6.2 Online-Rechner und Setup-Planer
 
 Der Einkommensteuerrechner und der Gehaltsrechner für den Employment Pass auf der Ressourcen-Seite laufen vollständig in Ihrem Browser. Die von Ihnen eingegebenen Angaben, etwa Einkommen, Alter oder Gehalt, werden ausschließlich auf Ihrem Gerät zur Berechnung des Ergebnisses verwendet und weder an Meridium noch an Dritte übermittelt oder gespeichert.
+
+Auch der Setup-Planer läuft in Ihrem Browser. Ihre Antworten werden auf Ihrem Gerät verwendet, um Ihren Plan zu erstellen, und im Sitzungsspeicher (Session Storage) Ihres Browsers abgelegt, damit der Plan erhalten bleibt, wenn Sie die Seite verlassen und zurückkehren; sie werden gelöscht, wenn Sie den Browser-Tab schließen oder „Neu beginnen“ wählen. Sie werden nur dann an Meridium übermittelt, wenn Sie das Formular zur Prüfung am Ende des Plans absenden. In diesem Fall werden Ihre Antworten, eine Zusammenfassung des Plans und die von Ihnen eingegebenen Angaben (Name, E-Mail-Adresse, Unternehmen, Land und eine etwaige Nachricht) aus Ihrem Browser direkt an HubSpot übermittelt und wie in Abschnitt 6.1 beschrieben als Anfrage behandelt. Sofern Sie Analyse-Cookies akzeptiert haben (Abschnitt 6.6), erfasst das Google-Tag, dass der Planer gestartet, abgeschlossen oder abgesendet wurde, ohne Ihre Antworten oder Ihr Ergebnis.
 
 ### 6.3 Compliance-Kalender und andere Downloads
 
@@ -125,7 +127,7 @@ Die Schaltflächen "Gespräch vereinbaren" auf dieser Website verweisen auf Cale
 
 meridium.sg ist eine statische Website, die auf GitHub Pages gehostet wird. Wie jeder Webhoster führt der Hosting-Anbieter übliche Server-Protokolle, die Ihre IP-Adresse, den Browsertyp und die aufgerufenen Seiten enthalten können, zu Sicherheits- und Betriebszwecken. Meridium erhält diese Protokolle nicht in identifizierbarer Form.
 
-Auf meridium.sg wird kein HubSpot-Tracking-Skript geladen. Die Website speichert in Ihrem Browser zwei Werte: Der eine hält fest, dass die Newsletter-Einladung angezeigt wurde oder dass Sie sich angemeldet haben, damit sie nicht erneut erscheint; der andere speichert Ihre Cookie-Auswahl (siehe Abschnitt 6.6). Keiner der beiden Werte enthält personenbezogene Daten, und beide können über die Browser-Einstellungen gelöscht werden.
+Auf meridium.sg wird kein HubSpot-Tracking-Skript geladen. Die Website speichert in Ihrem Browser einige wenige Werte: Einer hält fest, dass die Newsletter-Einladung angezeigt wurde oder dass Sie sich angemeldet haben, damit sie nicht erneut erscheint; ein weiterer speichert Ihre Cookie-Auswahl (siehe Abschnitt 6.6); und der Setup-Planer bewahrt Ihre Antworten für die laufende Browsersitzung auf (siehe Abschnitt 6.2). Keiner dieser Werte wird an Meridium übermittelt, und alle können über die Browser-Einstellungen gelöscht werden.
 
 ### 6.6 Analyse- und Werbe-Cookies (Google)
 

@@ -55,6 +55,8 @@ export const ui = {
       faq: 'Common questions',
       related: 'Related service',
       explore: 'Explore',
+      plannerEyebrow: 'Setup planner',
+      plannerCta: 'Open the setup planner',
     },
     form: {
       firstName: 'First name',
@@ -130,9 +132,28 @@ export const ui = {
     resources: {
       title: 'Resources',
       eyebrow: 'Resources',
-      heading: 'Practical tools for running a Singapore entity.',
+      heading: 'Practical tools for setting up and running a Singapore entity.',
       intro:
-        'Reference material we use with clients, made available to anyone who finds it useful. Start with the compliance calendar and the HR and payroll guide, then use the calculators to check Employment Pass salary thresholds and to estimate individual income tax in Singapore.',
+        'Reference material we use with clients, made available to anyone who finds it useful. Planning a Singapore entity? Start with the setup planner. Already operating? The compliance calendar and the HR and payroll guide cover the ongoing obligations, and the calculators check Employment Pass salary thresholds and estimate individual income tax.',
+      planner: {
+        eyebrow: 'Setup planner',
+        heading: 'Setting up in Singapore? Plan your entity in two minutes.',
+        body:
+          'Answer seven questions about your business and the planner shows whether you need a subsidiary, a branch or a representative office, the resident director and work passes involved, a typical timeline, the government fees and your tax position. Built for foreign companies and founders before they commit.',
+        points: [
+          'Subsidiary, branch or representative office, with the reasons',
+          'Director gap, Employment Pass and licence steps flagged',
+          'A week-by-week timeline you can save as a PDF',
+          'Your answers stay in your browser unless you send them to us',
+        ],
+        cta: 'Open the setup planner',
+        note: 'Free, and no sign-up is needed to see your result.',
+        previewLabel: 'Example result',
+        previewTitle: 'Singapore private limited company',
+        previewSub: 'A wholly owned subsidiary of your parent company',
+        previewReady: 'Operational in about 7 weeks',
+        previewRows: ['Incorporation with ACRA', 'Corporate bank account', 'Employment Pass'],
+      },
       calendar: {
         eyebrow: 'Compliance calendar',
         heading: 'Every filing deadline for a Singapore private company, on one page.',
@@ -410,6 +431,8 @@ export const ui = {
       faq: 'Häufige Fragen',
       related: 'Verwandte Leistung',
       explore: 'Mehr erfahren',
+      plannerEyebrow: 'Setup-Planer',
+      plannerCta: 'Setup-Planer öffnen',
     },
     form: {
       firstName: 'Vorname',
@@ -483,9 +506,28 @@ export const ui = {
     resources: {
       title: 'Ressourcen',
       eyebrow: 'Ressourcen',
-      heading: 'Praktische Werkzeuge für den Betrieb einer Gesellschaft in Singapur.',
+      heading: 'Praktische Werkzeuge für Gründung und Betrieb einer Gesellschaft in Singapur.',
       intro:
-        'Referenzmaterial, das wir in der Mandatsarbeit nutzen und allen zugänglich machen, die es brauchen können. Beginnen Sie mit dem Compliance-Kalender und dem HR- und Payroll-Leitfaden. Mit den Rechnern prüfen Sie dann die Gehaltsschwellen für den Employment Pass und schätzen die Einkommensteuer für natürliche Personen in Singapur.',
+        'Referenzmaterial, das wir in der Mandatsarbeit nutzen und allen zugänglich machen, die es brauchen können. Sie planen eine Gesellschaft in Singapur? Beginnen Sie mit dem Setup-Planer. Sie sind bereits tätig? Compliance-Kalender sowie HR- und Payroll-Leitfaden decken die laufenden Pflichten ab, und die Rechner prüfen die Gehaltsschwellen für den Employment Pass und schätzen die Einkommensteuer für natürliche Personen.',
+      planner: {
+        eyebrow: 'Setup-Planer',
+        heading: 'Sie gründen in Singapur? Planen Sie Ihre Gesellschaft in zwei Minuten.',
+        body:
+          'Beantworten Sie sieben Fragen zu Ihrem Vorhaben, und der Planer zeigt, ob Sie eine Tochtergesellschaft, eine Zweigniederlassung oder eine Repräsentanz brauchen, welcher ansässige Director und welche Arbeitsgenehmigungen dazugehören, einen typischen Zeitplan, die Behördengebühren und Ihre steuerliche Lage. Gemacht für ausländische Unternehmen und Gründer, bevor sie sich festlegen.',
+        points: [
+          'Tochtergesellschaft, Zweigniederlassung oder Repräsentanz, mit Begründung',
+          'Director-Lücke, Employment Pass und Lizenzschritte auf einen Blick',
+          'Ein Zeitplan Woche für Woche, als PDF speicherbar',
+          'Ihre Antworten bleiben in Ihrem Browser, solange Sie sie uns nicht senden',
+        ],
+        cta: 'Setup-Planer öffnen',
+        note: 'Kostenlos, und für das Ergebnis ist keine Anmeldung nötig.',
+        previewLabel: 'Beispielergebnis',
+        previewTitle: 'Singapore Private Limited Company',
+        previewSub: 'Eine hundertprozentige Tochtergesellschaft Ihrer Muttergesellschaft',
+        previewReady: 'Operativ nach rund 7 Wochen',
+        previewRows: ['Gründung bei ACRA', 'Geschäftskonto', 'Employment Pass'],
+      },
       calendar: {
         eyebrow: 'Compliance-Kalender',
         heading: 'Alle Fristen einer Singapore Private Company auf einer Seite.',
