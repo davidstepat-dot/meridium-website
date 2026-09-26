@@ -1,0 +1,1353 @@
+---
+// Singapore Setup Planner. Runs entirely in the visitor's browser: answers are
+// kept on the device (sessionStorage, so a visitor can leave the page and
+// come back) and leave it only if the visitor sends the review form. That form
+// submits to the existing HubSpot contact form (site.contact.formId) with the
+// plan summary, in English, in the message field, so no extra HubSpot form or
+// property is needed and the team is notified as for any enquiry.
+//
+// Copy, question set and rule data: src/data/setup-planner.ts.
+// Employment Pass qualifying salaries: src/data/ep-salary.ts (shared with the
+// EP salary calculator so the two tools never disagree).
+//
+// If the Google tag is present and the visitor has accepted analytics, the
+// planner records three events (setup_planner_start, setup_planner_complete,
+// setup_planner_submit). They carry no answers and no result. See section 6
+// of the data protection policy.
+import { site } from '@/data/site';
+import { langPrefix, type Lang } from '@/data/i18n';
+import {
+  planner,
+  LICENCE_WEEKS,
+  TARGET_WEEKS,
+  FEES,
+  CRM_SERVICE,
+  TREATY_COUNTRIES,
+  GERMAN_SPEAKING,
+} from '@/data/setup-planner';
+import { QUALIFYING_SALARY, DATES } from '@/data/ep-salary';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const c = planner[lang];
+const en = planner.en;
+
+// English labels for the plan summary sent to HubSpot, so every request reads
+// the same in the CRM whichever language the visitor used.
+const crm = {
+  q: en.q,
+  needs: en.r.needs,
+  titles: {
+    pte: en.r.pteTitle,
+    branch: en.r.branchTitle,
+    ro: en.r.roTitle,
+    parent: en.r.pteFormParent,
+    group: en.r.pteFormGroup,
+    founder: en.r.pteFormFounder,
+  },
+};
+
+const config = {
+  lang,
+  booking: site.bookingHref,
+  email: site.email,
+  privacyHref: `${langPrefix(lang)}/privacy/`,
+  hub: {
+    portalId: site.contact.portalId,
+    formId: site.contact.formId,
+    serviceProperty: site.contact.serviceProperty,
+  },
+  licenceWeeks: LICENCE_WEEKS,
+  targetWeeks: TARGET_WEEKS,
+  fees: FEES,
+  crmService: CRM_SERVICE,
+  treaty: TREATY_COUNTRIES,
+  germanSpeaking: GERMAN_SPEAKING,
+  ep: {
+    current: [QUALIFYING_SALARY.current.general[0], QUALIFYING_SALARY.current.fs[0]],
+    next: [QUALIFYING_SALARY.from2027.general[0], QUALIFYING_SALARY.from2027.fs[0]],
+    switchDate: DATES.newApplicationsSwitch,
+  },
+};
+---
+
+<div
+  id="planner"
+  class="sp scroll-mt-24"
+  data-setup-planner
+  data-copy={JSON.stringify(c)}
+  data-crm={JSON.stringify(crm)}
+  data-config={JSON.stringify(config)}
+>
+  <div data-sp-root></div>
+  <noscript>
+    <p class="sp-noscript">{c.noscript.replace('{email}', site.email)}</p>
+  </noscript>
+</div>
+
+<style is:global>
+  .sp {
+    --sp-navy: var(--color-navy);
+    --sp-red: var(--color-red);
+    --sp-line: var(--color-line);
+    --sp-tint: var(--color-tint);
+    --sp-ivory: var(--color-ivory);
+    --sp-body: var(--color-body);
+    max-width: 52rem;
+  }
+  .sp-noscript {
+    border: 1px solid var(--sp-line);
+    background: var(--sp-tint);
+    padding: 1.25rem;
+    line-height: 1.6;
+  }
+  .sp h2,
+  .sp h3 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--sp-navy);
+    text-wrap: balance;
+  }
+  .sp-progress {
+    display: flex;
+    gap: 4px;
+  }
+  .sp-progress i {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--sp-line);
+  }
+  .sp-progress i.is-done {
+    background: var(--sp-navy);
+  }
+  .sp-progress i.is-now {
+    background: var(--sp-red);
+  }
+  .sp-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-top: 0.75rem;
+    font-size: 14px;
+    color: color-mix(in srgb, var(--sp-body) 80%, transparent);
+  }
+  .sp-link {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    color: var(--sp-navy);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--sp-navy) 35%, transparent);
+    text-underline-offset: 4px;
+    cursor: pointer;
+  }
+  .sp-link:hover {
+    text-decoration-color: var(--sp-navy);
+  }
+  .sp-q {
+    margin-top: 2rem;
+  }
+  .sp-q h2 {
+    font-size: clamp(1.4rem, 3.4vw, 1.75rem);
+    line-height: 1.25;
+  }
+  .sp-q h2:focus {
+    outline: none;
+  }
+  .sp-help {
+    margin-top: 0.5rem;
+    max-width: 62ch;
+    line-height: 1.6;
+  }
+  .sp-opts {
+    display: grid;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+  .sp-opt {
+    display: grid;
+    grid-template-columns: 1.25rem minmax(0, 1fr);
+    gap: 0.9rem;
+    align-items: start;
+    width: 100%;
+    text-align: left;
+    background: #fff;
+    border: 1px solid var(--sp-line);
+    border-radius: 3px;
+    padding: 0.9rem 1rem;
+    cursor: pointer;
+    color: inherit;
+    font: inherit;
+    transition: border-color 0.15s;
+  }
+  .sp-opt:hover {
+    border-color: var(--sp-navy);
+  }
+  .sp-dot {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.2rem;
+    border: 1.5px solid color-mix(in srgb, var(--sp-navy) 40%, transparent);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+  }
+  .sp-opt[aria-checked='true'] {
+    border-color: var(--sp-navy);
+    box-shadow: inset 0 0 0 1px var(--sp-navy);
+  }
+  .sp-opt[aria-checked='true'] .sp-dot {
+    border-color: var(--sp-navy);
+  }
+  .sp-opt[aria-checked='true'] .sp-dot::after {
+    content: '';
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: var(--sp-navy);
+  }
+  .sp-opt strong {
+    display: block;
+    font-weight: 600;
+    color: var(--sp-navy);
+  }
+  .sp-opt span span {
+    display: block;
+    margin-top: 0.1rem;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .sp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+  .sp-chip {
+    font: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--sp-line);
+    background: #fff;
+    color: var(--sp-navy);
+    cursor: pointer;
+  }
+  .sp-chip:hover {
+    border-color: var(--sp-navy);
+  }
+  .sp-chip[aria-checked='true'] {
+    background: var(--sp-navy);
+    border-color: var(--sp-navy);
+    color: #fff;
+  }
+  .sp-sub {
+    margin-top: 1rem;
+    padding: 1rem 1.1rem 1.1rem;
+    background: var(--sp-tint);
+    border-radius: 3px;
+  }
+  .sp-sub h3 {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    letter-spacing: 0;
+  }
+  .sp-sub .sp-chips {
+    margin-top: 0.75rem;
+  }
+  .sp-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--sp-line);
+  }
+  .sp-nav .btn-red[disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* Result */
+  .sp-result > * + * {
+    margin-top: 2.5rem;
+  }
+  .sp-verdict {
+    background: #fff;
+    border: 1px solid var(--sp-line);
+    border-top: 3px solid var(--sp-red);
+    padding: 1.5rem;
+  }
+  @media (min-width: 640px) {
+    .sp-verdict {
+      padding: 2rem;
+    }
+  }
+  .sp-verdict h2 {
+    margin-top: 0.5rem;
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    line-height: 1.15;
+  }
+  .sp-form-of {
+    margin-top: 0.35rem;
+    color: color-mix(in srgb, var(--sp-body) 85%, transparent);
+  }
+  .sp-list {
+    margin-top: 1.1rem;
+    display: grid;
+    gap: 0.55rem;
+    line-height: 1.6;
+  }
+  .sp-list li {
+    display: flex;
+    gap: 0.75rem;
+  }
+  .sp-list svg {
+    flex-shrink: 0;
+    width: 0.9rem;
+    height: 0.9rem;
+    margin-top: 0.4rem;
+    color: var(--sp-red);
+  }
+  .sp-alt {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--sp-line);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .sp-alt strong {
+    color: var(--sp-navy);
+    font-weight: 600;
+  }
+  .sp-section h2 {
+    font-size: 1.5rem;
+  }
+  .sp-section-intro {
+    margin-top: 0.5rem;
+    max-width: 64ch;
+    line-height: 1.6;
+  }
+  .sp-flags {
+    margin-top: 1rem;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .sp-flag {
+    display: grid;
+    gap: 0.35rem;
+    padding: 1rem 1.1rem;
+    border-left: 3px solid #b45309;
+    background: #fdf6e7;
+    line-height: 1.6;
+  }
+  .sp-flag.is-ok {
+    border-left-color: #1d6b45;
+    background: #ecf5ef;
+  }
+  .sp-flag b {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #8a4a06;
+  }
+  .sp-flag.is-ok b {
+    color: #1d6b45;
+  }
+  .sp-gantt {
+    margin-top: 1rem;
+    background: #fff;
+    border: 1px solid var(--sp-line);
+    padding: 1rem 1.1rem 1.1rem;
+  }
+  .sp-grow,
+  .sp-axis {
+    display: grid;
+    grid-template-columns: minmax(9rem, 34%) minmax(0, 1fr);
+    gap: 0.9rem;
+    align-items: center;
+  }
+  .sp-grow {
+    padding-block: 0.45rem;
+  }
+  .sp-grow + .sp-grow {
+    border-top: 1px solid color-mix(in srgb, var(--sp-line) 60%, transparent);
+  }
+  .sp-glabel {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--sp-navy);
+  }
+  .sp-glabel small {
+    display: block;
+    margin-top: 0.1rem;
+    font-size: 12.5px;
+    font-weight: 400;
+    color: color-mix(in srgb, var(--sp-body) 80%, transparent);
+  }
+  .sp-track {
+    position: relative;
+    height: 0.8rem;
+    border-radius: 2px;
+    background-color: var(--sp-tint);
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent calc(var(--tick) - 1px),
+      color-mix(in srgb, var(--sp-navy) 12%, transparent) calc(var(--tick) - 1px),
+      color-mix(in srgb, var(--sp-navy) 12%, transparent) var(--tick)
+    );
+  }
+  .sp-bar {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 2px;
+    background: var(--sp-navy);
+  }
+  .sp-bar.is-soft {
+    background: color-mix(in srgb, var(--sp-navy) 30%, #fff);
+  }
+  .sp-bar.is-licence {
+    background: var(--sp-red);
+  }
+  .sp-target {
+    position: absolute;
+    top: -0.3rem;
+    bottom: -0.3rem;
+    border-left: 2px dashed var(--sp-red);
+  }
+  .sp-ticks {
+    position: relative;
+    height: 1.2rem;
+    margin-top: 0.4rem;
+    font-size: 11.5px;
+    font-variant-numeric: tabular-nums;
+    color: color-mix(in srgb, var(--sp-body) 75%, transparent);
+  }
+  .sp-ticks span {
+    position: absolute;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+  .sp-ticks span:first-child {
+    transform: none;
+  }
+  .sp-axis-unit {
+    margin-top: 0.1rem;
+    text-align: right;
+    font-size: 11.5px;
+    color: color-mix(in srgb, var(--sp-body) 75%, transparent);
+  }
+  .sp-ticks span:last-child {
+    transform: translateX(-100%);
+  }
+  .sp-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.1rem;
+    margin-top: 0.9rem;
+    font-size: 12.5px;
+    color: color-mix(in srgb, var(--sp-body) 80%, transparent);
+  }
+  .sp-legend i {
+    display: inline-block;
+    width: 0.8rem;
+    height: 0.5rem;
+    margin-right: 0.4rem;
+    border-radius: 2px;
+    vertical-align: middle;
+  }
+  @media (max-width: 560px) {
+    .sp-grow,
+    .sp-axis {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.35rem;
+    }
+    .sp-axis > div:first-child {
+      display: none;
+    }
+  }
+  .sp-check {
+    margin-top: 1rem;
+    border: 1px solid var(--sp-line);
+    background: #fff;
+  }
+  .sp-check li {
+    display: grid;
+    grid-template-columns: 1.1rem minmax(0, 1fr);
+    gap: 0.9rem;
+    padding: 0.85rem 1.1rem;
+    line-height: 1.5;
+  }
+  .sp-check li + li {
+    border-top: 1px solid var(--sp-line);
+  }
+  .sp-box {
+    width: 0.95rem;
+    height: 0.95rem;
+    margin-top: 0.25rem;
+    border: 1.5px solid color-mix(in srgb, var(--sp-navy) 45%, transparent);
+    border-radius: 2px;
+  }
+  .sp-check strong {
+    display: block;
+    font-weight: 600;
+    color: var(--sp-navy);
+  }
+  .sp-check span span {
+    display: block;
+    font-size: 14px;
+  }
+  .sp-fees {
+    margin-top: 1rem;
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid var(--sp-line);
+    font-size: 15px;
+  }
+  .sp-fees td {
+    padding: 0.75rem 1.1rem;
+    border-top: 1px solid var(--sp-line);
+    vertical-align: top;
+    line-height: 1.45;
+  }
+  .sp-fees tr:first-child td {
+    border-top: 0;
+  }
+  .sp-fees td:last-child {
+    text-align: right;
+    white-space: nowrap;
+    font-weight: 600;
+    color: var(--sp-navy);
+    font-variant-numeric: tabular-nums;
+  }
+  .sp-fees small {
+    display: block;
+    font-size: 13px;
+    color: color-mix(in srgb, var(--sp-body) 80%, transparent);
+  }
+  .sp-taxhead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 0.9rem;
+  }
+  .sp-rate {
+    font-family: var(--font-serif);
+    font-size: 1.9rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--sp-navy);
+  }
+  .sp-ratelabel {
+    font-size: 14px;
+  }
+  .sp-tax p {
+    margin-top: 0.75rem;
+    max-width: 66ch;
+    line-height: 1.65;
+  }
+  .sp-cta {
+    background: var(--sp-navy);
+    color: #fff;
+    padding: 1.5rem;
+  }
+  @media (min-width: 640px) {
+    .sp-cta {
+      padding: 2rem;
+    }
+  }
+  .sp .sp-cta h2 {
+    color: #fff;
+    font-size: 1.5rem;
+  }
+  .sp-cta p {
+    margin-top: 0.6rem;
+    max-width: 60ch;
+    line-height: 1.6;
+    color: rgb(255 255 255 / 0.85);
+  }
+  .sp-needs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+  }
+  .sp-needs span {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.12);
+  }
+  .sp-cta-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    margin-top: 1.5rem;
+    font-size: 14px;
+    color: rgb(255 255 255 / 0.85);
+  }
+  .sp-cta-actions b {
+    color: #fff;
+    font-weight: 600;
+    user-select: all;
+  }
+  .sp-lead {
+    border: 1px solid var(--sp-line);
+    background: var(--sp-ivory);
+    padding: 1.5rem;
+  }
+  @media (min-width: 640px) {
+    .sp-lead {
+      padding: 2rem;
+    }
+  }
+  .sp-lead h2 {
+    font-size: 1.5rem;
+  }
+  .sp-lead > p {
+    margin-top: 0.6rem;
+    max-width: 62ch;
+    line-height: 1.6;
+  }
+  .sp-fgrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+  .sp-fgrid .is-full {
+    grid-column: 1 / -1;
+  }
+  @media (max-width: 560px) {
+    .sp-fgrid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .sp-field label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--sp-navy);
+  }
+  .sp-field label small {
+    font-weight: 400;
+    color: color-mix(in srgb, var(--sp-body) 75%, transparent);
+  }
+  .sp-field input,
+  .sp-field textarea {
+    display: block;
+    width: 100%;
+    margin-top: 0.4rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--sp-line);
+    border-radius: 3px;
+    background: #fff;
+    color: var(--sp-navy);
+    font: inherit;
+  }
+  .sp-field input:focus,
+  .sp-field textarea:focus {
+    border-color: var(--sp-navy);
+    outline: none;
+  }
+  .sp-field input[aria-invalid='true'],
+  .sp-field textarea[aria-invalid='true'] {
+    border-color: var(--sp-red);
+  }
+  .sp-err {
+    margin-top: 0.35rem;
+    font-size: 13px;
+    color: var(--color-red-dark);
+  }
+  .sp-consent {
+    display: grid;
+    grid-template-columns: 1.1rem minmax(0, 1fr);
+    gap: 0.7rem;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .sp-consent input {
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.2rem;
+    accent-color: var(--sp-navy);
+  }
+  .sp-fine {
+    font-size: 13px;
+    line-height: 1.55;
+    color: color-mix(in srgb, var(--sp-body) 80%, transparent);
+  }
+  .sp-fine a {
+    color: var(--sp-navy);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .sp-status {
+    margin-top: 1rem;
+  }
+  .sp-status .is-success {
+    border: 1px solid color-mix(in srgb, var(--sp-navy) 20%, transparent);
+    background: var(--sp-tint);
+    padding: 1.1rem 1.25rem;
+  }
+  .sp-status .is-error {
+    border: 1px solid color-mix(in srgb, var(--sp-red) 40%, transparent);
+    background: color-mix(in srgb, var(--sp-red) 5%, #fff);
+    padding: 1.1rem 1.25rem;
+  }
+  .sp-status strong {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--sp-navy);
+  }
+  .sp-status .is-error strong {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    color: var(--color-red-dark);
+  }
+  .sp-hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .sp-foot {
+    display: grid;
+    gap: 0.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--sp-line);
+  }
+  .sp-print-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+  }
+
+  @media print {
+    body > header,
+    body > footer,
+    dialog,
+    [data-consent-banner],
+    .sp-noprint {
+      display: none !important;
+    }
+    .sp {
+      max-width: none;
+    }
+    .sp-result > * + * {
+      margin-top: 1.5rem;
+    }
+    .sp-verdict,
+    .sp-gantt,
+    .sp-check,
+    .sp-fees,
+    .sp-flag {
+      break-inside: avoid;
+    }
+    .sp-bar,
+    .sp-flag,
+    .sp-track {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>
+
+<script>
+  type Opt = string[];
+  const host = document.querySelector<HTMLElement>('[data-setup-planner]');
+  if (host) {
+    const c = JSON.parse(host.dataset.copy || '{}') as any;
+    const crm = JSON.parse(host.dataset.crm || '{}') as any;
+    const cfg = JSON.parse(host.dataset.config || '{}') as any;
+    const root = host.querySelector<HTMLElement>('[data-sp-root]')!;
+    const lang: string = cfg.lang;
+    const STORE = 'meridium-setup-planner';
+
+    const esc = (v: unknown) =>
+      String(v).replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch]!);
+    const fill = (s: string, v: Record<string, string | number>) => s.replace(/\{(\w+)\}/g, (_, k) => String(v[k] ?? ''));
+    const num = new Intl.NumberFormat(lang === 'de' ? 'de-DE' : 'en-SG');
+    const money = (n: number) => (lang === 'de' ? `${num.format(n)} S$` : `S$${num.format(n)}`);
+    const track = (name: string, params: Record<string, string> = {}) => {
+      try {
+        (window as any).gtag?.('event', name, params);
+      } catch {
+        /* analytics unavailable */
+      }
+    };
+    const check =
+      '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+    // ---- state ----
+    let s: Record<string, string> = {};
+    let view: 'wizard' | 'result' = 'wizard';
+    let stepIdx = 0;
+    let started = false;
+    const save = () => {
+      try {
+        sessionStorage.setItem(STORE, JSON.stringify({ s, view, stepIdx }));
+      } catch {
+        /* storage blocked */
+      }
+    };
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(STORE) || 'null');
+      if (saved && saved.s) {
+        s = saved.s;
+        view = saved.view === 'result' ? 'result' : 'wizard';
+        stepIdx = Number(saved.stepIdx) || 0;
+        started = Object.keys(s).length > 0;
+      }
+    } catch {
+      /* storage blocked */
+    }
+
+    const isCorp = () => s.who === 'parent' || s.who === 'group';
+    const isRO = () => isCorp() && s.activity === 'explore' && s.invoicing === 'no';
+    const STEPS = [
+      { id: 'you', fields: ['who', 'country'] },
+      { id: 'activity', fields: ['activity', 'regSector'] },
+      { id: 'invoicing', fields: ['invoicing'] },
+      { id: 'separate', fields: ['separate'], show: () => isCorp() && !isRO() },
+      { id: 'director', fields: ['director'], show: () => !isRO() },
+      { id: 'hires', fields: ['hires'] },
+      { id: 'plans', fields: ['revenue', 'timing'] },
+    ];
+    const CHIPS = ['country', 'regSector', 'revenue', 'timing'];
+    const fieldShown = (f: string) => f !== 'regSector' || s.activity === 'regulated';
+    const visibleSteps = () => STEPS.filter((st) => !st.show || st.show());
+    const stepComplete = (st: { fields: string[] }) => st.fields.filter(fieldShown).every((f) => s[f]);
+    const labelOf = (copy: any, key: string, val: string) => {
+      const o = (copy.q[key].options as Opt[]).find((x) => x[0] === val);
+      return o ? o[1] : '';
+    };
+
+    // ---- wizard ----
+    const renderField = (f: string): string => {
+      const q = c.q[f];
+      const chips = CHIPS.includes(f);
+      const opts = (q.options as Opt[])
+        .map((o) => {
+          const on = s[f] === o[0];
+          if (chips)
+            return `<button type="button" class="sp-chip" role="radio" aria-checked="${on}" data-f="${f}" data-v="${o[0]}">${esc(o[1])}</button>`;
+          return `<button type="button" class="sp-opt" role="radio" aria-checked="${on}" data-f="${f}" data-v="${o[0]}"><span class="sp-dot" aria-hidden="true"></span><span><strong>${esc(o[1])}</strong>${o[2] ? `<span>${esc(o[2])}</span>` : ''}</span></button>`;
+        })
+        .join('');
+      if (f === 'regSector')
+        return `<div class="sp-sub"><h3 id="sp-h-${f}">${esc(q.title)}</h3><div class="sp-chips" role="radiogroup" aria-labelledby="sp-h-${f}">${opts}</div></div>`;
+      return `<div class="sp-q"><h2 id="sp-h-${f}" tabindex="-1">${esc(q.title)}</h2>${q.help ? `<p class="sp-help">${esc(q.help)}</p>` : ''}<div class="${chips ? 'sp-chips' : 'sp-opts'}" role="radiogroup" aria-labelledby="sp-h-${f}">${opts}</div>${f === 'activity' && fieldShown('regSector') ? renderField('regSector') : ''}</div>`;
+    };
+
+    const renderWizard = (focusHeading: boolean) => {
+      const steps = visibleSteps();
+      if (stepIdx >= steps.length) stepIdx = steps.length - 1;
+      const st = steps[stepIdx];
+      const bars = steps.map((_, i) => `<i class="${i < stepIdx ? 'is-done' : i === stepIdx ? 'is-now' : ''}"></i>`).join('');
+      const body = st.fields.filter((f) => f !== 'regSector').map(renderField).join('');
+      const last = stepIdx === steps.length - 1;
+      root.innerHTML = `
+        <div class="sp-progress" aria-hidden="true">${bars}</div>
+        <div class="sp-meta"><span>${esc(fill(c.ui.step, { n: stepIdx + 1, total: steps.length }))} · ${esc(c.steps[st.id])}</span>${started ? `<button type="button" class="sp-link" data-act="restart">${esc(c.ui.restart)}</button>` : ''}</div>
+        ${body}
+        <div class="sp-nav">
+          ${stepIdx > 0 ? `<button type="button" class="btn-outline-navy" data-act="back">${esc(c.ui.back)}</button>` : '<span></span>'}
+          <button type="button" class="btn-red" data-act="next" ${stepComplete(st) ? '' : 'disabled'}>${esc(last ? c.ui.seePlan : c.ui.next)}</button>
+        </div>`;
+      if (focusHeading) root.querySelector<HTMLElement>('.sp-q h2')?.focus({ preventScroll: true });
+    };
+
+    const scrollToTop = () => {
+      const top = host.getBoundingClientRect().top;
+      if (top < 0 || top > window.innerHeight * 0.6) host.scrollIntoView({ block: 'start' });
+    };
+
+    const go = (next: typeof view, idx = stepIdx) => {
+      view = next;
+      stepIdx = idx;
+      save();
+      if (view === 'result') {
+        renderResult();
+        track('setup_planner_complete');
+      } else renderWizard(true);
+      scrollToTop();
+    };
+
+    const advance = () => {
+      const steps = visibleSteps();
+      if (!stepComplete(steps[stepIdx])) return;
+      if (stepIdx < steps.length - 1) go('wizard', stepIdx + 1);
+      else go('result');
+    };
+
+    root.addEventListener('click', (e) => {
+      const el = (e.target as HTMLElement).closest<HTMLElement>('[data-f],[data-act]');
+      if (!el || !root.contains(el)) return;
+      if (el.dataset.f) {
+        const f = el.dataset.f;
+        const v = el.dataset.v!;
+        if (!started) {
+          started = true;
+          track('setup_planner_start');
+        }
+        s[f] = v;
+        if (f === 'activity' && v !== 'regulated') delete s.regSector;
+        save();
+        const st = visibleSteps()[stepIdx];
+        const single = st.fields.filter(fieldShown).length === 1;
+        renderWizard(false);
+        root.querySelector<HTMLElement>(`[data-f="${f}"][data-v="${v}"]`)?.focus({ preventScroll: true });
+        if (single && stepComplete(st)) window.setTimeout(advance, 240);
+        return;
+      }
+      const act = el.dataset.act;
+      if (act === 'next') advance();
+      else if (act === 'back') go('wizard', Math.max(0, stepIdx - 1));
+      else if (act === 'restart') {
+        s = {};
+        started = false;
+        go('wizard', 0);
+      } else if (act === 'edit') go('wizard', 0);
+      else if (act === 'print') window.print();
+    });
+
+    // ---- plan logic ----
+    const structure = () => {
+      if (isRO()) return 'ro';
+      if (isCorp() && s.separate === 'no' && s.activity !== 'holding') return 'branch';
+      return 'pte';
+    };
+    const needsEP = () => s.hires === 'foreign' || s.hires === 'both' || s.director === 'relocate';
+    const hasLocal = () => s.hires === 'local' || s.hires === 'both';
+    const needsNominee = () => s.director === 'nominee' || s.director === 'relocate';
+    const licenceKey = () =>
+      s.activity === 'regulated' && s.regSector ? s.regSector : s.activity === 'fnb' ? 'fnb' : s.activity === 'trading' ? 'trading' : '';
+    const LICENCE_WEEKS: Record<string, [number, number]> = cfg.licenceWeeks;
+    const TARGET: Record<string, number> = cfg.targetWeeks;
+    const FEES: Record<string, number> = cfg.fees;
+
+    type Phase = { k: string; a: number; b: number; soft?: boolean; licence?: boolean; note?: string };
+    const phases = (str: string): Phase[] => {
+      const p: Phase[] = [];
+      if (str === 'ro') {
+        p.push({ k: 'roDocs', a: 0, b: 2 }, { k: 'roCorppass', a: 0, b: 2 }, { k: 'roApp', a: 1, b: 4 });
+        if (needsEP()) p.push({ k: 'ep', a: 4, b: 7 });
+        return p;
+      }
+      p.push({ k: 'scope', a: 0, b: 1 });
+      if (str === 'branch') p.push({ k: 'certify', a: 0, b: 3 });
+      const o = str === 'branch' ? 2 : 0;
+      if (needsNominee())
+        p.push(s.director === 'relocate' ? { k: 'nomineeInterim', a: 1 + o, b: 7 + o, soft: true } : { k: 'nominee', a: 1 + o, b: 10 + o, soft: true });
+      p.push({ k: str === 'branch' ? 'branchReg' : 'incorp', a: 1 + o, b: 2 + o });
+      p.push({ k: 'bank', a: 2 + o, b: 7 + o });
+      const regs = ['IRAS'];
+      if (hasLocal() || needsEP()) regs.push('CPF');
+      if (s.revenue === 'over') regs.push('GST');
+      p.push({ k: 'regs', a: 2 + o, b: 4 + o, note: regs.join(', ') });
+      if (needsEP()) p.push({ k: 'ep', a: 2 + o, b: 5 + o });
+      const L = licenceKey();
+      if (L) p.push({ k: `lic:${L}`, a: LICENCE_WEEKS[L][0] + o, b: LICENCE_WEEKS[L][1] + o, licence: true });
+      return p;
+    };
+
+    const plan = () => {
+      const str = structure();
+      const L = licenceKey();
+      const ph = phases(str);
+      const ready = Math.max(...ph.filter((x) => !x.soft).map((x) => x.b));
+      const target = TARGET[s.timing];
+
+      const needs: string[] = [str === 'ro' ? 'ro' : str === 'branch' ? 'branch' : 'incorp'];
+      if (str === 'pte') needs.push('secretary');
+      if (needsNominee()) needs.push(s.director === 'relocate' ? 'nomineeInterim' : 'nominee');
+      if (needsEP()) needs.push('ep');
+      if (hasLocal()) needs.push('payroll');
+      if (str !== 'ro') needs.push('accounting');
+      if (s.revenue === 'over') needs.push('gst');
+      if (s.who === 'group' || s.activity === 'holding' || s.separate === 'unsure') needs.push('structuring');
+
+      let score = 0;
+      if (needsNominee()) score += 2;
+      if (needsEP()) score += 2;
+      if (s.activity === 'regulated') score += 2;
+      if (s.revenue === 'over') score += 1;
+      if (s.timing === 'asap' || s.timing === 'q') score += 1;
+      if (isCorp()) score += 1;
+      if (hasLocal()) score += 1;
+      if (s.timing === 'explore') score -= 1;
+      if (str === 'ro') score -= 1;
+      score = Math.max(0, score);
+      const band = score >= 6 ? 'High' : score >= 3 ? 'Medium' : 'Low';
+      return { str, L, ph, ready, target, needs, score, band };
+    };
+
+    // ---- result ----
+    const renderResult = () => {
+      const r = c.r;
+      const P = plan();
+      const { str, L, ph, ready, target } = P;
+      const lic = L ? r.lic[L] : null;
+      const country = labelOf(c, 'country', s.country);
+
+      let title = '';
+      let form = '';
+      const why: string[] = [];
+      let alt = '';
+      if (str === 'pte') {
+        title = r.pteTitle;
+        form = s.who === 'parent' ? r.pteFormParent : s.who === 'group' ? r.pteFormGroup : r.pteFormFounder;
+        why.push(r.whyPteSeparate);
+        if (needsEP()) why.push(r.whyPteEp);
+        why.push(s.activity === 'holding' || s.who === 'group' ? r.whyPteTreaty : r.whyPteExempt);
+        if (s.separate === 'unsure') why.push(r.whyPteUnsure);
+        if (isCorp()) alt = s.activity === 'explore' ? r.altPteRo : r.altPteBranch;
+        else if (s.activity === 'explore') alt = r.altFounderRo;
+      } else if (str === 'branch') {
+        title = r.branchTitle;
+        form = r.branchForm;
+        why.push(r.whyBranch1, r.whyBranch2, r.whyBranch3);
+        alt = r.altBranch;
+      } else {
+        title = r.roTitle;
+        form = r.roForm;
+        why.push(r.whyRo1, r.whyRo2, r.whyRo3);
+        alt = r.altRo;
+      }
+
+      // Flags
+      const flags: { label: string; text: string; ok?: boolean }[] = [];
+      if (target && ready > target) {
+        const pace = L && LICENCE_WEEKS[L][1] > 8 ? r.paceLicence : r.paceBank;
+        flags.push({ label: r.flagTimingLabel, text: fill(r.flagTiming, { target: r.targetPhrase[s.timing], weeks: ready, pace }) });
+      }
+      if (s.director === 'relocate') flags.push({ label: r.flagGapLabel, text: r.flagGap });
+      if (needsEP()) {
+        const today = new Date().toISOString().slice(0, 10);
+        const salary =
+          today < cfg.ep.switchDate
+            ? `${fill(r.epSalary, { g: money(cfg.ep.current[0]), f: money(cfg.ep.current[1]) })} ${fill(r.epSalaryNext, { g: money(cfg.ep.next[0]), f: money(cfg.ep.next[1]) })}`
+            : fill(r.epSalary, { g: money(cfg.ep.next[0]), f: money(cfg.ep.next[1]) });
+        flags.push({ label: r.flagEpLabel, text: fill(r.flagEp, { salary }) });
+      }
+      if (target && ready <= target) flags.push({ label: r.flagOkLabel, text: fill(r.flagOk, { target: r.targetPhrase[s.timing], weeks: ready }), ok: true });
+
+      // Timeline
+      const maxW = Math.max(ready, target || 0, ...ph.map((x) => x.b));
+      const stepW = maxW > 20 ? 4 : maxW > 10 ? 2 : 1;
+      const span = Math.ceil(maxW / stepW) * stepW;
+      const pct = (w: number) => `${((w / span) * 100).toFixed(2)}%`;
+      const tick = `${((stepW / span) * 100).toFixed(3)}%`;
+      const showTarget = !!target && target <= span;
+      const rows = ph
+        .map((x) => {
+          let label: string;
+          let note: string;
+          if (x.k.startsWith('lic:')) {
+            label = lic.tag;
+            note = lic.note;
+          } else {
+            [label, note] = r.ph[x.k];
+            if (x.note) note = fill(note, { list: x.note });
+          }
+          const cls = x.soft ? ' is-soft' : x.licence ? ' is-licence' : '';
+          return `<div class="sp-grow"><div class="sp-glabel">${esc(label)}<small>${esc(note)}</small></div><div class="sp-track" style="--tick:${tick}"><div class="sp-bar${cls}" style="left:${pct(x.a)};width:${pct(Math.max(x.b - x.a, 0.5))}"></div>${showTarget ? `<div class="sp-target" style="left:${pct(target)}"></div>` : ''}</div></div>`;
+        })
+        .join('');
+      let ticks = '';
+      for (let w = 0; w <= span; w += stepW) ticks += `<span style="left:${pct(w)}">${w}</span>`;
+      const legend = [
+        `<span><i style="background:var(--sp-navy)"></i>${esc(r.legendCore)}</span>`,
+        L ? `<span><i style="background:var(--sp-red)"></i>${esc(r.legendLicence)}</span>` : '',
+        needsNominee() ? `<span><i style="background:color-mix(in srgb, var(--sp-navy) 30%, #fff)"></i>${esc(r.legendDirector)}</span>` : '',
+        showTarget ? `<span><i style="width:0;height:0.7rem;border-left:2px dashed var(--sp-red);border-radius:0"></i>${esc(r.legendTarget)}</span>` : '',
+      ].join('');
+
+      // Checklist
+      const ck = r.ck;
+      const items: string[][] = [];
+      if (str === 'ro') items.push(ck.roDocs, ck.roCorppass, ck.roOffice, ck.roRenewal);
+      else {
+        items.push(str === 'branch' ? ck.branchName : ck.pteName);
+        items.push([
+          str === 'branch' ? ck.directorBranch : ck.directorPte,
+          s.director === 'resident' ? ck.directorResident : s.director === 'relocate' ? ck.directorRelocate : ck.directorNominee,
+        ]);
+        items.push(ck.office);
+        if (str === 'pte') items.push(ck.secretary, ck.capital);
+        items.push(ck.rorc);
+        items.push(ck.bank);
+        if (hasLocal() || needsEP()) items.push(ck.cpf);
+        if (s.revenue === 'over') items.push(ck.gst);
+        items.push(ck.dpo);
+      }
+      if (lic) items.push([lic.name, lic.note]);
+
+      // Fees
+      const fe = r.fee;
+      const fees: [string[], string][] = [];
+      if (str === 'ro') fees.push([fe.roFee, money(FEES.roPerYear)]);
+      else fees.push([fe.acraName, money(FEES.acraName)], [str === 'branch' ? fe.acraBranch : fe.acraReg, money(FEES.acraRegistration)]);
+      if (needsEP()) fees.push([fe.epApp, money(FEES.epApplication)], [fe.epIssue, money(FEES.epIssuance)]);
+      if (s.revenue === 'over') fees.push([fe.gst, r.noFee]);
+
+      // Tax
+      const taxMain =
+        str === 'ro' ? r.taxRo : str === 'branch' ? r.taxBranch : s.activity === 'holding' ? r.taxHolding : s.who === 'founder' ? r.taxFounder : r.taxCorp;
+      const taxResid = str === 'pte' && (isCorp() || s.director === 'nominee') ? r.taxResidency : '';
+      const treaty =
+        str === 'ro' ? '' : (cfg.treaty as string[]).includes(s.country) ? fill(r.treaty, { country }) : s.country === 'us' ? r.treatyUs : r.treatyOther;
+
+      // CTA
+      const ctaBits: string[] = [];
+      if (needsNominee()) ctaBits.push(r.ctaDirector);
+      if (needsEP()) ctaBits.push(r.ctaEp);
+      if (lic && s.activity === 'regulated') ctaBits.push(lic.cta);
+      const ctaLine =
+        ctaBits.length >= 2
+          ? fill(r.ctaMany, { items: `${ctaBits.slice(0, -1).join(', ')} ${r.and} ${ctaBits[ctaBits.length - 1]}` })
+          : ctaBits.length === 1
+            ? fill(r.ctaOne, { item: ctaBits[0] })
+            : r.ctaNone;
+      const german = (cfg.germanSpeaking as string[]).includes(s.country) && lang === 'en' ? ` ${r.german}` : '';
+      const needChips = P.needs.map((n) => `<span>${esc(r.needs[n])}</span>`).join('');
+
+      const lead = c.lead;
+      const prefillCountry = ['eu', 'other'].includes(s.country) ? '' : country;
+      const field = (id: string, name: string, label: string, err: string, type = 'text', auto = '', full = false, value = '') =>
+        `<div class="sp-field${full ? ' is-full' : ''}"><label for="${id}">${esc(label)}</label><input id="${id}" name="${name}" type="${type}" ${auto ? `autocomplete="${auto}"` : ''} required value="${esc(value)}" data-error-id="${id}-err"><p id="${id}-err" class="sp-err" hidden>${esc(err)}</p></div>`;
+
+      root.innerHTML = `
+      <div class="sp-result">
+        <div class="sp-meta sp-noprint" style="margin-top:0"><span class="eyebrow">${esc(c.ui.resultEyebrow)}</span><span><button type="button" class="sp-link" data-act="edit">${esc(c.ui.change)}</button> · <button type="button" class="sp-link" data-act="restart">${esc(c.ui.restart)}</button></span></div>
+
+        <div class="sp-verdict">
+          <p class="eyebrow">${esc(r.recommended)}</p>
+          <h2 tabindex="-1" data-sp-title>${esc(title)}</h2>
+          <p class="sp-form-of">${esc(form)}</p>
+          <ul class="sp-list">${why.map((w) => `<li>${check}<span>${esc(w)}</span></li>`).join('')}</ul>
+          ${alt ? `<p class="sp-alt">${esc(alt)}</p>` : ''}
+        </div>
+
+        ${flags.length ? `<section class="sp-section"><h2>${esc(r.flagsHeading)}</h2><div class="sp-flags">${flags.map((f) => `<div class="sp-flag${f.ok ? ' is-ok' : ''}"><b>${esc(f.label)}</b><p>${esc(f.text)}</p></div>`).join('')}</div></section>` : ''}
+
+        <section class="sp-section">
+          <h2>${esc(r.timelineHeading)}</h2>
+          <p class="sp-section-intro">${esc(r.timelineIntro)} <strong class="font-semibold text-navy">${esc(fill(r.timelineReady, { weeks: ready }))}</strong></p>
+          <div class="sp-gantt" role="img" aria-label="${esc(fill(r.timelineAria, { weeks: ready }))}">
+            ${rows}
+            <div class="sp-axis"><div></div><div><div class="sp-ticks">${ticks}</div><p class="sp-axis-unit">${esc(r.weeks)}</p></div></div>
+            <div class="sp-legend">${legend}</div>
+          </div>
+        </section>
+
+        <section class="sp-section">
+          <h2>${esc(r.checklistHeading)}</h2>
+          <ul class="sp-check">${items.map((it) => `<li><span class="sp-box" aria-hidden="true"></span><span><strong>${esc(it[0])}</strong><span>${esc(it[1])}</span></span></li>`).join('')}</ul>
+        </section>
+
+        <section class="sp-section">
+          <h2>${esc(r.feesHeading)}</h2>
+          <p class="sp-section-intro">${esc(r.feesIntro)}</p>
+          <table class="sp-fees"><tbody>${fees.map(([l, v]) => `<tr><td>${esc(l[0])}${l[1] ? `<small>${esc(l[1])}</small>` : ''}</td><td>${esc(v)}</td></tr>`).join('')}</tbody></table>
+        </section>
+
+        <section class="sp-section sp-tax">
+          <div class="sp-taxhead"><h2>${esc(r.taxHeading)}</h2>${str !== 'ro' ? `<span class="sp-rate">17%</span><span class="sp-ratelabel">${esc(r.rateLabel)}</span>` : ''}</div>
+          <p>${esc(taxMain)}</p>
+          ${taxResid ? `<p>${esc(taxResid)}</p>` : ''}
+          ${treaty ? `<p>${esc(treaty)}</p>` : ''}
+        </section>
+
+        <section class="sp-cta sp-noprint">
+          <h2>${esc(r.ctaHeading)}</h2>
+          <p>${esc(ctaLine + german)}</p>
+          <div class="sp-needs">${needChips}</div>
+          <div class="sp-cta-actions">
+            <a class="btn-red" href="${esc(cfg.booking)}" target="_blank" rel="noopener">${esc(r.book)}</a>
+            <span>${esc(r.writeTo)} <b>${esc(cfg.email)}</b></span>
+          </div>
+        </section>
+
+        <section class="sp-lead sp-noprint">
+          <h2>${esc(lead.heading)}</h2>
+          <p>${esc(lead.body)}</p>
+          <form data-sp-form novalidate>
+            <div class="sp-fgrid">
+              ${field('sp-fn', 'firstname', lead.firstName, lead.firstNameError, 'text', 'given-name')}
+              ${field('sp-ln', 'lastname', lead.lastName, lead.lastNameError, 'text', 'family-name')}
+              ${field('sp-co', 'company', lead.company, lead.companyError, 'text', 'organization')}
+              ${field('sp-ct', 'country', lead.country, lead.countryError, 'text', 'country-name', false, prefillCountry)}
+              ${field('sp-em', 'email', lead.email, lead.emailError, 'email', 'email', true)}
+              <div class="sp-field is-full"><label for="sp-nt">${esc(lead.note)} <small>(${esc(lead.optional)})</small></label><textarea id="sp-nt" name="note" rows="3"></textarea></div>
+              <label class="sp-hp" aria-hidden="true">Leave this box unticked<input type="checkbox" name="botcheck" tabindex="-1"></label>
+              <div class="is-full">
+                <div class="sp-consent"><input type="checkbox" id="sp-consent" name="consent" required data-error-id="sp-consent-err"><label for="sp-consent">${esc(lead.consent)}</label></div>
+                <p id="sp-consent-err" class="sp-err" hidden>${esc(lead.consentError)}</p>
+                <p class="sp-fine" style="margin-top:0.6rem">${esc(lead.policyPre)} <a href="${esc(cfg.privacyHref)}">${esc(lead.policyLink)}</a>. ${esc(lead.sensitive)}</p>
+              </div>
+              <div class="is-full"><button type="submit" class="btn-red" data-sp-submit>${esc(lead.send)}</button></div>
+            </div>
+            <div class="sp-status" aria-live="polite">
+              <p data-sp-busy hidden>${esc(lead.busy)}</p>
+              <div class="is-success" data-sp-success hidden><strong>${esc(lead.successTitle)}</strong><p style="margin-top:0.35rem">${esc(fill(lead.successBody, { email: cfg.email }))}</p></div>
+              <div class="is-error" data-sp-error hidden><strong>${esc(lead.errorTitle)}</strong><p style="margin-top:0.35rem">${esc(lead.errorPre)} <a class="sp-link" href="mailto:${esc(cfg.email)}">${esc(cfg.email)}</a> ${esc(lead.errorPost)}</p></div>
+            </div>
+          </form>
+        </section>
+
+        <div class="sp-foot">
+          <div class="sp-print-row sp-noprint"><button type="button" class="btn-outline-navy" data-act="print">${esc(c.ui.print)}</button><span class="sp-fine">${esc(c.ui.printNote)}</span></div>
+          <p class="sp-fine">${esc(r.disclaimer)}</p>
+          <p class="sp-fine">${esc(r.sources)}</p>
+        </div>
+      </div>`;
+
+      root.querySelector<HTMLElement>('[data-sp-title]')?.focus({ preventScroll: true });
+      bindForm(P, title);
+    };
+
+    // ---- review form → HubSpot contact form ----
+    const summary = (P: ReturnType<typeof plan>, note: string) => {
+      const t = crm.titles;
+      const en = (k: string) => (s[k] ? labelOf(crm, k, s[k]) : '');
+      const form = P.str === 'pte' ? t[s.who] : '';
+      const lines = [
+        `Setup Planner request (${lang === 'de' ? 'German' : 'English'} site)`,
+        `Recommended: ${t[P.str]}${form ? ` (${form})` : ''}`,
+        `Lead priority: ${P.band} (score ${P.score} of 10)`,
+        `Likely services: ${P.needs.map((n) => crm.needs[n]).join(', ')}`,
+        `Planner timeline: about ${P.ready} weeks${s.timing ? `; wants to be operational: ${en('timing')}` : ''}`,
+        '',
+        'Answers',
+        `- Setting up: ${en('who')}`,
+        `- Based in: ${en('country')}`,
+        `- Activity: ${en('activity')}${s.regSector ? ` (${en('regSector')})` : ''}`,
+        `- Contracts or invoices in year one: ${en('invoicing')}`,
+      ];
+      if (s.separate && isCorp() && !isRO()) lines.push(`- Legally separate: ${en('separate')}`);
+      if (s.director && !isRO()) lines.push(`- Resident director: ${en('director')}`);
+      lines.push(`- Staff in first 12 months: ${en('hires')}`, `- Revenue, first two years: ${en('revenue')}`);
+      if (note) lines.push('', 'Visitor note:', note);
+      return lines.join('\n');
+    };
+
+    const bindForm = (P: ReturnType<typeof plan>, title: string) => {
+      const form = root.querySelector<HTMLFormElement>('[data-sp-form]');
+      if (!form) return;
+      let submitting = false;
+      const showError = (input: HTMLElement, show: boolean) => {
+        input.setAttribute('aria-invalid', String(show));
+        const id = input.getAttribute('data-error-id');
+        const msg = id ? document.getElementById(id) : null;
+        if (msg) msg.hidden = !show;
+        if (id) {
+          if (show) input.setAttribute('aria-describedby', id);
+          else input.removeAttribute('aria-describedby');
+        }
+      };
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (submitting) return;
+        let firstInvalid: HTMLElement | null = null;
+        for (const field of form.querySelectorAll<HTMLInputElement>('input[required]')) {
+          let valid = field.type === 'checkbox' ? field.checked : field.value.trim().length > 0;
+          if (valid && field.type === 'email') valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(field.value.trim());
+          showError(field, !valid);
+          if (!valid && !firstInvalid) firstInvalid = field;
+        }
+        if (firstInvalid) {
+          firstInvalid.focus();
+          return;
+        }
+        const busy = form.querySelector<HTMLElement>('[data-sp-busy]')!;
+        const success = form.querySelector<HTMLElement>('[data-sp-success]')!;
+        const error = form.querySelector<HTMLElement>('[data-sp-error]')!;
+        const button = form.querySelector<HTMLButtonElement>('[data-sp-submit]')!;
+        const grid = form.querySelector<HTMLElement>('.sp-fgrid')!;
+        success.hidden = true;
+        error.hidden = true;
+        const data = new FormData(form);
+        const text = (n: string) => String(data.get(n) ?? '').trim();
+        if (data.get('botcheck')) {
+          grid.hidden = true;
+          success.hidden = false;
+          return;
+        }
+        const hub = cfg.hub;
+        if (!hub.portalId || !hub.formId) {
+          error.hidden = false;
+          return;
+        }
+        const consentText = form.querySelector('label[for="sp-consent"]')?.textContent?.trim() ?? '';
+        // Every name here must exist on the HubSpot contact form, which also
+        // requires all of them. See site.contact in src/data/site.ts.
+        const fields = [
+          { objectTypeId: '0-1', name: 'firstname', value: text('firstname') },
+          { objectTypeId: '0-1', name: 'lastname', value: text('lastname') },
+          { objectTypeId: '0-1', name: 'email', value: text('email') },
+          { objectTypeId: '0-1', name: 'company', value: text('company') },
+          { objectTypeId: '0-1', name: 'country', value: text('country') },
+          { objectTypeId: '0-1', name: hub.serviceProperty, value: cfg.crmService },
+          { objectTypeId: '0-1', name: 'message', value: summary(P, text('note')) },
+        ];
+        submitting = true;
+        button.setAttribute('aria-disabled', 'true');
+        busy.hidden = false;
+        try {
+          const res = await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${hub.portalId}/${hub.formId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              submittedAt: Date.now(),
+              fields,
+              context: { pageUri: location.href, pageName: `${document.title} (${title})` },
+              legalConsentOptions: { consent: { consentToProcess: true, text: consentText } },
+            }),
+          });
+          if (res.ok) {
+            grid.hidden = true;
+            success.hidden = false;
+            success.scrollIntoView({ block: 'nearest' });
+            track('setup_planner_submit');
+          } else error.hidden = false;
+        } catch {
+          error.hidden = false;
+        } finally {
+          submitting = false;
+          button.removeAttribute('aria-disabled');
+          busy.hidden = true;
+        }
+      });
+    };
+
+    // ---- boot ----
+    if (view === 'result' && visibleSteps().every(stepComplete)) renderResult();
+    else {
+      view = 'wizard';
+      renderWizard(false);
+    }
+  }
+</script>

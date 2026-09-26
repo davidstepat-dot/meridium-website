@@ -50,6 +50,7 @@ export const GET: APIRoute = async () => {
     ),
     '## Free resources',
     '',
+    `- [Singapore Setup Planner](${site.url}/resources/setup-planner/): seven questions that recommend a Singapore private limited company, branch or representative office, with a typical timeline, checklist, government fees and tax position; includes a comparison of the three structures`,
     `- [Resources](${site.url}/resources/): Singapore compliance calendar, Employment Pass salary calculator and individual income tax calculator`,
     '',
     '## Company',

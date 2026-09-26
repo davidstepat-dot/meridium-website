@@ -11,9 +11,9 @@ denied until the visitor clicks Accept in the cookie banner
 (`src/components/ConsentBanner.astro`); the measurement ID is `site.googleTag.id` in
 `src/data/site.ts`, and emptying it removes both the tag and the banner. If tracking
 changes, update section 6.6 of the data protection policy (both languages) first. Apart
-from that, the site loads no trackers or cookies. The two things that talk to
-outside services (the contact form and the newsletter sign-up) send data from the
-visitor's browser directly to HubSpot's Forms API; "Book a call" opens Calendly in a new
+from that, the site loads no trackers or cookies. The three things that talk to
+outside services (the contact form, the setup planner's review form and the newsletter
+sign-up) send data from the visitor's browser directly to HubSpot's Forms API; "Book a call" opens Calendly in a new
 tab. Nothing in this repository is secret: the HubSpot portal, form and subscription IDs
 are the same public identifiers the browser sends, and no API keys or credentials are
 needed to build or deploy.
@@ -67,6 +67,24 @@ npm run check      # type-check the templates and content
   table (add the new table, move the switch dates) and whenever MOM announces a new EP
   qualifying salary. Sources are cited as plain text; MOM's terms of use ask for
   permission before deep-linking to its pages.
+- **Singapore Setup Planner** (`/resources/setup-planner/`, `/de/resources/setup-planner/`):
+  seven questions that recommend a private limited company, branch or representative
+  office, with a timeline, checklist, government fees, tax position and a review form.
+  Copy for both languages, the question set, fees, licence allowances and treaty
+  countries are in `src/data/setup-planner.ts` (sources in its header comment); the logic
+  and styling are in `src/components/SetupPlanner.astro`; the page around it (hero,
+  structure comparison table, FAQs, which also feed the FAQPage structured data) is
+  `src/components/SetupPlannerPage.astro`. Employment Pass salaries come from
+  `src/data/ep-salary.ts`, so they update with the EP calculator. Answers stay in the
+  visitor's browser (sessionStorage) unless the visitor sends the review form, which
+  submits to the existing HubSpot contact form with service of interest "Incorporation"
+  and the full plan summary (in English, with a lead priority score) in the message
+  field. "Save or print this plan" uses the browser's print dialog with a print
+  stylesheet. Entry points: homepage hero button, the first card on the Resources page,
+  the `planner` frontmatter block on the Incorporation, Payroll/HR and Licence
+  applications service pages, and the Contact page sidebar. The newsletter popup does not
+  open on the planner. Re-verify the figures after each Budget and when MOM, ACRA or
+  Enterprise Singapore announce changes.
 - **Data protection policy**: `src/policies/data-protection-policy.md`.
 - **Photos**: `src/assets/`. Replace a file and rebuild; Astro regenerates the optimised
   responsive variants.
@@ -107,6 +125,10 @@ to the users chosen in the form's Options tab. Contacts created by this form are
 as marketing contacts, so enquiries do not consume the marketing contacts tier; they
 become marketing contacts only if they subscribe to the newsletter.
 
+The setup planner's review form (`src/components/SetupPlanner.astro`) submits to the same
+HubSpot form with the same seven fields, so any change to the form's fields must be made
+in both components.
+
 Rules when editing the HubSpot form or this component:
 
 - Keep the field sets identical. HubSpot rejects API submissions whose fields do not
@@ -128,7 +150,7 @@ Rules when editing the HubSpot form or this component:
 `src/components/NewsletterPopup.astro` is rendered on every page from `Base.astro`. It
 opens after 10 seconds or at 40% scroll depth, never on the contact, data protection or
 terms pages, once per visitor per 30 days, and never again after a successful sign-up.
-The footer's "Newsletter" link opens it on demand; `meridium.sg/?newsletter` forces it
+It also stays closed on the setup planner. The footer's "Newsletter" link opens it on demand; `meridium.sg/?newsletter` forces it
 open for testing on any page.
 
 Submissions go from the visitor's browser straight to HubSpot's Forms API, with both

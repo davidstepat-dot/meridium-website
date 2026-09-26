@@ -1,0 +1,168 @@
+---
+// Shared body of /resources/setup-planner/ and /de/resources/setup-planner/.
+// Copy: src/data/setup-planner.ts. The planner itself: SetupPlanner.astro.
+// The comparison table and FAQs double as structured data (FAQPage), so
+// search engines and AI assistants can quote them.
+import Base from '@/layouts/Base.astro';
+import CTABand from '@/components/CTABand.astro';
+import SetupPlanner from '@/components/SetupPlanner.astro';
+import { site } from '@/data/site';
+import { langPrefix, ui, type Lang } from '@/data/i18n';
+import { planner } from '@/data/setup-planner';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'en' } = Astro.props;
+const c = planner[lang];
+const prefix = langPrefix(lang);
+const inLanguage = lang === 'de' ? 'de' : 'en-SG';
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const homeUrl = new URL(prefix ? `${prefix}/` : '/', Astro.site).href;
+const resourcesUrl = new URL(`${prefix}/resources/`, Astro.site).href;
+const jsonLd: Record<string, unknown>[] = [
+  {
+    '@type': 'WebApplication',
+    '@id': `${pageUrl}#planner`,
+    name: c.hero.eyebrow,
+    description: c.meta.description,
+    url: pageUrl,
+    inLanguage,
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Any',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'SGD' },
+    provider: { '@id': `${site.url}/#organization` },
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: ui[lang].service.home, item: homeUrl },
+      { '@type': 'ListItem', position: 2, name: c.hero.crumb, item: resourcesUrl },
+      { '@type': 'ListItem', position: 3, name: c.hero.eyebrow, item: pageUrl },
+    ],
+  },
+  {
+    '@type': 'FAQPage',
+    '@id': `${pageUrl}#faq`,
+    inLanguage,
+    mainEntity: c.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<Base title={c.meta.title} description={c.meta.description} lang={lang} jsonLd={jsonLd}>
+  <section class="border-b border-line bg-ivory print:hidden">
+    <div class="container-m py-14 md:py-20">
+      <nav aria-label="Breadcrumb" class="text-sm">
+        <ol class="flex flex-wrap items-center gap-2">
+          <li><a href={prefix || '/'} class="text-navy/70 hover:text-navy">{ui[lang].service.home}</a></li>
+          <li aria-hidden="true" class="text-navy/40">/</li>
+          <li><a href={`${prefix}/resources/`} class="text-navy/70 hover:text-navy">{c.hero.crumb}</a></li>
+          <li aria-hidden="true" class="text-navy/40">/</li>
+          <li aria-current="page" class="font-medium text-navy">{c.hero.eyebrow}</li>
+        </ol>
+      </nav>
+      <h1 class="mt-6 max-w-3xl font-serif text-4xl font-semibold leading-[1.1] tracking-tight text-navy sm:text-5xl">
+        {c.hero.heading}
+      </h1>
+      <p class="mt-6 max-w-[62ch] text-lg leading-relaxed">{c.hero.intro}</p>
+      <ul class="mt-8 grid max-w-4xl gap-4 sm:grid-cols-3">
+        {
+          c.hero.points.map((p) => (
+            <li class="border-t border-navy/15 pt-4">
+              <p class="font-serif text-lg font-semibold tracking-tight text-navy">{p.title}</p>
+              <p class="mt-1 text-[15px] leading-relaxed">{p.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <a href="#planner" class="btn-red">{c.hero.start}</a>
+        <span class="text-[14px] text-body/80">{c.hero.startNote}</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white">
+    <div class="container-m section">
+      <SetupPlanner lang={lang} />
+    </div>
+  </section>
+
+  <section class="border-t border-line bg-ivory print:hidden">
+    <div class="container-m section">
+      <div class="max-w-2xl">
+        <p class="eyebrow">{c.explainer.eyebrow}</p>
+        <h2 class="mt-4 font-serif text-3xl font-semibold tracking-tight text-navy">{c.explainer.heading}</h2>
+        <p class="mt-5 leading-relaxed">{c.explainer.intro}</p>
+      </div>
+      <div class="mt-10 overflow-x-auto border border-line bg-white">
+        <table class="w-full min-w-[40rem] border-collapse text-[15px] leading-snug">
+          <thead>
+            <tr>
+              {
+                c.explainer.cols.map((col, i) => (
+                  <th
+                    scope="col"
+                    class={`border-b-2 border-navy/20 px-4 py-3 text-left align-bottom font-serif text-[1.05rem] font-semibold text-navy ${i === 0 ? 'w-[24%]' : ''}`}
+                  >
+                    {col}
+                  </th>
+                ))
+              }
+            </tr>
+          </thead>
+          <tbody>
+            {
+              c.explainer.rows.map((row) => (
+                <tr>
+                  {row.map((cell, i) =>
+                    i === 0 ? (
+                      <th scope="row" class="border-b border-line px-4 py-3 text-left align-top font-semibold text-navy">
+                        {cell}
+                      </th>
+                    ) : (
+                      <td class="border-b border-line px-4 py-3 align-top">{cell}</td>
+                    )
+                  )}
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white print:hidden">
+    <div class="container-m section">
+      <h2 class="max-w-2xl font-serif text-3xl font-semibold tracking-tight text-navy">{c.faqHeading}</h2>
+      <div class="mt-8 max-w-3xl divide-y divide-line border-y border-line">
+        {
+          c.faqs.map((faq) => (
+            <details class="group py-5">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-serif text-lg font-semibold tracking-tight text-navy [&::-webkit-details-marker]:hidden">
+                {faq.q}
+                <svg class="h-4 w-4 shrink-0 transition-transform group-open:rotate-45" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+              </summary>
+              <p class="mt-3 max-w-[62ch] leading-relaxed">{faq.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <div class="print:hidden">
+    <CTABand lang={lang} />
+  </div>
+</Base>

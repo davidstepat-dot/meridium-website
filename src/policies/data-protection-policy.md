@@ -103,15 +103,17 @@ This section explains what happens to personal data when you use meridium.sg and
 
 ### 6.1 Enquiry form and newsletter sign-up
 
-When you submit the enquiry form or subscribe to the Meridium newsletter, the details you enter (name, email address, and where provided company name, telephone number, the service you are interested in and your message) are sent from your browser directly to HubSpot, the customer relationship management platform Meridium uses, and stored as a contact record there. Meridium uses this data to respond to your enquiry, to prepare proposals and, where you have subscribed, to send you the newsletter you chose (English or German).
+When you submit the enquiry form, send your plan from the setup planner (section 6.2) or subscribe to the Meridium newsletter, the details you enter (name, email address, and where provided company name, telephone number, the service you are interested in and your message) are sent from your browser directly to HubSpot, the customer relationship management platform Meridium uses, and stored as a contact record there. Meridium uses this data to respond to your enquiry, to prepare proposals and, where you have subscribed, to send you the newsletter you chose (English or German).
 
 The newsletter is sent monthly from newsletter@meridium.sg and covers business, regulatory, tax and compliance developments in Singapore and the region. Subscribing triggers an automated welcome email. Every newsletter contains an unsubscribe link, and you may also withdraw consent at any time by writing to enquiries@meridium.sg. Enquiry contacts are not added to the newsletter unless they subscribe separately.
 
 HubSpot processes this data on Meridium's behalf as a data intermediary, under a written data processing agreement, on servers located outside Singapore. Meridium relies on HubSpot's contractual commitments to provide a standard of protection comparable to the PDPA, as described in section 11.
 
-### 6.2 Online calculators
+### 6.2 Online calculators and setup planner
 
 The income tax calculator and the Employment Pass salary calculator on the resources page run entirely in your browser. The figures you enter, such as income, age or salary, are used only on your device to produce the result and are not transmitted to, or stored by, Meridium or any third party.
+
+The setup planner also runs in your browser. Your answers are used on your device to produce your plan and are kept in your browser's session storage, so that the plan is still there if you leave the page and return; they are deleted when you close the browser tab or choose "Start again". They are not transmitted to Meridium unless you send the review form at the end of the plan. If you do, your answers, a summary of the plan and the details you enter (name, email address, company, country and any note) are sent from your browser directly to HubSpot and handled as an enquiry, as described in section 6.1. If you have accepted analytics cookies (section 6.6), the Google tag records that the planner was started, completed or sent, without your answers or your result.
 
 ### 6.3 Compliance calendar and other downloads
 
@@ -125,7 +127,7 @@ The "Book a call" buttons on this website link to Calendly, a third party schedu
 
 meridium.sg is a static website hosted on GitHub Pages. In common with any web host, the hosting provider records standard server logs, which may include your IP address, browser type and the pages requested, for security and operational purposes. Meridium does not receive these logs in identifiable form.
 
-No HubSpot tracking script is loaded on meridium.sg. The site stores two values in your browser: one remembers that the newsletter invitation has been shown or that you have subscribed, so that it is not shown again, and the other remembers your cookie choice (described in section 6.6). Neither value contains personal data, and both can be cleared through your browser settings.
+No HubSpot tracking script is loaded on meridium.sg. The site stores a small number of values in your browser: one remembers that the newsletter invitation has been shown or that you have subscribed, so that it is not shown again; another remembers your cookie choice (described in section 6.6); and the setup planner keeps your answers for the current browser session (described in section 6.2). None of these values is sent to Meridium, and all of them can be cleared through your browser settings.
 
 ### 6.6 Analytics and advertising cookies (Google)
 

@@ -5,6 +5,9 @@ outcome: "Your team paid correctly every month, employed through us if needed, w
 headline: "Singapore payroll, run properly every month."
 intro: "Meridium runs monthly payroll for foreign employers in Singapore: salaries, payslips, CPF, the Skills Development Levy and year-end IR8A reporting, handled by one senior contact. Where you want to hire local staff before or instead of setting up your own entity, we can employ them for you as employer of record. Around both sit HR advisory and the work passes that bring your people here."
 ctaNoun: "payroll, HR and EOR"
+planner:
+  heading: "Relocating people or hiring locally first?"
+  body: "The setup planner shows whether you need your own entity before your first hire, how the Employment Pass fits your timeline and when employer of record is an option. It takes about two minutes."
 seoTitle: "Payroll, HR, EOR and Work Passes in Singapore | Meridium"
 seoDescription: "Monthly payroll with CPF and IR8A compliance, employer of record (EOR) for local hires, HR advisory and work passes for foreign employers in Singapore."
 included:

@@ -5,6 +5,9 @@ outcome: "Ihr Team jeden Monat korrekt bezahlt, bei Bedarf über uns angestellt,
 headline: "Gehaltsabrechnung in Singapur, jeden Monat sauber erledigt."
 intro: "Meridium übernimmt die monatliche Gehaltsabrechnung für ausländische Arbeitgeber in Singapur: Gehälter, Abrechnungen, CPF, die Skills Development Levy und die IR8A-Meldung zum Jahresende, betreut von einem erfahrenen Ansprechpartner. Wenn Sie lokale Mitarbeiter einstellen möchten, bevor oder ohne dass Sie eine eigene Gesellschaft gründen, stellen wir sie als Employer of Record für Sie an. Ergänzt wird das durch HR-Beratung und die Arbeitspässe, die Ihre Mitarbeiter ins Land bringen."
 ctaNoun: "Ihre Gehaltsabrechnung, HR und EOR"
+planner:
+  heading: "Erst entsenden oder erst lokal einstellen?"
+  body: "Der Setup-Planer zeigt, ob Sie vor der ersten Einstellung eine eigene Gesellschaft brauchen, wie der Employment Pass in Ihren Zeitplan passt und wann ein Employer of Record infrage kommt. Das dauert rund zwei Minuten."
 seoTitle: "Payroll, HR, EOR und Arbeitspässe in Singapur | Meridium"
 seoDescription: "Monatliche Gehaltsabrechnung mit CPF- und IR8A-Compliance, Employer of Record (EOR) für lokale Mitarbeiter, HR-Beratung und Arbeitspässe für ausländische Arbeitgeber in Singapur."
 included:

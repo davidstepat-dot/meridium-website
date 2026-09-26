@@ -22,6 +22,9 @@ const services = defineCollection({
     related: z.object({ slug: reference('services'), label: z.string() }).optional(),
     // Lowercase noun phrase for the closing CTA, for example "incorporation".
     ctaNoun: z.string().optional(),
+    // Optional prompt linking to the setup planner (/resources/setup-planner/),
+    // shown after the page narrative.
+    planner: z.object({ heading: z.string(), body: z.string() }).optional(),
   }),
 });
 
