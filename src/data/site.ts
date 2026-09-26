@@ -11,6 +11,10 @@ export const site = {
   tagline: 'Corporate Services | Singapore',
   url: 'https://meridium.sg',
   email: 'enquiries@meridium.sg',
+  // Company page on LinkedIn. Listed as a sameAs profile in the structured
+  // data (Base.astro) and in /llms.txt, so search engines and AI assistants
+  // link the page and the website to the same firm.
+  linkedin: 'https://www.linkedin.com/company/meridium-singapore/',
   uen: '202635066H',
   // ACRA registration number under the CSP regime: add here and restore the
   // footer line in Footer.astro once the number is issued.

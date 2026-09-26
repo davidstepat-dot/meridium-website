@@ -18,6 +18,46 @@ const { Content } = await render(entry);
 
 const hasBody = entry.body && entry.body.trim().length > 0;
 const relatedSlug = data.related ? data.related.slug.id.split('/')[1] : null;
+
+// Structured data for this service: the Service itself (provided by the firm
+// node in Base.astro), the breadcrumb trail, and the FAQs as a FAQPage so
+// search engines and AI assistants can quote the answers directly. Built from
+// the same frontmatter the page renders, so the two never drift apart.
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const homeUrl = new URL(prefix ? `${prefix}/` : '/', Astro.site).href;
+const serviceJsonLd: Record<string, unknown>[] = [
+  {
+    '@type': 'Service',
+    '@id': `${pageUrl}#service`,
+    name: data.title,
+    serviceType: data.title,
+    description: data.intro,
+    url: pageUrl,
+    inLanguage: lang === 'de' ? 'de' : 'en-SG',
+    provider: { '@id': `${site.url}/#organization` },
+    areaServed: { '@type': 'Country', name: 'Singapore' },
+  },
+  {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t.service.home, item: homeUrl },
+      { '@type': 'ListItem', position: 2, name: t.service.services, item: `${homeUrl}#services` },
+      { '@type': 'ListItem', position: 3, name: data.title, item: pageUrl },
+    ],
+  },
+];
+if (data.faqs.length > 0 && !data.stub) {
+  serviceJsonLd.push({
+    '@type': 'FAQPage',
+    '@id': `${pageUrl}#faq`,
+    inLanguage: lang === 'de' ? 'de' : 'en-SG',
+    mainEntity: data.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  });
+}
 ---
 
 <Base
@@ -25,6 +65,7 @@ const relatedSlug = data.related ? data.related.slug.id.split('/')[1] : null;
   description={data.seoDescription ?? data.outcome}
   noindex={data.stub}
   lang={lang}
+  jsonLd={serviceJsonLd}
 >
   <!-- Page header -->
   <section class="border-b border-line bg-ivory">

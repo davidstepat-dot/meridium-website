@@ -15,6 +15,9 @@ interface Props {
   // Stub pages carry noindex until their content phase lands.
   noindex?: boolean;
   lang?: Lang;
+  // Extra schema.org nodes for this page (for example Service and FAQPage on
+  // service pages). They join the site-wide nodes in one @graph.
+  jsonLd?: Record<string, unknown>[];
 }
 
 const {
@@ -23,21 +26,31 @@ const {
   ogImage = '/og-default.jpg',
   noindex = false,
   lang = 'en',
+  jsonLd: pageJsonLd = [],
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImageUrl = new URL(ogImage, Astro.site);
 const enUrl = new URL(altPath(Astro.url.pathname, 'en'), Astro.site);
 const deUrl = new URL(altPath(Astro.url.pathname, 'de'), Astro.site);
 
-// ProfessionalService schema. Identifiers are completed as facts are
-// confirmed (see src/data/site.ts).
-const jsonLd = {
-  '@context': 'https://schema.org',
+// Structured data (schema.org). Search engines and AI assistants read this to
+// identify the firm and connect the website, the LinkedIn page and third-party
+// listings to one entity. Identifiers are completed as facts are confirmed
+// (see src/data/site.ts). Pages add their own nodes through the jsonLd prop.
+const organization = {
   '@type': 'ProfessionalService',
   '@id': `${site.url}/#organization`,
   image: new URL('/og-default.jpg', site.url).href,
+  logo: {
+    '@type': 'ImageObject',
+    url: new URL('/logo.png', site.url).href,
+    width: 1200,
+    height: 734,
+  },
   name: site.legalName,
+  legalName: site.legalName,
   alternateName: site.brand,
+  slogan: site.tagline,
   url: site.url,
   email: site.email,
   description: site.defaultDescription,
@@ -49,16 +62,42 @@ const jsonLd = {
     addressCountry: 'SG',
   },
   identifier: { '@type': 'PropertyValue', propertyID: 'UEN', value: site.uen },
+  sameAs: [site.linkedin],
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer service',
+    email: site.email,
+    url: site.bookingHref,
+    availableLanguage: ['English', 'German'],
+    areaServed: 'SG',
+  },
+  knowsLanguage: ['en', 'de'],
   areaServed: ['Singapore', 'Southeast Asia', 'India', 'China'],
   knowsAbout: [
     'Company incorporation in Singapore',
     'Corporate secretarial services',
+    'Nominee resident director services',
     'Payroll and work passes',
+    'Employer of record services in Singapore',
     'Accounting and tax compliance',
     'Regulatory licence applications',
     'Trademark registration',
     'Market entry advisory',
   ],
+};
+
+const website = {
+  '@type': 'WebSite',
+  '@id': `${site.url}/#website`,
+  url: site.url,
+  name: site.brand,
+  inLanguage: ['en-SG', 'de'],
+  publisher: { '@id': `${site.url}/#organization` },
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [organization, website, ...pageJsonLd],
 };
 ---
 

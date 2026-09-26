@@ -150,6 +150,28 @@ subscription type, so the lists never mix.
 - **Welcome emails**: sent by the workflow attached to each form in HubSpot (the form's
   Automation tab), not by the site.
 
+## Search engines and AI assistants
+
+The site is set up so that search engines and AI assistants (ChatGPT, Claude, Gemini,
+Perplexity, Copilot) can find, read and cite it.
+
+- **`public/robots.txt`** allows every crawler and names the AI crawlers explicitly
+  (GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended and others). Do not
+  add `Disallow` lines for them unless the firm decides to opt out of AI answers.
+- **`/llms.txt`** (`src/pages/llms.txt.ts`) is a plain-text summary of the firm, its
+  services and their FAQs for AI assistants, generated at build time from the service
+  markdown and `src/data/site.ts`. It updates itself when those files change.
+- **Structured data**: `src/layouts/Base.astro` emits one schema.org `@graph` on every
+  page with the firm (`ProfessionalService`, including UEN, address, logo, languages and
+  the LinkedIn page as `sameAs`) and the `WebSite`. Service pages add `Service`,
+  `BreadcrumbList` and `FAQPage` nodes built from the same frontmatter the page shows
+  (`src/components/ServicePage.astro`), so the FAQs in the markdown are also the FAQs
+  search engines see. Other pages can add nodes through Base's `jsonLd` prop. When the
+  firm gets new public profiles (Google Business Profile, chamber or directory listings),
+  add their URLs to `sameAs`.
+- **`public/logo.png`** is the full logo flattened onto white at 1200 px, referenced as
+  the schema logo. Keep it on white, per the brand rule.
+
 ## Deploy (GitHub Pages)
 
 `.github/workflows/deploy.yml` builds the site and publishes it to GitHub Pages on every
