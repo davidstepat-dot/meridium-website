@@ -50,6 +50,8 @@ export const GET: APIRoute = async () => {
     ),
     '## Free resources',
     '',
+    `- [Setting up a Singapore subsidiary or regional HQ](${site.url}/singapore-subsidiary/): what Meridium sets up for foreign groups, how it works and common questions`,
+    `- [Already operating in Singapore](${site.url}/singapore-operations/): taking over company secretarial, accounting, tax and payroll, and how a change of provider works`,
     `- [Singapore Setup Planner](${site.url}/resources/setup-planner/): seven questions that recommend a Singapore private limited company, branch or representative office, with a typical timeline, checklist, government fees and tax position; includes a comparison of the three structures`,
     `- [Resources](${site.url}/resources/): Singapore compliance calendar, Employment Pass salary calculator and individual income tax calculator`,
     '',
