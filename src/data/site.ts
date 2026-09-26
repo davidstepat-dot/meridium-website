@@ -61,7 +61,11 @@ export const site = {
   // to send Ads conversions directly as well. Empty values send nothing extra.
   googleAds: {
     conversions: {
-      lead: '',
+      // Google Ads conversion action "Website lead (enquiry or planner)"
+      // (category Submit lead form, count one per click), account
+      // 496-331-4692, created 26 Sep 2026 and routed through the site's
+      // existing Google tag.
+      lead: 'AW-18469424294/ElNkCPm_hIYdEKaZ9OZE',
       signup: '',
       booking: '',
     },
