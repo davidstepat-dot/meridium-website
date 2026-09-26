@@ -50,6 +50,22 @@ export const site = {
   googleTag: {
     id: 'G-277R1EST4G',
   },
+  // Conversion tracking (src/components/GoogleTag.astro). The site always
+  // sends these Google Analytics events through the Google tag:
+  //   generate_lead   contact form or setup planner review sent (lead_type)
+  //   sign_up         newsletter subscription (method: newsletter)
+  //   book_call_click a "Book a call" link to Calendly was clicked
+  // plus setup_planner_start / setup_planner_complete from the planner.
+  // Mark them as key events in Google Analytics and import them into Google
+  // Ads, or paste Google Ads conversion labels below ('AW-123456789/AbCdEf')
+  // to send Ads conversions directly as well. Empty values send nothing extra.
+  googleAds: {
+    conversions: {
+      lead: '',
+      signup: '',
+      booking: '',
+    },
+  },
   defaultDescription:
     'Licensed Singapore corporate services firm for foreign companies entering Asia: incorporation, compliance, tax, payroll and EOR, and expansion, delivered by senior advisers.',
   // Contact form (src/components/ContactForm.astro). Submissions go straight

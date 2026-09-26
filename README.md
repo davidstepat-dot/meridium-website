@@ -10,7 +10,10 @@ The only third-party script is the Google tag (Google Analytics and Google Ads,
 denied until the visitor clicks Accept in the cookie banner
 (`src/components/ConsentBanner.astro`); the measurement ID is `site.googleTag.id` in
 `src/data/site.ts`, and emptying it removes both the tag and the banner. If tracking
-changes, update section 6.6 of the data protection policy (both languages) first. Apart
+changes, update section 6.6 of the data protection policy (both languages) first. Conversion events
+(`generate_lead`, `sign_up`, `book_call_click`, plus the setup planner's own events) are sent
+through `window.meridiumTrack` in `GoogleTag.astro`; optional Google Ads conversion labels
+go in `site.googleAds.conversions`. Apart
 from that, the site loads no trackers or cookies. The three things that talk to
 outside services (the contact form, the setup planner's review form and the newsletter
 sign-up) send data from the visitor's browser directly to HubSpot's Forms API; "Book a call" opens Calendly in a new

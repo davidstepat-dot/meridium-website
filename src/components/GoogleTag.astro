@@ -14,6 +14,7 @@
 import { site } from '@/data/site';
 
 const tagId = site.googleTag.id;
+const adsConversions = site.googleAds.conversions;
 ---
 
 {
@@ -50,6 +51,30 @@ const tagId = site.googleTag.id;
         gtag('config', tagId);
       </script>
       <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${tagId}`} />
+      <script is:inline define:vars={{ adsConversions }}>
+        // Conversion events. Components call window.meridiumTrack(kind, params)
+        // after a successful submission; kind is lead, signup or booking.
+        // Each sends the matching Google Analytics event and, when a label is
+        // set in site.googleAds.conversions, a Google Ads conversion too.
+        // Nothing the visitor typed is ever included.
+        (function () {
+          var EVENTS = { lead: 'generate_lead', signup: 'sign_up', booking: 'book_call_click' };
+          window.meridiumTrack = function (kind, params) {
+            try {
+              var name = EVENTS[kind] || kind;
+              gtag('event', name, params || {});
+              var label = adsConversions[kind];
+              if (label) gtag('event', 'conversion', { send_to: label });
+            } catch (e) {
+              /* analytics unavailable */
+            }
+          };
+          document.addEventListener('click', function (e) {
+            var a = e.target && e.target.closest ? e.target.closest('a[href*="calendly.com"]') : null;
+            if (a) window.meridiumTrack('booking', { link_page: location.pathname });
+          });
+        })();
+      </script>
     </>
   )
 }

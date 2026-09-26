@@ -1332,6 +1332,7 @@ const config = {
             success.hidden = false;
             success.scrollIntoView({ block: 'nearest' });
             track('setup_planner_submit');
+            (window as any).meridiumTrack?.('lead', { lead_type: 'setup_planner' });
           } else error.hidden = false;
         } catch {
           error.hidden = false;
