@@ -3,7 +3,6 @@
 // foreign companies establishing in Singapore, one for companies already
 // operating here. Service link labels come from the service collection.
 import { getCollection } from 'astro:content';
-import { site } from '@/data/site';
 import { langPrefix, type Lang } from '@/data/i18n';
 
 interface Props {
@@ -24,7 +23,7 @@ const copy = {
         heading: 'Establishing your company in Singapore',
         body: 'For groups setting up a subsidiary, regional headquarters or holding company: structure, resident director, Employment Passes, bank account and licences, coordinated by one senior team.',
         cta: 'Plan your Singapore entity',
-        href: `${prefix}/resources/setup-planner/`,
+        href: `${prefix}/singapore-subsidiary/`,
         external: false,
         links: ['incorporation', 'payroll-hr', 'asia-expansion'],
       },
@@ -32,9 +31,9 @@ const copy = {
         label: 'Already operating in Singapore',
         heading: 'Running your Singapore entity properly',
         body: 'For companies already here whose filings, books or payroll need a firmer hand: company secretarial, accounting and tax, payroll, and a senior adviser who raises issues before a regulator does. We handle a change of provider for you, including the handover of registers and records.',
-        cta: 'Book a review of your entity',
-        href: site.bookingHref,
-        external: true,
+        cta: 'See how we take over your entity',
+        href: `${prefix}/singapore-operations/`,
+        external: false,
         links: ['company-secretarial', 'accounting-tax', 'payroll-hr'],
       },
     ],
@@ -47,7 +46,7 @@ const copy = {
         heading: 'Ihre Gesellschaft in Singapur aufbauen',
         body: 'Für Unternehmensgruppen, die eine Tochtergesellschaft, eine Regionalzentrale oder eine Holding gründen: Struktur, ansässiger Director, Employment Passes, Bankkonto und Lizenzen, koordiniert von einem erfahrenen Team.',
         cta: 'Markteintritt planen',
-        href: `${prefix}/resources/setup-planner/`,
+        href: `${prefix}/singapore-subsidiary/`,
         external: false,
         links: ['incorporation', 'payroll-hr', 'asia-expansion'],
       },
@@ -55,9 +54,9 @@ const copy = {
         label: 'Bereits in Singapur tätig',
         heading: 'Ihre Gesellschaft in Singapur richtig führen',
         body: 'Für Unternehmen vor Ort, deren Meldungen, Buchhaltung oder Lohnabrechnung eine festere Hand brauchen: Company Secretarial, Buchhaltung und Steuern, Lohnabrechnung und ein erfahrener Berater, der Probleme anspricht, bevor eine Behörde es tut. Einen Anbieterwechsel übernehmen wir für Sie, einschließlich der Übergabe von Registern und Unterlagen.',
-        cta: 'Überprüfung Ihrer Gesellschaft vereinbaren',
-        href: site.bookingHref,
-        external: true,
+        cta: 'So übernehmen wir Ihre Gesellschaft',
+        href: `${prefix}/singapore-operations/`,
+        external: false,
         links: ['company-secretarial', 'accounting-tax', 'payroll-hr'],
       },
     ],
