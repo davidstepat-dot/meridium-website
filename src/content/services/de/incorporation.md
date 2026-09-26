@@ -3,12 +3,12 @@ title: "Firmengründung"
 order: 1
 outcome: "Eine singapurische Private Limited Company, korrekt aufgesetzt und bereit für den Geschäftsbetrieb."
 headline: "Ihre Gesellschaft in Singapur, vom ersten Tag an korrekt gegründet."
-intro: "Meridium gründet singapurische Private Limited Companies für ausländische Gründer und Unternehmensgruppen. Wir beraten zur Struktur, bevor irgendetwas eingereicht wird, besetzen die gesetzlich vorgeschriebenen Rollen und bleiben für die Gesellschaft verantwortlich, lange nachdem die Gründungsurkunde vorliegt."
+intro: "Meridium gründet singapurische Private Limited Companies für ausländische Unternehmen, Unternehmensgruppen und Gründer. Wir beraten zur Struktur, bevor irgendetwas eingereicht wird, besetzen die gesetzlich vorgeschriebenen Rollen und bleiben für die Gesellschaft verantwortlich, lange nachdem die Gründungsurkunde vorliegt."
 ctaNoun: "Ihre Firmengründung in Singapur"
 planner:
   heading: "Unsicher, welche Struktur Sie brauchen?"
   body: "Der Setup-Planer vergleicht Private Limited Company, Zweigniederlassung und Repräsentanz für Ihre Situation und zeigt Director, Zeitplan und Behördengebühren. Das dauert rund zwei Minuten."
-seoTitle: "Firmengründung in Singapur für ausländische Gründer | Meridium"
+seoTitle: "Firmengründung in Singapur für ausländische Unternehmen | Meridium"
 seoDescription: "Gründen Sie eine Private Limited Company in Singapur mit erfahrenen Beratern: Resident Director, Geschäftssitz, Company Secretary und Bankkonto."
 included:
   - "Beratung vor der Gründung zu Kapitalausstattung, Anteilsklassen und Holdingstruktur"

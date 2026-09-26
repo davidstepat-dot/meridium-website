@@ -237,6 +237,7 @@ const linkClass =
       if (response.ok) {
         form.reset();
         success?.classList.remove('hidden');
+        (window as any).meridiumTrack?.('lead', { lead_type: 'contact_form' });
         success?.scrollIntoView({ block: 'nearest' });
       } else {
         error?.classList.remove('hidden');

@@ -383,7 +383,7 @@ export const ui = {
           'This calculator gives an estimate for planning purposes only. It does not account for every relief, deduction or special scheme, and it is not tax advice. Your actual assessment is determined by IRAS. For advice on your position, speak with us.',
         source: 'Source: IRAS, Individual Income Tax rates',
         ctaHeading: 'Need the actual number, not an estimate?',
-        ctaBody: 'Our senior advisers handle individual and corporate tax filings for foreign founders and their Singapore companies.',
+        ctaBody: 'Our senior advisers handle individual and corporate tax filings for foreign companies, their Singapore entities and their people.',
       },
     },
   },

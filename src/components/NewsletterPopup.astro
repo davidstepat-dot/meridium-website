@@ -348,7 +348,10 @@ const linkClass =
             },
           }),
         });
-        if (response.ok) succeed();
+        if (response.ok) {
+          succeed();
+          (window as any).meridiumTrack?.('signup', { method: 'newsletter' });
+        }
         else error?.classList.remove('hidden');
       } catch {
         error?.classList.remove('hidden');
